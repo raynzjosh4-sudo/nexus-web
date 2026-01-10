@@ -1,0 +1,6 @@
+<div class="sc-comp price-component">
+    <div class="price-row">
+        <span class="price-current">{{ comp.currency|default:product.currency }} {{ comp.price|floatformat:0 }}</span>
+        {% if comp.originalPrice %}<span class="price-original">{{ comp.currency|default:product.currency }} {{ comp.originalPrice|floatformat:0 }}</span>{% endif %}
+    </div>
+</div>

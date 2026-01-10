@@ -1,0 +1,138 @@
+<style>
+    /* --- Feature Variables --- */
+    :root {
+        --feature-bg: var(--nexus-card-bg, #181b21);
+        --feature-border: var(--nexus-border, rgba(255, 255, 255, 0.08));
+        --nexus-accent: var(--nexus-accent, #f97316);
+        --icon-bg: rgba(255, 255, 255, 0.05);
+    }
+
+    .nexus-feature-section {
+        padding: 40px 0;
+        width: 100%;
+    }
+
+    .nexus-feature-title {
+        font-size: 1.8rem;
+        color: var(--nexus-text, white);
+        margin-bottom: 40px;
+        text-align: center;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    /* --- STYLE A: ICON TOP --- */
+    .feature-grid-top {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+
+    .feature-card-top {
+        background: var(--feature-bg);
+        border: 1px solid var(--feature-border);
+        border-radius: 20px;
+        padding: 35px 25px;
+        text-align: center;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        height: 100%;
+        display: flex; flex-direction: column; align-items: center;
+    }
+
+    .feature-card-top:hover {
+        transform: translateY(-5px);
+        border-color: var(--nexus-accent);
+    }
+
+    .feature-icon-circle {
+        width: 70px; height: 70px;
+        background: var(--icon-bg);
+        color: var(--nexus-accent);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 2rem; margin-bottom: 20px;
+        transition: transform 0.3s ease;
+        border: 1px solid var(--feature-border);
+    }
+
+    .feature-card-top:hover .feature-icon-circle {
+        transform: scale(1.1) rotate(5deg);
+        background: var(--nexus-accent);
+        color: white;
+    }
+
+    /* --- STYLE B: ICON LEFT --- */
+    .feature-grid-left {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+    }
+
+    .feature-item-left {
+        display: flex; align-items: flex-start; gap: 20px;
+        padding: 25px;
+        background: rgba(255,255,255,0.02);
+        border-radius: 16px;
+        border: 1px solid transparent;
+        transition: background 0.3s;
+    }
+
+    .feature-item-left:hover {
+        background: var(--feature-bg);
+        border-color: var(--nexus-accent);
+    }
+
+    .feature-icon-square {
+        min-width: 50px; height: 50px;
+        background: var(--icon-bg);
+        color: var(--nexus-accent);
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.5rem; margin-top: 5px;
+    }
+
+    /* --- Typography --- */
+    .feature-name {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.25rem; font-weight: 600;
+        color: var(--nexus-text, white);
+        margin: 0 0 10px 0;
+    }
+
+    .feature-desc {
+        font-size: 0.95rem; color: #9ca3af; line-height: 1.6; margin: 0;
+    }
+</style>
+
+<div class="nexus-feature-section">
+    {% if component.title %}
+        <h3 class="nexus-feature-title">{{ component.title }}</h3>
+    {% endif %}
+
+    {% if component.style == 'iconTop' %}
+        <div class="feature-grid-top">
+            {% for feature in component.features %}
+                <div class="feature-card-top">
+                    <div class="feature-icon-circle">
+                        {{ feature.icon }} 
+                    </div>
+                    <h4 class="feature-name">{{ feature.title }}</h4>
+                    <p class="feature-desc">{{ feature.description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="feature-grid-left">
+            {% for feature in component.features %}
+                <div class="feature-item-left">
+                    <div class="feature-icon-square">
+                        {{ feature.icon }}
+                    </div>
+                    <div>
+                        <h4 class="feature-name">{{ feature.title }}</h4>
+                        <p class="feature-desc">{{ feature.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div> 

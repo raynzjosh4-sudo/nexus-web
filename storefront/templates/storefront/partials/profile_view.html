@@ -1,0 +1,176 @@
+<div id="view-about" class="profile-mobile-container">
+
+    {# --- 1. HERO SECTION --- #}
+    <div class="hero-wrapper">
+        {# Always include hero.html; it now handles missing component data using business fallbacks #}
+        {% include "storefront/components/hero.html" with component=hero_component %}
+
+        {# Tabs appear inside the hero wrapper for layout consistency #}
+        {% if tab_component and tab_component.tabs %}
+        {% include "storefront/components/tabs.html" with component=tab_component %}
+        {% endif %}
+    </div>
+
+    {# --- 2. MAIN CONTENT STACK --- #}
+    <div class="main-content-wrapper">
+        <div class="component-stack">
+            {% for component in components %}
+
+            {# --- COMPONENT LOOP USING CLEAN_TYPE --- #}
+            <div class="component-item">
+
+                {% if component.clean_type == 'bio' %}
+                {% include "storefront/components/bio.html" with component=component %}
+
+                {% elif component.clean_type == 'servicelist' %}
+                {% include "storefront/components/services.html" with component=component %}
+
+                {% elif component.clean_type == 'featurelist' %}
+                {% include "storefront/components/features.html" with component=component %}
+
+                {% elif component.clean_type == 'portfolio' %}
+                {% include "storefront/components/portfolio.html" with component=component %}
+
+                {% elif component.clean_type == 'timeline' %}
+                {% include "storefront/components/timeline.html" with component=component %}
+
+                {% elif component.clean_type == 'contact' %}
+                {% include "storefront/components/contact.html" with component=component %}
+
+                {% elif component.clean_type == 'heading' %}
+                {% include "storefront/components/heading.html" with component=component %}
+
+                {% elif component.clean_type == 'divider' %}
+                {% include "storefront/components/divider.html" with component=component %}
+
+                {% elif component.clean_type == 'awards' %}
+                {% include "storefront/components/awards.html" with component=component %}
+
+                {% elif component.clean_type == 'filedownload' %}
+                {% include "storefront/components/downloads.html" with component=component %}
+
+                {% elif component.clean_type == 'testimonial' %}
+                {% include "storefront/components/testimonials.html" with component=component %}
+
+                {% elif component.clean_type == 'booking' %}
+                {% include "storefront/components/booking.html" with component=component %}
+
+                {% elif component.clean_type == 'map' %}
+                {% include "storefront/components/map.html" with component=component %}
+
+                {% elif component.clean_type == 'video' %}
+                {% include "storefront/components/video.html" with component=component %}
+
+                {% elif component.clean_type == 'cta' %}
+                {% include "storefront/components/cta.html" with component=component %}
+
+                {% elif component.clean_type == 'gallery' %}
+                {% include "storefront/components/gallery.html" with component=component %}
+
+                {% elif component.clean_type == 'faq' %}
+                {% include "storefront/components/faq.html" with component=component %}
+
+                {% elif component.clean_type == 'pricing' %}
+                {% include "storefront/components/pricing.html" with component=component %}
+
+                {% elif component.clean_type == 'team' %}
+                {% include "storefront/components/team.html" with component=component %}
+
+                {# --- DEBUG BLOCK: Uncomment to see if a component is missing --- #}
+                {# {% else %} #}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Mobile-First Layout Optimization */
+    .profile-mobile-container {
+        /* 🟢 UPDATED: Uses dynamic theme variable */
+        background-color: var(--nexus-bg, #0f1115);
+        min-height: 100vh;
+        padding-bottom: 50px;
+    }
+
+    .main-content-wrapper {
+        max-width: 800px;
+        /* Slightly wider for desktop view */
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .component-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-top: 20px;
+    }
+
+    .component-item {
+        /* 🟢 UPDATED: Uses dynamic card background variable */
+        background: var(--nexus-card-bg, #181b21);
+        border-radius: 16px;
+        border: 1px solid var(--nexus-border, rgba(255, 255, 255, 0.05));
+        overflow: hidden;
+        animation: mobileFadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Stagger animation for items (first 5 items) */
+    .component-item:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .component-item:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .component-item:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .component-item:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .component-item:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    .fallback-hero {
+        padding: 100px 20px 60px;
+        text-align: center;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .hero-big-title {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        margin-bottom: 12px;
+        color: var(--nexus-text, #ffffff);
+        letter-spacing: -1px;
+    }
+
+    .hero-desc {
+        font-size: 1.1rem;
+        color: var(--nexus-text-muted, #9ca3af);
+        line-height: 1.6;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    @keyframes mobileFadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

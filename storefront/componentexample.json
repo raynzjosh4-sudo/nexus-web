@@ -1,0 +1,222 @@
+[
+    {
+        "type": "ProfileHeroComponent",
+        "style": "textOverlay",
+        "title": "Gemini Man Shoe",
+        "imageUrl": "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/cover_small.webp?t=1767371860633",
+        "subtitle": "That's what you want me"
+    },
+    {
+        "tabs": [
+            {
+                "title": "New Tab",
+                "components": [
+                    {
+                        "type": "ProfileTestimonialComponent",
+                        "style": "quoteList",
+                        "title": "What Our Customers Say",
+                        "testimonials": [
+                            {
+                                "quote": "Very kind with customers",
+                                "authorName": "John Kasule",
+                                "authorTitle": "Ceo",
+                                "authorImageUrl": "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/testimonial_images/1767361746446_compressed.jpg"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "ProfileFileDownloadComponent",
+                        "files": [
+                            {
+                                "title": "The charger ",
+                                "fileUrl": "https/ghj",
+                                "fileSize": "15",
+                                "fileType": "PDF",
+                                "description": null
+                            }
+                        ],
+                        "title": "Downloads"
+                    },
+                    {
+                        "type": "ProfileGalleryComponent",
+                        "style": "filmstrip",
+                        "title": null,
+                        "imageUrls": [
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767560032972_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767560034100_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767560034646_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767560035188_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767560036175_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767560036761_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767560037217_compressed.jpg"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "New Tab",
+                "components": [
+                    {
+                        "text": "Edit this new tab!",
+                        "type": "ProfileBioComponent",
+                        "alignment": "left",
+                        "textColor": null,
+                        "backgroundColor": null,
+                        "showMoreEnabled": false,
+                        "backgroundImageUrl": null
+                    }
+                ]
+            }
+        ],
+        "type": "ProfileTabbedContentComponent"
+    },
+    {
+        "type": "ProfileGalleryComponent",
+        "style": "grid",
+        "title": null,
+        "imageUrls": [
+            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767363073370_compressed.jpg",
+            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767363074700_compressed.jpg",
+            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/gallery_images/1767363075088_compressed.jpg"
+        ]
+    },
+    {
+        "type": "ProfileWebsiteThemeComponent",
+        "textColor": "#B1FB10",
+        "accentColor": "#22D5FF",
+        "primaryColor": "#080A2C",
+        "surfaceColor": "#000000",
+        "secondaryColor": "#DA03D0",
+        "backgroundColor": "#380808"
+    },
+    {
+        "type": "ProfileTimelineComponent",
+        "items": [
+            {
+                "date": "2012",
+                "title": "Type of work ",
+                "description": "Yu Yu Hakusho to do it with the logo on a call to u have u have to get the kids in my app the company I want you "
+            },
+            {
+                "date": "2505",
+                "title": "Good GH ",
+                "description": "Hello 👋🤩👋🤩👋🤩👋🏠 you to get up to go up my usual I "
+            }
+        ],
+        "title": null
+    }
+]
+
+
+[
+    {
+        "type": "ProfileHeroComponent",
+        "style": "textOverlay",
+        "title": "Nexus Businesses",
+        "imageUrl": "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/cover_small.jpg?t=1766882765635",
+        "subtitle": "Innovating for the Future"
+    },
+    {
+        "text": "We are a dedicated team of professionals focused on delivering high-quality web solutions.",
+        "type": "ProfileBioComponent",
+        "alignment": "center",
+        "textColor": null,
+        "backgroundColor": null,
+        "showMoreEnabled": false,
+        "backgroundImageUrl": null
+    },
+    {
+        "type": "ProfileServiceListComponent",
+        "style": "detailed",
+        "title": "Our Expertise",
+        "services": [
+            {
+                "name": "Web Development",
+                "imageUrl": "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+                "description": "Full-stack solutions using Python, Django, and React."
+            },
+            {
+                "name": "Cloud Strategy",
+                "imageUrl": "https://images.unsplash.com/photo-1451187580459-43490279c0fa",
+                "description": "Scalable cloud architecture for growing businesses."
+            },
+            {
+                "name": "UI/UX Design",
+                "imageUrl": "https://images.unsplash.com/photo-1561070791-2526d30994b5",
+                "description": "Creating intuitive and beautiful user experiences."
+            }
+        ]
+    },
+    {
+        "type": "ProfileFeatureListComponent",
+        "style": "iconLeft",
+        "title": "Why Work With Us",
+        "features": [
+            {
+                "icon": "🚀",
+                "title": "Fast Delivery",
+                "description": "We launch products in weeks, not months."
+            },
+            {
+                "icon": "🛡️",
+                "title": "Secure",
+                "description": "Enterprise-grade security standards."
+            },
+            {
+                "icon": "🤝",
+                "title": "24/7 Support",
+                "description": "We are always here when you need us."
+            }
+        ]
+    },
+    {
+        "tabs": [
+            {
+                "title": "places",
+                "components": [
+                    {
+                        "text": "Edit this new tab!",
+                        "type": "ProfileBioComponent",
+                        "alignment": "left",
+                        "textColor": null,
+                        "backgroundColor": null,
+                        "showMoreEnabled": false,
+                        "backgroundImageUrl": null
+                    },
+                    {
+                        "type": "ProfileGalleryComponent",
+                        "style": "filmstrip",
+                        "title": null,
+                        "imageUrls": [
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951586091_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951587835_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951588808_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951589873_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951590795_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951591794_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951592971_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951594219_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951595318_compressed.jpg",
+                            "https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/business-assets/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/gallery_images/1765951596207_compressed.jpg"
+                        ]
+                    }
+                ]
+            },
+            {
+                "title": "terms and conditions ",
+                "components": [
+                    {
+                        "text": "Edit this new tab!",
+                        "type": "ProfileBioComponent",
+                        "alignment": "left",
+                        "textColor": null,
+                        "backgroundColor": null,
+                        "showMoreEnabled": false,
+                        "backgroundImageUrl": null
+                    }
+                ]
+            }
+        ],
+        "type": "ProfileTabbedContentComponent"
+    }
+]

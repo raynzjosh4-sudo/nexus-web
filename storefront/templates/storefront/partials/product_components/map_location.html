@@ -1,0 +1,52 @@
+<div class="sc-comp map-component">
+    <div class="map-inner">
+        <div class="map-icon-box">
+            <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="map-details">
+            <h4 class="map-title">{{ comp.placeName|default:'Location' }}</h4>
+            <p class="map-address">{{ comp.address }}</p>
+            
+            <a href="https://www.google.com/maps/search/?api=1&query={{ comp.latitude }},{{ comp.longitude }}" 
+               target="_blank" 
+               class="btn-view-map">
+                View on Google Maps <i class="fas fa-external-link-alt"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .map-component {
+        background: #202124;
+        border: 1px solid #3c4043;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 24px;
+    }
+    .map-inner { display: flex; gap: 16px; align-items: flex-start; }
+    
+    .map-icon-box {
+        width: 40px; height: 40px;
+        background: rgba(249, 115, 22, 0.15); /* Orange tint */
+        color: #f97316;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .map-details { flex-grow: 1; }
+    
+    .map-title { margin: 0 0 4px 0; color: white; font-size: 16px; }
+    .map-address { margin: 0 0 12px 0; color: #9ca3af; font-size: 14px; }
+
+    .btn-view-map {
+        display: inline-block;
+        color: #8ab4f8; /* Google Blue */
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .btn-view-map:hover { text-decoration: underline; }
+</style>

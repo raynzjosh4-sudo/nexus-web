@@ -1,0 +1,5 @@
+<div class="sc-comp column-component">
+    {% for child in comp.children %}
+        <div class="column-child">{% include 'storefront/partials/product_components/_render_component.html' with comp=child only %}</div>
+    {% endfor %}
+</div>

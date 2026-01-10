@@ -1,0 +1,5 @@
+<div class="sc-comp richtext-component">
+    {% if comp.title %}<h4>{{ comp.title }}</h4>{% endif %}
+    {# NOTE: comp.markdownText is expected to be pre-rendered HTML or safe markdown - use |safe if confident #}
+    <div class="richtext" {% if comp.stretchToEdges %}style="width:100%;"{% endif %}>{{ comp.markdownText|safe }}</div>
+</div>

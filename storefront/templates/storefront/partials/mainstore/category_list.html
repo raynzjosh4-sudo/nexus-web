@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category_name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Load Global Theme & Reset -->
+    {% include "storefront/theme_css.html" %}
+    <style>
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .category-header {
+            /* Padding clears the Fixed Navbar */
+            padding: 120px 20px 40px 20px;
+            text-align: center;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .cat-title {
+            font-size: 32px;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .cat-count {
+            color: var(--text-sub);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .full-grid-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            row-gap: 40px;
+        }
+
+        /* Card Styles matching Shop Home */
+        .grid-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .grid-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-color);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .grid-media {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            background: var(--bg-page);
+            transition: transform 0.5s ease;
+        }
+
+        .grid-card:hover .grid-media {
+            transform: scale(1.08);
+        }
+
+        .grid-details {
+            padding: 16px;
+        }
+
+        .grid-title {
+            color: var(--text-main);
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .grid-price {
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* Currency styling */
+        .grid-price .currency {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-sub);
+            margin-right: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "storefront/partials/navbar.html" %}
+
+    <div class="category-header">
+        <h1 class="cat-title">{{ category_name }}</h1>
+        <div class="cat-count">Viewing {{ products|length }} items</div>
+    </div>
+
+    <div class="full-grid-container">
+        {% for product in products %}
+        <a href="{% url 'product_detail' product.id %}" class="grid-card">
+            <div class="grid-media-wrapper skeleton" style="aspect-ratio: 1/1;">
+                {% if product.video_url %}
+                <video class="grid-media img-loading" muted loop
+                    onloadeddata="this.classList.add('img-loaded'); this.parentElement.classList.remove('skeleton')"
+                    onmouseover="this.play()" onmouseout="this.pause()">
+                    <source src="{{ product.video_url }}">
+                </video>
+                {% else %}
+                <img src="{{ product.image_url }}" class="grid-media img-loading"
+                    onload="this.classList.add('img-loaded'); this.parentElement.classList.remove('skeleton')"
+                    onerror="this.parentElement.classList.remove('skeleton'); this.src='https://via.placeholder.com/300?text=No+Image'">
+                {% endif %}
+            </div>
+
+            <div class="grid-details">
+                <div class="grid-title">{{ product.name }}</div>
+                <div class="grid-price">
+                    <span class="currency">{{ product.currency }}</span>{{ product.price|floatformat:0 }}
+                </div>
+            </div>
+        </a>
+        {% empty %}
+        <div style="grid-column: 1/-1; text-align: center; color: #666; padding: 50px;">
+            <h3>No products found in this category.</h3>
+        </div>
+        {% endfor %}
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<div class="sc-comp card-component" {% if comp.backgroundColor %}style="background: {{ comp.backgroundColor|escape }};"{% endif %} data-bg-value="{{ comp.backgroundColorValue|default:"" }}" aria-label="card-component">
+    <div class="card-inner" style="padding:16px; border-radius:10px;">
+        {% if comp.children %}
+            {% for child in comp.children %}
+                {% include 'storefront/partials/product_components/_render_component.html' with comp=child only %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    // Convert numeric ARGB color values (from backgroundColorValue) to CSS hex if background not provided
+    (function(){
+        document.addEventListener('DOMContentLoaded', function(){
+            document.querySelectorAll('.card-component').forEach(function(el){
+                var bg = el.style.background;
+                var val = el.getAttribute('data-bg-value');
+                if((!bg || bg === '') && val){
+                    // Attempt to parse decimal or hex string
+                    var n = parseInt(val, 10);
+                    if(isNaN(n)){
+                        // try hex
+                        if(/^0x[0-9a-f]+$/i.test(val) || /^[0-9a-f]{6,8}$/i.test(val)){
+                            var hex = val.replace(/^0x/i, '');
+                            hex = hex.slice(-6); // take last 6 chars
+                            el.style.background = '#' + hex.padStart(6, '0');
+                        }
+                        return;
+                    }
+                    // n is integer ARGB (Dart Color.value). Extract last 6 hex digits (RGB)
+                    var hex = (n >>> 0).toString(16).slice(-6);
+                    el.style.background = '#' + hex.padStart(6, '0');
+                }
+            });
+        });
+    })();
+</script>

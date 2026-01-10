@@ -1,0 +1,407 @@
+<div class="pro-detail-grid">
+
+    <div class="grid-gallery">
+        <div class="main-media-frame" id="main-media-container">
+            {% if product.video_url %}
+            <video id="main-video" class="{% if not product.image_url %}active-media{% else %}hidden-media{% endif %}"
+                controls autoplay muted loop>
+                <source src="{{ product.video_url }}" type="video/mp4">
+            </video>
+            {% endif %}
+
+            <img id="main-image"
+                class="{% if product.video_url and not product.image_url %}hidden-media{% else %}active-media{% endif %}"
+                src="{{ product.image_url }}" alt="{{ product.name }}"
+                onerror="this.src='https://via.placeholder.com/600'">
+        </div>
+
+        {% if product.images|length > 1 or product.video_url %}
+        <div class="thumbnail-strip">
+            {% if product.video_url %}
+            <div class="thumb-card" onclick="switchMedia('video', '{{ product.video_url }}')">
+                <img src="{{ product.image_url|default:'https://via.placeholder.com/70?text=Video' }}"
+                    class="thumb-img active" id="thumb-video">
+                <div class="play-overlay"><i class="fas fa-play"></i></div>
+            </div>
+            {% endif %}
+
+            {% for img in product.images %}
+            <div class="thumb-card" onclick="switchMedia('image', '{{ img.url }}', this)">
+                <img src="{{ img.url }}"
+                    class="thumb-img {% if forloop.first and not product.video_url %}active{% endif %}">
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="action-area left-align">
+            <a href="{% url 'create_order' product.id %}" class="btn-order-now">
+                <span class="btn-title">Order Now</span>
+                <i class="fas fa-shopping-bag"></i>
+            </a>
+            <button class="btn-wishlist" onclick="toggleWishlist(this)">
+                <i class="far fa-heart"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="grid-components">
+        <div class="sticky-info">
+            <div class="badge-row">
+                <span class="stock-badge">In Stock</span>
+                <span class="category-badge">{{ product.category.name }}</span>
+            </div>
+
+            <h1 class="pro-title">{{ product.name }}</h1>
+
+            <div class="price-tag">
+                <span class="currency">{{ product.currency }}</span>
+                <span class="amount">{{ product.price|floatformat:0 }}</span>
+            </div>
+
+            <div class="dynamic-feed-inline">
+                {% include "storefront/partials/mainstore/components/product_feed.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* --- NEW GRID SYSTEM --- */
+    .pro-detail-grid {
+        max-width: 1200px;
+        margin: 120px auto 40px auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 450px 1fr;
+        /* Fixed width for image, flexible for info */
+        gap: 60px;
+        align-items: start;
+    }
+
+    /* --- GALLERY (Top Left) --- */
+    .main-media-frame {
+        background: var(--bg-card);
+        /* Theme Card BG */
+        border-radius: 12px;
+        border: 1px solid var(--glass-border);
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+
+    .main-media-frame img,
+    .main-media-frame video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .thumbnail-strip {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 30px;
+    }
+
+    .thumb-card {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        cursor: pointer;
+        overflow: hidden;
+        border: 2px solid transparent;
+        background: var(--bg-card);
+    }
+
+    .thumb-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.5;
+    }
+
+    .thumb-img.active {
+        opacity: 1;
+    }
+
+    .thumb-card:has(.active) {
+        border-color: var(--accent-color);
+    }
+
+    /* --- ACTIONS (Bottom Left) --- */
+    .action-area.left-align {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .btn-order-now {
+        flex: 1;
+        background: var(--accent-color);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        font-weight: 700;
+        font-size: 16px;
+        height: 55px;
+        transition: transform 0.2s;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-order-now:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.1);
+    }
+
+    .btn-wishlist {
+        width: 55px;
+        height: 55px;
+        border-radius: 8px;
+        background: var(--bg-card);
+        border: 1px solid var(--glass-border);
+        color: var(--text-main);
+        cursor: pointer;
+        font-size: 20px;
+        transition: 0.2s;
+    }
+
+    .btn-wishlist.active {
+        color: #ff4757;
+        border-color: #ff4757;
+    }
+
+    /* --- INFO & COMPONENTS (Top Right) --- */
+    .sticky-info {
+        position: sticky;
+        top: 100px;
+    }
+
+    .pro-title {
+        font-size: 32px;
+        font-weight: 800;
+        margin: 10px 0;
+        letter-spacing: -1px;
+        color: var(--text-main);
+    }
+
+    .price-tag {
+        margin-bottom: 30px;
+        color: var(--text-main);
+    }
+
+    .price-tag .amount {
+        font-size: 34px;
+        font-weight: 300;
+    }
+
+    .price-tag .currency {
+        color: var(--text-main);
+        opacity: 0.7;
+        margin-right: 5px;
+    }
+
+    .badge-row {
+        display: flex;
+        gap: 8px;
+    }
+
+    .stock-badge {
+        color: #4ade80;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .category-badge {
+        color: var(--accent-color);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    /* Space out the rich components */
+    .dynamic-feed-inline {
+        border-top: 1px solid var(--glass-border);
+        padding-top: 25px;
+        margin-top: 25px;
+    }
+
+    @media (max-width: 900px) {
+        .pro-detail-grid {
+            grid-template-columns: 1fr;
+            margin-top: 80px;
+        }
+
+        .grid-gallery {
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        .action-area.left-align {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding: 15px;
+            background: var(--bg-card);
+            z-index: 100;
+            border-top: 1px solid var(--glass-border);
+        }
+    }
+</style>
+
+<script>
+    function switchMedia(type, url, thumbElement) {
+        const mainImg = document.getElementById('main-image');
+        const mainVideo = document.getElementById('main-video');
+        document.querySelectorAll('.thumb-img').forEach(t => t.classList.remove('active'));
+        if (thumbElement) thumbElement.querySelector('img').classList.add('active');
+        if (type === 'video' && mainVideo) {
+            mainImg.classList.add('hidden-media'); mainVideo.classList.remove('hidden-media'); mainVideo.play();
+        } else {
+            if (mainVideo) { mainVideo.pause(); mainVideo.classList.add('hidden-media'); }
+            mainImg.src = url; mainImg.classList.remove('hidden-media');
+        }
+    }
+
+    // Get CSRF token from cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function toggleWishlist(btn) {
+        const productId = '{{ product.id }}';
+        const csrftoken = getCookie('csrftoken');
+
+        // Show loading state
+        btn.disabled = true;
+        const icon = btn.querySelector('i');
+        const originalClass = icon.className;
+        icon.className = 'fas fa-spinner fa-spin';
+
+        fetch(`/wishlist/toggle/${productId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json',
+            },
+            credentials: 'same-origin'
+        })
+            .then(response => response.json())
+            .then(data => {
+                btn.disabled = false;
+
+                if (data.success) {
+                    // Toggle button state
+                    btn.classList.toggle('active');
+                    if (data.action === 'added') {
+                        icon.className = 'fas fa-heart';
+                        showNotification('Added to wishlist!', 'success');
+                    } else {
+                        icon.className = 'far fa-heart';
+                        showNotification('Removed from wishlist', 'info');
+                    }
+                } else {
+                    // Restore original state on error
+                    icon.className = originalClass;
+
+                    if (data.redirect) {
+                        showNotification(data.error || 'Please log in first', 'warning');
+                        setTimeout(() => window.location.href = data.redirect, 1500);
+                    } else {
+                        showNotification(data.error || 'Unable to update wishlist', 'error');
+                    }
+                }
+            })
+            .catch(error => {
+                btn.disabled = false;
+                icon.className = originalClass;
+                showNotification('Network error. Please try again.', 'error');
+                console.error('Wishlist error:', error);
+            });
+    }
+
+    // Simple notification system
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 12px 20px;
+            background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            font-weight: 500;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
+    // Check initial wishlist status on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        const productId = '{{ product.id }}';
+        fetch(`/wishlist/status/${productId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.in_wishlist) {
+                    const wishlistBtn = document.querySelector('.btn-wishlist');
+                    if (wishlistBtn) {
+                        wishlistBtn.classList.add('active');
+                        const icon = wishlistBtn.querySelector('i');
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    }
+                }
+            })
+            .catch(error => console.error('Wishlist status check error:', error));
+    });
+</script>
+
+<style>
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
+</style>

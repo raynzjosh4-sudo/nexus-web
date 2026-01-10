@@ -1,0 +1,88 @@
+<style>
+    :root {
+        --award-bg: var(--nexus-card-bg, #181b21);
+        --award-border: var(--nexus-border, rgba(255, 255, 255, 0.08));
+        --nexus-gold: #fbbf24; /* Keep Gold for awards */
+    }
+
+    .nexus-awards-section { padding: 40px 0; width: 100%; }
+    .nexus-section-title {
+        font-size: 2rem; color: var(--nexus-text, white);
+        margin-bottom: 40px; text-align: center; font-family: 'Outfit', sans-serif;
+    }
+
+    .awards-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 25px; padding-bottom: 10px;
+    }
+
+    .award-card {
+        background: var(--award-bg);
+        border: 1px solid var(--award-border);
+        border-radius: 16px; padding: 30px 20px;
+        display: flex; flex-direction: column; align-items: center; text-align: center;
+        position: relative; transition: transform 0.3s ease;
+    }
+    .award-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--nexus-gold);
+    }
+
+    .award-icon-box {
+        width: 70px; height: 70px;
+        background: rgba(251, 191, 36, 0.1);
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        margin-bottom: 20px; border: 1px solid rgba(251, 191, 36, 0.2);
+        color: var(--nexus-gold); font-size: 1.8rem; flex-shrink: 0;
+    }
+    .award-img { width: 100%; height: 100%; object-fit: contain; padding: 15px; }
+
+    .award-title { font-size: 1.1rem; font-weight: 700; color: var(--nexus-text, white); margin: 0 0 8px 0; }
+    .award-issuer { font-size: 0.9rem; color: #9ca3af; margin-bottom: 15px; }
+    
+    .award-year {
+        font-size: 0.75rem; font-weight: 700;
+        background: rgba(255, 255, 255, 0.05); color: var(--nexus-text, white);
+        padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Mobile Scroll Logic */
+    @media (max-width: 900px) {
+        .awards-grid {
+            display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+            padding-bottom: 20px; -webkit-overflow-scrolling: touch;
+        }
+        .award-card {
+            min-width: 260px; scroll-snap-align: start; margin-right: 0;
+        }
+    }
+</style>
+
+<div class="nexus-awards-section">
+    {% if component.title %}
+        <div class="nexus-section-header">
+            <h3 class="nexus-section-title">{{ component.title }}</h3>
+        </div>
+    {% endif %}
+
+    <div class="awards-grid">
+        {% for award in component.awards %}
+            <div class="award-card">
+                <div class="award-icon-box">
+                    {% if award.imageUrl %}
+                        <img src="{{ award.imageUrl }}" alt="{{ award.title }}" class="award-img">
+                    {% else %}
+                        <span>🏆</span>
+                    {% endif %}
+                </div>
+                <h4 class="award-title">{{ award.title }}</h4>
+                {% if award.issuer %}
+                    <span class="award-issuer">{{ award.issuer }}</span>
+                {% endif %}
+                {% if award.year %}
+                    <span class="award-year">{{ award.year }}</span>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div> 

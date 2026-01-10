@@ -1,0 +1,22 @@
+<div class="category-section">
+    <div class="section-header">
+        <h3 class="section-title">{{ title }}</h3>
+        
+        <a href="{% url 'category_view' title %}" class="more-icon">
+            <i class="fas fa-ellipsis-v"></i>
+        </a>
+    </div>
+
+    <div class="horizontal-scroll-container">
+        {% for product in products %}
+            {% include "storefront/partials/mainstore/components/product_card.html" with product=product business=business %}
+        {% endfor %}
+        
+        <a href="{% url 'category_view' title %}" class="view-all-card">
+            <div class="view-all-circle">
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <span>See more</span>
+        </a>
+    </div>
+</div>

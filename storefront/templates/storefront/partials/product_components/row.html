@@ -1,0 +1,5 @@
+<div class="sc-comp row-component" style="display:flex; gap:12px; flex-wrap:wrap;">
+    {% for child in comp.children %}
+        <div class="row-child" style="flex:1 1 200px;">{% include 'storefront/partials/product_components/_render_component.html' with comp=child only %}</div>
+    {% endfor %}
+</div>

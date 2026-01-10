@@ -1,0 +1,173 @@
+<style>
+    /* Scoped styles for the footer to ensure it looks good immediately */
+    .nexus-footer-wrapper {
+        background-color: #111827; /* Dark background */
+        color: #f3f4f6;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        padding: 60px 20px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: auto; /* Pushes to bottom if flex is set on body */
+    }
+
+    .nexus-footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 40px;
+    }
+
+    /* Brand Section */
+    .nexus-brand-col {
+        flex: 1 1 300px;
+        min-width: 280px;
+    }
+
+    .nexus-brand-col h3 {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+    }
+
+    .nexus-brand-col p {
+        color: #9ca3af;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0 0 20px 0;
+        max-width: 300px;
+    }
+
+    /* The Badge */
+    .nexus-sponsored-badge {
+        display: inline-flex;
+        align-items: center;
+        background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+        color: white;
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        transition: transform 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .nexus-sponsored-badge:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.3);
+    }
+
+    /* Links Section */
+    .nexus-links-group {
+        display: flex;
+        gap: 60px;
+        flex-wrap: wrap;
+    }
+
+    .nexus-col strong {
+        display: block;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 16px;
+    }
+
+    .nexus-col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nexus-col li {
+        margin-bottom: 12px;
+    }
+
+    .nexus-col a {
+        color: #9ca3af;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+    }
+
+    .nexus-col a:hover {
+        color: #fff;
+    }
+
+    /* Bottom Copyright */
+    .nexus-footer-bottom {
+        max-width: 1200px;
+        margin: 40px auto 0;
+        padding-top: 24px;
+        border-top: 1px solid #374151;
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 640px) {
+        .nexus-footer-content {
+            flex-direction: column;
+            gap: 30px;
+        }
+        .nexus-links-group {
+            gap: 40px;
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+</style>
+
+<footer class="nexus-footer-wrapper">
+    <div class="nexus-footer-content">
+        
+        <div class="nexus-brand-col">
+            <h3>{{ business.business_name }}</h3>
+            <p>Empowering your digital journey with seamless commerce solutions.</p>
+            
+            <a href="#" class="nexus-sponsored-badge">
+                Sponsored by Nexus
+            </a>
+        </div>
+
+        <div class="nexus-links-group">
+            <div class="nexus-col">
+                <strong>Platform</strong>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                </ul>
+            </div>
+            
+            <div class="nexus-col">
+                <strong>Legal</strong>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Use</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="nexus-col">
+                <strong>Support</strong>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Support</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="nexus-footer-bottom">
+        &copy; <script>document.write(new Date().getFullYear())</script> {{ business.business_name }}. 
+        <span style="opacity: 0.7;">Powered by Nexus Ecosystem.</span>
+    </div>
+</footer>

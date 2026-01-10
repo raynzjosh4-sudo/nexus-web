@@ -1,0 +1,130 @@
+<div class="sc-comp bulleted-list-component">
+    {% if comp.title %}
+        <h4 class="list-title">{{ comp.title }}</h4>
+    {% endif %}
+
+    <div class="list-container">
+        {% if comp.listStyle == 'numbered' %}
+            <ol class="styled-list numbered">
+                {% for item in comp.items %}
+                    <li><span class="item-content">{{ item }}</span></li>
+                {% endfor %}
+            </ol>
+        {% elif comp.listStyle == 'checkmark' %}
+            <ul class="styled-list checkmark">
+                {% for item in comp.items %}
+                    <li>
+                        <span class="icon">
+                            <i class="fas fa-check-circle"></i>
+                        </span>
+                        <span class="item-content">{{ item }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <ul class="styled-list bullet">
+                {% for item in comp.items %}
+                    <li><span class="item-content">{{ item }}</span></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .bulleted-list-component {
+        margin: 24px 0;
+        padding: 0 4px;
+    }
+
+    .list-title {
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 16px;
+        letter-spacing: -0.01em;
+    }
+
+    .styled-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    /* Common Item Styling */
+    .styled-list li {
+        color: #9ca3af; /* Muted text color */
+        font-size: 0.95rem;
+        line-height: 1.5;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .item-content {
+        flex: 1;
+    }
+
+    /* Checkmark Variant */
+    .styled-list.checkmark li {
+        gap: 12px;
+    }
+
+    .styled-list.checkmark .icon {
+        color: #f97316; /* Theme orange */
+        font-size: 1rem;
+        margin-top: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Numbered Variant */
+    .styled-list.numbered {
+        counter-reset: list-counter;
+    }
+
+    .styled-list.numbered li {
+        counter-increment: list-counter;
+        gap: 16px;
+    }
+
+    .styled-list.numbered li::before {
+        content: counter(list-counter);
+        background: #333;
+        color: #fff;
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    /* Standard Bullet Variant */
+    .styled-list.bullet li {
+        gap: 12px;
+    }
+
+    .styled-list.bullet li::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: #f97316;
+        border-radius: 50%;
+        margin-top: 8px;
+        flex-shrink: 0;
+    }
+
+    /* Hover effect for interactivity */
+    .styled-list li:hover {
+        color: #ffffff;
+        transition: color 0.2s ease;
+    }
+</style>

@@ -1,0 +1,187 @@
+<style>
+    :root {
+        --pricing-bg: var(--nexus-card-bg, #181b21);
+        --pricing-border: var(--nexus-border, rgba(255, 255, 255, 0.08));
+        --nexus-accent: var(--nexus-accent, #f97316);
+        --text-muted: #9ca3af;
+    }
+
+    .nexus-pricing-section {
+        padding: 60px 0;
+        width: 100%;
+    }
+
+    .nexus-section-header {
+        margin-bottom: 50px;
+        text-align: center;
+    }
+
+    .nexus-section-title {
+        font-size: 2.2rem;
+        color: var(--nexus-text, white);
+        margin-bottom: 10px;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    /* --- PRICING GRID --- */
+    .pricing-grid {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        align-items: flex-start; 
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* --- THE CARD --- */
+    .pricing-card {
+        background: var(--pricing-bg);
+        border: 1px solid var(--pricing-border);
+        border-radius: 24px;
+        padding: 40px 30px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        flex: 1;
+        min-width: 300px;
+        max-width: 380px;
+    }
+
+    .pricing-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--nexus-accent);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        z-index: 5;
+    }
+
+    /* --- FEATURED CARD --- */
+    .pricing-card.featured {
+        background: linear-gradient(to bottom, var(--pricing-bg), #000);
+        border: 2px solid var(--nexus-accent);
+        transform: scale(1.05);
+        box-shadow: 0 25px 50px rgba(0,0,0, 0.5);
+        z-index: 2;
+    }
+
+    .pricing-card.featured:hover {
+        transform: scale(1.05) translateY(-10px);
+    }
+
+    /* Badge */
+    .popular-badge {
+        position: absolute;
+        top: -15px; left: 50%; transform: translateX(-50%);
+        background: var(--nexus-accent);
+        color: white;
+        padding: 6px 16px; border-radius: 20px;
+        font-size: 0.8rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 1px;
+        box-shadow: 0 5px 15px rgba(0,0,0, 0.4);
+        white-space: nowrap;
+    }
+
+    /* --- CONTENT --- */
+    .pricing-title {
+        font-size: 1.2rem; color: var(--text-muted);
+        font-weight: 600; margin: 0 0 15px 0;
+        text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    .pricing-price {
+        font-size: 3rem; color: var(--nexus-text, white);
+        font-weight: 800; line-height: 1; margin-bottom: 5px;
+    }
+
+    .pricing-period {
+        font-size: 0.9rem; color: var(--text-muted); margin-bottom: 30px;
+    }
+
+    .pricing-features {
+        list-style: none; padding: 0; margin: 0 0 40px 0; flex-grow: 1; 
+    }
+
+    .pricing-feature-item {
+        display: flex; align-items: center; gap: 12px;
+        margin-bottom: 15px; color: var(--nexus-text, #e5e7eb); font-size: 0.95rem;
+    }
+
+    .check-icon { color: var(--nexus-accent); font-weight: bold; }
+    .cross-icon { color: #4b5563; }
+    .unavailable-text { color: #6b7280; text-decoration: line-through; }
+
+    /* --- CTA BUTTON --- */
+    .pricing-btn {
+        display: block; width: 100%; padding: 15px 0;
+        text-align: center; border-radius: 12px; font-weight: 700;
+        text-decoration: none; transition: all 0.3s ease;
+    }
+
+    .pricing-btn.standard {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .pricing-btn.standard:hover { background: white; color: black; }
+
+    .pricing-btn.featured-btn {
+        background: var(--nexus-accent); color: white;
+        box-shadow: 0 10px 20px rgba(0,0,0, 0.3);
+    }
+    .pricing-btn.featured-btn:hover { filter: brightness(1.1); }
+
+    /* --- MOBILE SCROLL --- */
+    @media (max-width: 1000px) {
+        .pricing-grid {
+            display: flex; flex-wrap: nowrap; overflow-x: auto;
+            justify-content: flex-start; scroll-snap-type: x mandatory;
+            padding-bottom: 40px;
+        }
+        .pricing-card {
+            flex: 0 0 auto; width: 85vw; min-width: 300px;
+            scroll-snap-align: center; margin-right: 15px;
+        }
+        .pricing-card.featured { transform: scale(1); border-width: 2px; }
+    }
+</style>
+
+<div class="nexus-pricing-section">
+    {% if component.title %}
+        <div class="nexus-section-header">
+            <h3 class="nexus-section-title">{{ component.title }}</h3>
+        </div>
+    {% endif %}
+
+    <div class="pricing-grid">
+        {% for tier in component.tiers %}
+            <div class="pricing-card {% if tier.isFeatured %}featured{% endif %}">
+                {% if tier.isFeatured %}
+                    <span class="popular-badge">Most Popular</span>
+                {% endif %}
+
+                <h4 class="pricing-title">{{ tier.title }}</h4>
+                <div class="pricing-price">{{ tier.price }}</div>
+                <div class="pricing-period">per {{ tier.perUnit }}</div>
+
+                <ul class="pricing-features">
+                    {% for feature in tier.features %}
+                        <li class="pricing-feature-item {% if not feature.isAvailable %}unavailable-text{% endif %}">
+                            {% if feature.isAvailable %}
+                                <span class="check-icon">✓</span>
+                            {% else %}
+                                <span class="cross-icon">×</span>
+                            {% endif %}
+                            {{ feature.featureText }}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <a href="#" class="pricing-btn {% if tier.isFeatured %}featured-btn{% else %}standard{% endif %}">
+                    Choose Plan
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>

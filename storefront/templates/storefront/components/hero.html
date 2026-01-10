@@ -1,0 +1,240 @@
+<section class="nexus-hero">
+    <div class="hero-container">
+        <div class="hero-media">
+            {% if component.imageUrl %}
+            <img src="{{ component.imageUrl }}" alt="{{ component.title }}" class="hero-img">
+            {% elif business.cover_small_url %}
+            <img src="{{ business.cover_small_url }}" alt="{{ business.business_name }}" class="hero-img">
+            {% elif business.logo_url %}
+            <img src="{{ business.logo_url }}" alt="{{ business.business_name }}" class="hero-img">
+            {% else %}
+            <div class="hero-placeholder"></div>
+            {% endif %}
+            <div class="hero-overlay"></div>
+        </div>
+
+        <div class="hero-content">
+            {% if business.logo_url %}
+            <div class="hero-logo">
+                <img src="{{ business.logo_url }}" alt="Logo">
+            </div>
+            {% endif %}
+
+            <h1 class="hero-title">{{ component.title|default:business.business_name }}</h1>
+
+            {% if business.category %}
+            <span class="hero-category">{{ business.category }}</span>
+            {% endif %}
+
+            {% if component.subtitle %}
+            <p class="hero-subtitle">{{ component.subtitle }}</p>
+            {% elif business.business_description %}
+            <p class="hero-subtitle">{{ business.business_description }}</p>
+            {% endif %}
+
+            <div class="hero-actions">
+                <a href="#view-products" onclick="switchView('products')" class="btn-hero-primary">Shop Now</a>
+                <a href="#contact" class="btn-hero-secondary">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* ========================================
+       🟢 GLOBAL RESET FOR FULL CONTACT
+       ======================================== */
+    /* This ensures there is no gap at the very top of the page */
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* ========================================
+       🟢 HERO LAYOUT - TOUCHING ALL SIDES
+       ======================================== */
+    .nexus-hero {
+        position: relative;
+        width: 100%;
+        /* 🟢 Use 100svh to ensure it fills the visible area on mobile without gaps */
+        min-height: 100vh;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+
+    .hero-container {
+        position: relative;
+        width: 100%;
+        /* Standardizes the height to fill the hero's min-height */
+        min-height: inherit;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 24px;
+        text-align: center;
+    }
+
+    /* Background Media */
+    .hero-media {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        margin: 0;
+        padding: 0;
+    }
+
+    .hero-img {
+        width: 100%;
+        height: 100%;
+        /* 🟢 Ensures the image covers the entire area and touches top/bottom */
+        object-fit: cover;
+        display: block;
+        animation: heroZoom 20s ease-out forwards;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        /* 🟢 Gradient ends with your page background color for a seamless transition */
+        background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.2) 0%,
+                rgba(0, 0, 0, 0.5) 60%,
+                var(--bg-page) 100%);
+        z-index: 2;
+    }
+
+    /* Content Styling */
+    .hero-content {
+        position: relative;
+        z-index: 3;
+        max-width: 1000px;
+    }
+
+    .hero-logo {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid var(--accent-color);
+        background: var(--bg-card);
+        margin: 0 auto 24px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        animation: heroFadeUp 0.8s ease-out forwards;
+    }
+
+    .hero-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 15px;
+        color: var(--text-white) !important;
+        letter-spacing: -2px;
+        opacity: 0;
+        animation: heroFadeUp 0.8s ease-out 0.1s forwards;
+    }
+
+    .hero-category {
+        color: var(--accent-color);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        display: block;
+        opacity: 0;
+        animation: heroFadeUp 0.8s ease-out 0.2s forwards;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-white);
+        opacity: 0;
+        max-width: 600px;
+        margin: 0 auto 30px;
+        animation: heroFadeUp 0.8s ease-out 0.3s forwards;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        opacity: 0;
+        animation: heroFadeUp 0.8s ease-out 0.4s forwards;
+    }
+
+    /* Buttons */
+    .btn-hero-primary {
+        background: var(--accent-color);
+        color: #fff !important;
+        padding: 14px 36px;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .btn-hero-secondary {
+        border: 2px solid #fff;
+        color: #fff !important;
+        padding: 12px 34px;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    /* ========================================
+       🟢 MOBILE OPTIMIZATION
+       ======================================== */
+    @media (max-width: 768px) {
+        .nexus-hero {
+            /* 🟢 Pulls hero under the navbar so it touches the very top */
+            margin-top: -64px;
+            min-height: 100svh;
+        }
+
+        .hero-container {
+            padding-top: 100px;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+    }
+
+    @keyframes heroZoom {
+        from {
+            transform: scale(1.1);
+        }
+
+        to {
+            transform: scale(1);
+        }
+    }
+
+    @keyframes heroFadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Error | {{ business.business_name }}</title>
+    <!-- Load Global Theme -->
+    {% include "storefront/theme_css.html" %}
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .error-code {
+            font-size: 120px;
+            font-weight: 800;
+            color: var(--secondary-color);
+            line-height: 1;
+            margin-bottom: 0;
+            opacity: 0.8;
+        }
+
+        .error-title {
+            font-size: 32px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+
+        .error-desc {
+            font-size: 18px;
+            color: var(--text-sub);
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+
+        .home-btn {
+            background: var(--accent-color);
+            color: #fff;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    {% include "storefront/partials/navbar.html" %}
+
+    <div class="error-container">
+        <h1 class="error-code">500</h1>
+        <h2 class="error-title">Something went wrong</h2>
+        <p class="error-desc">
+            We're experiencing an internal server error. Please try refreshing the page or come back later.
+        </p>
+        <a href="{% url 'shop_home' %}" class="home-btn">Return to Shop</a>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,406 @@
+<!-- <style>
+    /* --- GLOBAL NAV VARS --- */
+    :root {
+        --header-bg: #161b22;       /* GitHub-like dark background */
+        --header-border: #30363d;   /* Subtle bottom border */
+        --header-text: #f0f6fc;
+        --accent-color: #f97316;
+        --nav-height: 64px;
+    }
+
+    /* --- 1. THE BAR (GitHub Style) --- */
+    .navbar-top {
+        position: sticky; /* Stays fixed at the top */
+        top: 0;
+        left: 0;
+        width: 100%;      /* Touches all sides */
+        height: var(--nav-height);
+        
+        background-color: var(--header-bg);
+        border-bottom: 1px solid var(--header-border);
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        /* Spacing on left and right */
+        padding: 0 24px; 
+        box-sizing: border-box; /* Ensures padding doesn't break width */
+        z-index: 9999;
+    }
+
+    /* --- 2. LEFT SIDE (Logo + Name) --- */
+    .nav-left { 
+        display: flex; 
+        align-items: center; 
+        gap: 12px; 
+    }
+    .nav-logo-img { 
+        width: 32px; 
+        height: 32px; 
+        border-radius: 50%; 
+        object-fit: cover; 
+        border: 1px solid var(--header-border); 
+    }
+    .nav-brand-text { 
+        font-weight: 600; 
+        font-size: 1rem; 
+        color: var(--header-text); 
+        white-space: nowrap; 
+    }
+
+    /* --- 3. CENTER (The Switcher) --- */
+    .nav-center { 
+        position: absolute; 
+        left: 50%; 
+        transform: translateX(-50%);
+    }
+
+    /* Switcher Container */
+    .nav-switcher { 
+        display: flex; 
+        gap: 8px; 
+    }
+
+    .switch-btn { 
+        background: transparent; 
+        border: none; 
+        color: #8b949e; /* GitHub muted text color */
+        padding: 6px 16px; 
+        border-radius: 6px; /* Slightly squared corners like GitHub */
+        cursor: pointer; 
+        font-weight: 500; 
+        font-size: 0.9rem; 
+        transition: all 0.2s ease; 
+    }
+
+    .switch-btn:hover { 
+        color: white; 
+        background: rgba(255,255,255,0.1); 
+    }
+
+    .switch-btn.active { 
+        color: white; 
+        font-weight: 600;
+        /* Highlight style: orange underline */
+        border-bottom: 2px solid var(--accent-color);
+        border-radius: 0; 
+    }
+
+    /* --- 4. RIGHT SIDE (Actions) --- */
+    .nav-right { 
+        display: flex; 
+        align-items: center; 
+        gap: 16px; 
+    }
+    .btn-login { 
+        text-decoration: none; 
+        color: var(--header-text); 
+        font-size: 0.9rem; 
+        font-weight: 500; 
+    }
+    .btn-signup { 
+        text-decoration: none; 
+        background: transparent; 
+        color: var(--header-text); 
+        padding: 5px 12px; 
+        border: 1px solid var(--header-border); 
+        border-radius: 6px; 
+        font-weight: 500; 
+        font-size: 0.85rem; 
+        transition: 0.2s;
+    }
+    .btn-signup:hover {
+        border-color: #8b949e;
+        background-color: rgba(255,255,255,0.05);
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+        .nav-brand-text { display: none; } /* Hide name on small screens */
+        .navbar-top { padding: 0 16px; }
+        .switch-btn { padding: 6px 10px; font-size: 0.8rem; }
+    }
+</style>
+
+<header class="navbar-top">
+    <div class="nav-left">
+        <img src="{{ business.logo_url|default:'https://via.placeholder.com/50' }}" class="nav-logo-img" alt="Logo">
+        <span class="nav-brand-text">{{ business.business_name }}</span>
+    </div>
+
+    <div class="nav-center">
+        <div class="nav-switcher">
+            <button id="btn-about" class="switch-btn active" onclick="switchView('about')">Profile</button>
+            <button id="btn-products" class="switch-btn" onclick="switchView('products')">Store</button>
+            <button id="btn-market" class="switch-btn" onclick="switchView('market')">Market</button>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <a href="#" class="btn-login">Sign in</a>
+        <a href="#" class="btn-signup">Sign up</a>
+    </div>
+</header> -->
+
+{% load static %}
+<header class="navbar-top">
+    <div class="nav-left">
+        <img src="{% if business.logo_url %}{{ business.logo_url }}{% else %}{% static 'icon.png' %}{% endif %}"
+            class="nav-logo-img">
+        <span class="nav-brand-text">{{ business.business_name }}</span>
+    </div>
+
+    <div class="nav-center">
+        <div class="nav-switcher">
+            <button class="switch-btn active" onclick="switchView('view-about')">Profile</button>
+            <button class="switch-btn" onclick="switchView('view-products')">Store</button>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown">
+            <button class="profile-trigger" onclick="toggleProfileMenu()">
+                {% if request.session.user_email %}
+                <img src="{{ user.avatar_url|default:'https://api.dicebear.com/7.x/avataaars/svg' }}"
+                    class="profile-avatar" alt="Profile">
+                {% else %}
+                <img src="{{ business.logo_url|default:'https://via.placeholder.com/50' }}" class="profile-avatar"
+                    alt="Profile">
+                {% endif %}
+                <span class="profile-name">
+                    {% if request.session.user_id %}
+                    {{ user.name|default:"My Account"|truncatechars:15 }}
+                    {% else %}
+                    My Account
+                    {% endif %}
+                </span>
+                <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </button>
+
+            <div class="dropdown-menu" id="profileMenu">
+                <a href="{% url 'profile' %}" class="dropdown-item">
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                </a>
+                <a href="{% url 'shop_home' %}" class="dropdown-item">
+                    <i class="fas fa-store"></i>
+                    <span>Shop</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                {% if request.session.user_id %}
+                <a href="{% url 'logout' %}" class="dropdown-item" style="color: #ef4444;">
+                    <i class="fas fa-sign-out-alt" style="color: #ef4444;"></i>
+                    <span>Sign Out</span>
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}" class="dropdown-item">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Sign In</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</header>
+<style>
+    .navbar-top {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 64px;
+        background-color: var(--bg-card) !important;
+        /* Matches your Surface Color */
+        border-bottom: 1px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        z-index: 9999;
+    }
+
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .nav-logo-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid var(--accent-color);
+    }
+
+    .nav-brand-text {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: var(--text-main) !important;
+    }
+
+    .nav-switcher {
+        display: flex;
+        gap: 8px;
+    }
+
+    .switch-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        opacity: 0.6;
+        padding: 6px 16px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .switch-btn:hover {
+        opacity: 1;
+    }
+
+    .switch-btn.active {
+        opacity: 1;
+        border-bottom: 2px solid var(--accent-color) !important;
+    }
+
+    .btn-signup {
+        text-decoration: none;
+        border: 1px solid var(--accent-color);
+        color: var(--text-main);
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+    }
+
+    /* Profile Dropdown Styles */
+    .profile-dropdown {
+        position: relative;
+    }
+
+    .profile-trigger {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: transparent;
+        border: 1px solid var(--glass-border);
+        border-radius: 50px;
+        padding: 6px 16px 6px 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--text-main);
+    }
+
+    .profile-trigger:hover {
+        border-color: var(--accent-color);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .profile-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--accent-color);
+    }
+
+    .profile-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .dropdown-arrow {
+        font-size: 0.75rem;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-trigger:hover .dropdown-arrow {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: var(--bg-card);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 8px;
+        min-width: 220px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+    }
+
+    .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: var(--text-main);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .dropdown-item i {
+        width: 20px;
+        text-align: center;
+        color: var(--accent-color);
+        font-size: 0.95rem;
+    }
+
+    .dropdown-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(4px);
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background: var(--glass-border);
+        margin: 8px 0;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+        .profile-name {
+            display: none;
+        }
+
+        .profile-trigger {
+            padding: 6px;
+        }
+    }
+</style>
+
+<script>
+    function toggleProfileMenu() {
+        const menu = document.getElementById('profileMenu');
+        menu.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (event) {
+        const dropdown = document.querySelector('.profile-dropdown');
+        const menu = document.getElementById('profileMenu');
+
+        if (dropdown && !dropdown.contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+</script>

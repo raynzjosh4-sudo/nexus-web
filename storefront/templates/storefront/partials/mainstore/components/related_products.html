@@ -1,0 +1,160 @@
+{% if related_products %}
+<section class="pro-related-section">
+    <div class="related-container">
+        <div class="related-top-bar">
+            <div class="title-group">
+                <span class="sub-label">Discover More</span>
+                <h3 class="section-title">Similar Products</h3>
+            </div>
+            <a href="{% url 'category_view' product.category.name %}" class="btn-view-all">
+                View All <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+
+        <div class="related-product-grid">
+            {% for p in related_products %}
+            <div class="related-item">
+                {% include "storefront/partials/mainstore/components/product_card.html" with product=p business=business
+                %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+    /* --- SECTION LAYOUT --- */
+    .pro-related-section {
+        background-color: transparent;
+        padding: 80px 0;
+        border-top: 1px solid var(--glass-border);
+        margin-top: 40px;
+    }
+
+    .related-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* --- HEADER STYLING --- */
+    .related-top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 40px;
+    }
+
+    .sub-label {
+        display: block;
+        color: var(--accent-color);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 8px;
+    }
+
+    .section-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text-main);
+        margin: 0;
+        letter-spacing: -0.5px;
+    }
+
+    .btn-view-all {
+        color: var(--text-main);
+        opacity: 0.7;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: opacity 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 5px;
+    }
+
+    .btn-view-all:hover {
+        opacity: 1;
+    }
+
+    /* --- PRODUCT GRID --- */
+    .related-product-grid {
+        display: grid;
+        /* Responsive columns: starts with 2 on mobile, up to 5 on large screens */
+        grid-template-columns: repeat(5, 1fr);
+        gap: 24px;
+    }
+
+    /* Subtle entry animation */
+    .related-item {
+        animation: fadeInSlide 0.6s ease forwards;
+        opacity: 0;
+    }
+
+    .related-item:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .related-item:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .related-item:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .related-item:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .related-item:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    @keyframes fadeInSlide {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* --- RESPONSIVE ADJUSTMENTS --- */
+    @media (max-width: 1100px) {
+        .related-product-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    @media (max-width: 900px) {
+        .related-product-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .section-title {
+            font-size: 24px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .related-product-grid {
+            grid-template-columns: repeat(2, 1fr);
+            /* 2 per row on mobile */
+        }
+
+        .pro-related-section {
+            padding: 40px 0 100px 0;
+        }
+
+        /* Bottom padding for mobile fixed buttons */
+    }
+</style>
+{% endif %}

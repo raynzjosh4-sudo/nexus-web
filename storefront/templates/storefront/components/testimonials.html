@@ -1,0 +1,223 @@
+<style>
+    :root {
+        --testim-bg: #181b21;
+        --testim-border: rgba(255, 255, 255, 0.08);
+        --nexus-accent: #f97316;
+        --text-muted: #9ca3af;
+    }
+
+    .nexus-testimonial-section {
+        padding: 40px 0;
+        width: 100%;
+        overflow: hidden; /* Hide the scrollbar */
+        position: relative;
+    }
+
+    .nexus-section-header {
+        margin-bottom: 40px;
+        border-left: 4px solid var(--nexus-accent);
+        padding-left: 20px;
+        /* Ensure title stays static while cards move */
+        max-width: 1200px;
+        margin-left: auto; 
+        margin-right: auto;
+    }
+
+    .nexus-section-title {
+        font-size: 2rem;
+        color: white;
+        margin: 0;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    /* --- SCROLLER CONTAINER --- */
+    .testimonial-scroller {
+        width: 100%;
+        display: flex;
+        /* Fades the edges for a premium look */
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+
+    /* --- THE MOVING TRACK --- */
+    .testimonial-track {
+        display: flex;
+        gap: 30px;
+        padding: 10px 0; /* Space for shadow */
+        /* The Animation */
+        animation: scroll-loop 40s linear infinite;
+        width: max-content; /* Ensure it wraps contents perfectly */
+    }
+
+    /* Pause animation when user hovers to read */
+    .testimonial-scroller:hover .testimonial-track {
+        animation-play-state: paused;
+    }
+
+    @keyframes scroll-loop {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); } /* Move exactly half way (one full set) */
+    }
+
+    /* --- THE CARD --- */
+    .testimonial-card {
+        background: var(--testim-bg);
+        border: 1px solid var(--testim-border);
+        border-radius: 20px;
+        padding: 30px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        
+        /* FIXED WIDTH IS CRUCIAL FOR CAROUSELS */
+        width: 350px; 
+        flex-shrink: 0; /* Prevent squishing */
+        
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(249, 115, 22, 0.5);
+        background: #1f232b;
+    }
+
+    /* Giant Quote Icon Background */
+    .testimonial-card::before {
+        content: '“';
+        position: absolute;
+        top: 5px;
+        right: 20px;
+        font-size: 6rem;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.03);
+        font-family: serif;
+        pointer-events: none;
+    }
+
+    /* --- CONTENT --- */
+    .testim-text {
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #e5e7eb;
+        margin-bottom: 20px;
+        font-style: italic;
+        flex-grow: 1;
+        white-space: normal; /* Ensure text wraps inside the card */
+    }
+
+    /* --- AUTHOR SECTION --- */
+    .testim-author {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 15px;
+    }
+
+    .author-img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--nexus-accent);
+    }
+
+    .author-initial {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: rgba(249, 115, 22, 0.1);
+        color: var(--nexus-accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+        border: 1px solid rgba(249, 115, 22, 0.3);
+    }
+
+    .author-info h4 {
+        margin: 0;
+        font-size: 0.95rem;
+        color: white;
+        font-weight: 700;
+    }
+
+    .author-info span {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        display: block;
+        margin-top: 2px;
+    }
+    
+    /* Mobile Speed Up */
+    @media (max-width: 600px) {
+        .testimonial-card { width: 280px; } /* Smaller cards on phone */
+        .testimonial-track { animation-duration: 30s; }
+    }
+</style>
+
+<div class="nexus-testimonial-section">
+    
+    {% if component.title %}
+        <div class="nexus-section-header">
+            <h3 class="nexus-section-title">{{ component.title }}</h3>
+        </div>
+    {% endif %}
+
+    <div class="testimonial-scroller">
+        <div class="testimonial-track">
+            
+            {# --- FIRST LOOP (Original Set) --- #}
+            {% for item in component.testimonials %}
+                <div class="testimonial-card">
+                    <p class="testim-text">"{{ item.quote }}"</p>
+                    
+                    <div class="testim-author">
+                        {% if item.authorImageUrl %}
+                            <img src="{{ item.authorImageUrl }}" alt="{{ item.authorName }}" class="author-img">
+                        {% else %}
+                            <div class="author-initial">
+                                {{ item.authorName|slice:":1" }}
+                            </div>
+                        {% endif %}
+
+                        <div class="author-info">
+                            <h4>{{ item.authorName }}</h4>
+                            {% if item.authorTitle %}
+                                <span>{{ item.authorTitle }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {# --- SECOND LOOP (Duplicate Set for Seamless Infinity) --- #}
+            {% for item in component.testimonials %}
+                <div class="testimonial-card">
+                    <p class="testim-text">"{{ item.quote }}"</p>
+                    
+                    <div class="testim-author">
+                        {% if item.authorImageUrl %}
+                            <img src="{{ item.authorImageUrl }}" alt="{{ item.authorName }}" class="author-img">
+                        {% else %}
+                            <div class="author-initial">
+                                {{ item.authorName|slice:":1" }}
+                            </div>
+                        {% endif %}
+
+                        <div class="author-info">
+                            <h4>{{ item.authorName }}</h4>
+                            {% if item.authorTitle %}
+                                <span>{{ item.authorTitle }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>

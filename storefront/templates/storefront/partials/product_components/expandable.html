@@ -1,0 +1,22 @@
+<div class="sc-comp expandable-component">
+    <button type="button" class="exp-toggle">{{ comp.title }}</button>
+    <div class="exp-children" style="display: none; margin-top:12px;">
+        {% for child in comp.children %}
+            {% include 'storefront/partials/product_components/_render_component.html' with comp=child only %}
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    (function(){
+        document.addEventListener('click', function(e){
+            const btn = e.target.closest('.exp-toggle');
+            if(!btn) return;
+            const parent = btn.closest('.expandable-component');
+            const children = parent.querySelector('.exp-children');
+            const open = children.style.display !== 'none';
+            children.style.display = open ? 'none' : 'block';
+            btn.setAttribute('aria-expanded', (!open).toString());
+        });
+    })();
+</script>

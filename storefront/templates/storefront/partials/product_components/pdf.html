@@ -1,0 +1,21 @@
+<div class="pdf-actions">
+    {# firstof will try pdfUrl, then pdf_url, and assign the first one found to pdf_link #}
+    {% firstof comp.pdfUrl comp.pdf_url as pdf_link %}
+    
+    {% if pdf_link %}
+        <a href="{{ pdf_link }}" 
+           target="_blank" 
+           rel="noopener" 
+           class="btn btn-primary">
+            <i class="fas fa-external-link-alt"></i> Open PDF
+        </a>
+        
+        {% if comp.isDownloadable %}
+        <a href="{{ pdf_link }}" 
+           download 
+           class="btn btn-outline">
+            <i class="fas fa-download"></i> Download
+        </a>
+        {% endif %}
+    {% endif %}
+</div>

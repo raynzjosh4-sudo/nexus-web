@@ -1,0 +1,182 @@
+<style>
+    /* --- VARIABLES --- */
+    :root {
+        /* Use global theme vars if available, else fallbacks */
+        --nexus-accent: var(--nexus-accent, #f97316); 
+        --tab-bg: var(--nexus-bg, #0f1115);
+        --tab-border: rgba(255, 255, 255, 0.1);
+        --text-inactive: #9ca3af;
+        --text-active: var(--nexus-text, #ffffff);
+    }
+
+    /* 1. CONTAINER */
+    .nexus-tabs-container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        min-height: 200px;
+    }
+
+    /* 2. THE NAVIGATION BAR (Sticky & Full Width) */
+    .nexus-tabs-nav {
+        display: flex;
+        width: 100%; /* Touches both edges */
+        background: var(--tab-bg);
+        border-bottom: 1px solid var(--tab-border);
+        
+        /* Sticky Logic */
+        position: sticky;
+        top: 0; 
+        z-index: 999;
+    }
+
+    /* 3. THE BUTTONS (Equal Width) */
+    .nexus-tab-btn {
+        flex: 1; /* Makes all tabs equal width */
+        background: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        
+        /* Text Styling */
+        padding: 15px 0;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--text-inactive);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+        
+        /* Animation for the underline */
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+    /* Active State (The Orange Underline) */
+    .nexus-tab-btn::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--nexus-accent);
+        transform: scaleX(0); /* Hidden by default */
+        transition: transform 0.3s ease;
+    }
+
+    .nexus-tab-btn.active {
+        color: var(--text-active);
+        font-weight: 700;
+    }
+
+    .nexus-tab-btn.active::after {
+        transform: scaleX(1); /* Show underline */
+    }
+
+    /* 4. CONTENT AREA */
+    .tab-pane-content {
+        display: none;
+        padding: 20px 0; /* Add some space below the tabs */
+        width: 100%;
+        animation: simpleFade 0.3s ease-in-out;
+    }
+
+    /* Add spacing between stacked components */
+    .tab-inner-item {
+        margin-bottom: 30px;
+    }
+
+    @keyframes simpleFade {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="nexus-tabs-container">
+    
+    <div class="nexus-tabs-nav">
+        {% for tab in component.tabs %}
+            <button class="nexus-tab-btn {% if forloop.first %}active{% endif %}" 
+                    onclick="openTab(event, 'tab-{{ forloop.parentloop.counter }}-{{ forloop.counter }}')">
+                {{ tab.title }}
+            </button>
+        {% endfor %}
+    </div>
+
+    {% for tab in component.tabs %}
+        <div id="tab-{{ forloop.parentloop.counter }}-{{ forloop.counter }}" 
+             class="tab-pane-content" 
+             style="display: {% if forloop.first %}block{% else %}none{% endif %};">
+            
+            {% for subcomponent in tab.components %}
+                <div class="tab-inner-item">
+                    
+                    {# --- UPDATED: Using 'clean_type' matches your Python logic --- #}
+                    
+                    {% if subcomponent.clean_type == 'testimonial' %}
+                        {% include "storefront/components/testimonials.html" with component=subcomponent %}
+                    
+                    {% elif subcomponent.clean_type == 'filedownload' %}
+                        {% include "storefront/components/downloads.html" with component=subcomponent %}
+
+                    {% elif subcomponent.clean_type == 'bio' %}
+                        {% include "storefront/components/bio.html" with component=subcomponent %}
+                    
+                    {% elif subcomponent.clean_type == 'servicelist' %}
+                        {% include "storefront/components/services.html" with component=subcomponent %}
+
+                    {% elif subcomponent.clean_type == 'featurelist' %}
+                        {% include "storefront/components/features.html" with component=subcomponent %}
+
+                    {% elif subcomponent.clean_type == 'portfolio' %}
+                        {% include "storefront/components/portfolio.html" with component=subcomponent %}
+
+                    {% elif subcomponent.clean_type == 'timeline' %}
+                        {% include "storefront/components/timeline.html" with component=subcomponent %}
+                    
+                    {% elif subcomponent.clean_type == 'contact' %}
+                        {% include "storefront/components/contact.html" with component=subcomponent %}
+                    
+                    {% elif subcomponent.clean_type == 'gallery' %}
+                        {% include "storefront/components/gallery.html" with component=subcomponent %}
+                    
+                    {% elif subcomponent.clean_type == 'video' %}
+                        {% include "storefront/components/video.html" with component=subcomponent %}
+
+                    {# Debug helper if needed #}
+                    {# {% else %} <p style="color:red">Unknown tab component: {{ subcomponent.clean_type }}</p> #}
+                    {% endif %}
+                    
+                </div>
+            {% endfor %}
+
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    function openTab(evt, tabId) {
+        // 1. Find the container to scope the logic (in case of multiple tab sets)
+        const container = evt.target.closest('.nexus-tabs-container');
+        
+        // 2. Hide all panes
+        const panes = container.querySelectorAll('.tab-pane-content');
+        panes.forEach(pane => pane.style.display = 'none');
+        
+        // 3. Deactivate all buttons
+        const buttons = container.querySelectorAll('.nexus-tab-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        // 4. Show target pane
+        const targetPane = document.getElementById(tabId);
+        if (targetPane) {
+            targetPane.style.display = 'block';
+        }
+        
+        // 5. Activate clicked button
+        evt.currentTarget.classList.add('active');
+    }
+</script>

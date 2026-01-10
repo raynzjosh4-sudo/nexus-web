@@ -1,0 +1,8 @@
+<div class="sc-comp image-gallery-component">
+    {% if comp.title %}<h4>{{ comp.title }}</h4>{% endif %}
+    <div class="image-gallery-grid">
+        {% for url in comp.imageUrls|default:comp.imageUrls %}
+            <div class="gallery-item"><img src="{{ url }}" alt="Gallery image"></div>
+        {% endfor %}
+    </div>
+</div>

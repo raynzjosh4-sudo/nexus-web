@@ -1,0 +1,94 @@
+<style>
+    :root {
+        --faq-bg: var(--nexus-card-bg, #181b21);
+        --faq-border: var(--nexus-border, rgba(255, 255, 255, 0.08));
+        --nexus-accent: var(--nexus-accent, #f97316);
+        --text-main: var(--nexus-text, #ffffff);
+        --text-muted: #9ca3af;
+    }
+
+    .nexus-faq-section {
+        padding: 40px 0; width: 100%; max-width: 900px; margin: 0 auto;
+    }
+
+    .nexus-section-title {
+        font-size: 2rem; color: var(--text-main); margin-bottom: 40px;
+        text-align: center; font-family: 'Outfit', sans-serif;
+    }
+
+    /* --- ITEM --- */
+    .faq-item {
+        background: var(--faq-bg);
+        border: 1px solid var(--faq-border);
+        border-radius: 16px; margin-bottom: 15px;
+        overflow: hidden; transition: all 0.3s ease;
+    }
+    .faq-item:hover { border-color: rgba(255, 255, 255, 0.2); }
+    .faq-item.active { border-color: var(--nexus-accent); }
+
+    /* --- HEADER --- */
+    .faq-header {
+        padding: 25px; display: flex; justify-content: space-between;
+        align-items: center; cursor: pointer; user-select: none;
+    }
+    .faq-question {
+        margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--text-main);
+    }
+
+    /* --- ICON --- */
+    .faq-icon {
+        width: 24px; height: 24px; position: relative; flex-shrink: 0;
+        transition: transform 0.4s ease;
+    }
+    .faq-icon::before, .faq-icon::after {
+        content: ''; position: absolute; background: var(--nexus-accent);
+        border-radius: 2px; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    }
+    .faq-icon::before { width: 100%; height: 2px; }
+    .faq-icon::after { width: 2px; height: 100%; }
+
+    .faq-item.active .faq-icon { transform: rotate(135deg); }
+
+    /* --- BODY --- */
+    .faq-body {
+        display: grid; grid-template-rows: 0fr;
+        transition: grid-template-rows 0.4s ease-out; padding: 0 25px;
+    }
+    .faq-content-inner {
+        overflow: hidden; color: var(--text-muted); line-height: 1.6;
+        opacity: 0; transition: opacity 0.3s ease;
+    }
+    
+    .faq-item.active .faq-body { grid-template-rows: 1fr; padding-bottom: 25px; }
+    .faq-item.active .faq-content-inner { opacity: 1; }
+</style>
+
+<div class="nexus-faq-section">
+    {% if component.title %}
+        <div class="nexus-section-header">
+            <h3 class="nexus-section-title">{{ component.title }}</h3>
+        </div>
+    {% endif %}
+
+    <div class="nexus-accordion">
+        {% for item in component.items %}
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-header">
+                    <h4 class="faq-question">{{ item.question }}</h4>
+                    <div class="faq-icon"></div>
+                </div>
+                <div class="faq-body">
+                    <div class="faq-content-inner">
+                        {{ item.answer|linebreaks }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function toggleFaq(element) {
+        element.classList.toggle('active');
+    }
+</script>

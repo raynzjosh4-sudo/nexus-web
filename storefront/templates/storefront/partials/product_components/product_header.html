@@ -1,0 +1,9 @@
+<div class="sc-comp header-component">
+    <h2 class="ph-title">{{ comp.productName|default:product.name }}</h2>
+    <div class="ph-pricing">
+        <span class="ph-price">{{ comp.currency|default:product.currency }} {{ comp.price|floatformat:0 }}</span>
+        {% if comp.originalPrice and comp.originalPrice > 0 %}
+            <span class="ph-original">{{ comp.currency|default:product.currency }} {{ comp.originalPrice|floatformat:0 }}</span>
+        {% endif %}
+    </div>
+</div>

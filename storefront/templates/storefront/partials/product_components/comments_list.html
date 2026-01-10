@@ -1,0 +1,31 @@
+<div class="sc-comp comments-list">
+    <h4>Comments ({{ comments|length }})</h4>
+    <div class="comments-list-inner">
+        {% for c in comments %}
+            <div class="comment">
+                {% if c.authorImageUrl %}
+                    <img class="comment-avatar" src="{{ c.authorImageUrl }}" alt="{{ c.authorName }}">
+                {% else %}
+                    <div class="comment-avatar fallback">{{ c.authorName|slice:":1" }}</div>
+                {% endif %}
+                <div class="comment-body">
+                    <div class="comment-meta"><strong>{{ c.authorName }}</strong> <span class="muted">• {{ c.like_count }} likes</span></div>
+                    <p class="comment-text">{{ c.text }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <p class="muted">No comments yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .comments-list { margin-top: 18px; }
+    .comments-list-inner { display:flex; flex-direction:column; gap:12px; }
+    .comment{ display:flex; gap:12px; align-items:flex-start; }
+    .comment-avatar{ width:44px; height:44px; border-radius:8px; object-fit:cover; }
+    .comment-avatar.fallback{ width:44px; height:44px; border-radius:8px; background:#222; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; }
+    .comment-body .comment-meta{ font-size:0.9rem; color:#fff; }
+    .comment-body .muted{ color:#9ca3af; font-size:0.85rem; margin-left:8px; }
+    .comment-text{ margin:4px 0 0 0; color:#d1d5db; }
+</style>

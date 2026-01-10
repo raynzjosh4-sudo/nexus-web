@@ -1,0 +1,622 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.name|default:"My Profile" }} | {{ business.business_name }}</title>
+    <link rel="icon" type="image/png" href="{% static 'icon.png' %}">
+
+    <!-- Load Global Theme & Reset -->
+    {% include "storefront/theme_css.html" %}
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* :root Variables are now loaded via theme_css.html */
+
+        html,
+        body,
+        .profile-wrapper {
+            background-color: var(--bg-page) !important;
+            color: var(--text-main) !important;
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .profile-wrapper {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px 24px 120px 24px;
+        }
+
+        /* --- HERO SECTION --- */
+        .premium-hero {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 48px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 48px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(20px);
+        }
+
+        .premium-hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            filter: blur(150px);
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .hero-avatar-belt {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-portrait {
+            width: 140px;
+            height: 140px;
+            border-radius: 40px;
+            object-fit: cover;
+            border: 4px solid var(--bg-page);
+            box-shadow: 0 0 0 2px var(--accent-color);
+            background: var(--bg-page);
+            transition: var(--transition-smooth);
+        }
+
+        .hero-info-belt {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-info-belt h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            letter-spacing: -1px;
+            line-height: 1;
+            color: var(--text-main);
+        }
+
+        .hero-info-belt p {
+            font-size: 1.1rem;
+            color: var(--text-sub);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-actions-belt {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .btn-modern {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: var(--glass-border);
+            color: var(--text-main);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger-ghost {
+            background: rgba(239, 68, 68, 0.05);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .btn-danger-ghost:hover {
+            background: #ef4444;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* --- TABS --- */
+        .tabs-container {
+            width: 100%;
+        }
+
+        .tabs-header {
+            display: flex;
+            gap: 24px;
+            border-bottom: 1px solid var(--glass-border);
+            margin-bottom: 32px;
+            padding-bottom: 1px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0 0 16px 0;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            color: var(--accent-color);
+        }
+
+        .tab-btn.active::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 3px 3px 0 0;
+            box-shadow: 0 -2px 10px var(--accent-color);
+        }
+
+        /* --- CONTENT SECTIONS --- */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- ORDERS --- */
+        .order-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .item-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        .item-card:hover {
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.02);
+            transform: translateX(4px);
+        }
+
+        .item-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            background: #23262d;
+            border: 1px solid var(--glass-border);
+        }
+
+        .item-content {
+            flex: 1;
+        }
+
+        .item-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .item-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+            color: var(--text-main);
+        }
+
+        .item-meta {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .status-pill {
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+        }
+
+        .status-completed {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+        }
+
+        .item-price-tag {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: right;
+            color: var(--text-main);
+        }
+
+        /* --- WISHLIST GRID --- */
+        .wishlist-masonry {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .wish-brick {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-smooth);
+            display: block;
+        }
+
+        .wish-brick:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .brick-img-wrap {
+            position: relative;
+            padding-top: 100%;
+            overflow: hidden;
+        }
+
+        .brick-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .wish-brick:hover .brick-img {
+            transform: scale(1.05);
+        }
+
+        .brick-body {
+            padding: 16px;
+        }
+
+        .brick-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            color: var(--text-main);
+        }
+
+        .brick-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brick-price {
+            color: var(--accent-color);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        /* --- EMPTY STATES --- */
+        .empty-canvas {
+            background: rgba(255, 255, 255, 0.01);
+            border: 2px dashed var(--glass-border);
+            border-radius: 32px;
+            padding: 60px 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .empty-icon-wrap {
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-sub);
+            opacity: 0.5;
+        }
+
+        .empty-canvas p {
+            color: var(--text-sub);
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .premium-hero {
+                grid-template-columns: 1fr;
+                padding: 32px;
+                text-align: center;
+            }
+
+            .hero-actions-belt {
+                flex-direction: row;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .premium-hero {
+                padding: 24px;
+                border-radius: 24px;
+            }
+
+            .hero-actions-belt {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .item-card {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            .item-preview {
+                width: 100%;
+                height: 180px;
+            }
+
+            .item-price-tag {
+                width: 100%;
+                text-align: left;
+                padding-top: 12px;
+                border-top: 1px solid var(--glass-border);
+            }
+
+            .wishlist-masonry {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .brick-body {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "storefront/partials/navbar.html" %}
+
+    <div class="profile-wrapper">
+
+        <!-- Premium Hero Section -->
+        <div class="premium-hero" id="profile-hero">
+            <div class="hero-avatar-belt">
+                <img src="{{ user.avatar_url|default:'https://api.dicebear.com/7.x/avataaars/svg?seed='|add:user.name }}"
+                    class="profile-portrait" alt="User Avatar">
+            </div>
+            <div class="hero-info-belt">
+                <h1>{{ user.name|default:"Nexus User" }}</h1>
+                <p><i class="far fa-envelope"></i> {{ user.email }}</p>
+                {% if user.phone_number %}
+                <p style="margin-top: 8px;"><i class="fas fa-phone-alt"></i> {{ user.phone_number }}</p>
+                {% endif %}
+            </div>
+            <div class="hero-actions-belt">
+                <a href="{% url 'shop_home' %}" class="btn-modern btn-ghost">
+                    <i class="fas fa-shopping-bag"></i> Shop Now
+                </a>
+                <a href="tel:{{ business.phone_number|default:'' }}" class="btn-modern btn-ghost"
+                    style="border-color: var(--secondary-color); color: var(--text-main);">
+                    <i class="fas fa-phone-alt"></i> Contact Us
+                </a>
+            </div>
+        </div>
+
+        <!-- NEW: Tabs Layout -->
+        <div class="tabs-container">
+            <div class="tabs-header">
+                <button class="tab-btn active" onclick="openTab(event, 'tab-orders')">
+                    <i class="fas fa-box-open" style="margin-right: 8px;"></i> My Orders
+                </button>
+                <button class="tab-btn" onclick="openTab(event, 'tab-wishlist')">
+                    <i class="fas fa-heart" style="margin-right: 8px;"></i> Wishlist
+                </button>
+            </div>
+
+            <!-- Tab 1: Orders -->
+            <div id="tab-orders" class="tab-content active">
+                {% if orders %}
+                <div class="order-stream">
+                    {% for o in orders %}
+                    <div class="item-card">
+                        <img src="{{ o.product_image|default:'https://via.placeholder.com/100' }}" class="item-preview"
+                            alt="Order">
+                        <div class="item-content">
+                            <span class="item-tag">{{ o.business_name }}</span>
+                            <span class="item-name">{{ o.product_name }}</span>
+                            <div class="item-meta">
+                                <span
+                                    class="status-pill {% if o.status == 'PENDING' %}status-pending{% elif o.status == 'COMPLETED' %}status-completed{% else %}status-cancelled{% endif %}">
+                                    {{ o.status }}
+                                </span>
+                                <span><i class="far fa-calendar"></i> {{ o.created_at|slice:":10" }}</span>
+                            </div>
+                        </div>
+                        <div class="item-price-tag">
+                            {{ o.product_currency }} {{ o.offer_price|floatformat:0 }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-canvas">
+                    <div class="empty-icon-wrap"><i class="fas fa-shopping-cart"></i></div>
+                    <p>No active orders found.</p>
+                    <a href="{% url 'shop_home' %}"
+                        style="color: var(--accent-color); font-weight: 700; text-decoration: none; margin-top: 10px;">Browse
+                        Store</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Tab 2: Wishlist -->
+            <div id="tab-wishlist" class="tab-content">
+                {% if wishes %}
+                <div class="wishlist-masonry">
+                    {% for item in wishes %}
+                    <a href="{% url 'product_detail' item.id %}" class="wish-brick">
+                        <div class="brick-img-wrap">
+                            <img src="{{ item.image_url|default:'https://via.placeholder.com/300' }}" class="brick-img"
+                                alt="Wishlist Item">
+                        </div>
+                        <div class="brick-body">
+                            <div class="brick-name">{{ item.name }}</div>
+                            <div class="brick-footer">
+                                <div class="brick-price">{{ item.currency }} {{ item.price|floatformat:0 }}</div>
+                                <div class="brick-icon"><i class="fas fa-arrow-right"></i></div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-canvas">
+                    <div class="empty-icon-wrap"><i class="fas fa-heart"></i></div>
+                    <p>Your wishlist is looking empty.</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+
+        {% comment %}
+        <!-- Debugging Info (Hidden by default, easier to check source if needed) -->
+        <div style="display:none;">
+            UID: {{ debug_info.uid }} | OC: {{ debug_info.order_count }} | WC: {{ debug_info.wish_count }} | TF: {{
+            business.theme_component|yesno:"Y,N" }}
+        </div>
+        {% endcomment %}
+
+    </div>
+
+    {% include "storefront/partials/nexus_footer.html" %}
+
+    <script>
+        function openTab(evt, tabName) {
+            // Hide all tab contents
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+                tabcontent[i].style.display = "none";
+            }
+
+            // Remove active class from buttons
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Show specific tab and activate button
+            document.getElementById(tabName).style.display = "block";
+            // Small timeout to allow display:block to apply before adding opacity class (if modifying for transition)
+            // For now just simple toggle:
+            setTimeout(() => {
+                document.getElementById(tabName).classList.add("active");
+            }, 10);
+
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+
+</body>
+
+
+</html>

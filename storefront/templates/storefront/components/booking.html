@@ -1,0 +1,85 @@
+<style>
+    :root {
+        --book-bg: var(--nexus-card-bg, #181b21);
+        --book-border: var(--nexus-border, rgba(255, 255, 255, 0.08));
+        --nexus-accent: var(--nexus-accent, #f97316);
+    }
+
+    .nexus-booking-section { padding: 40px 0; width: 100%; display: flex; justify-content: center; }
+
+    .booking-card {
+        background: var(--book-bg);
+        border: 1px solid var(--book-border);
+        border-radius: 24px; padding: 50px;
+        width: 100%; max-width: 900px;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 40px; position: relative; overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .booking-content { flex: 1; z-index: 2; }
+    .booking-title {
+        font-family: 'Outfit', sans-serif; font-size: 2.2rem; color: var(--nexus-text, white);
+        margin: 0 0 15px 0; font-weight: 800;
+    }
+    .booking-desc { font-size: 1.1rem; color: #9ca3af; margin-bottom: 30px; }
+
+    /* Visual */
+    .booking-visual {
+        flex: 0 0 250px; height: 250px;
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255, 0.05), transparent 60%);
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+    .calendar-icon {
+        width: 140px; height: 140px; background: #252830;
+        border-radius: 20px; position: relative;
+        box-shadow: -10px 10px 30px rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.1);
+        transform: rotate(-10deg); transition: transform 0.4s ease;
+    }
+    .booking-card:hover .calendar-icon { transform: rotate(0deg) scale(1.05); }
+
+    /* Theme Accent used here */
+    .calendar-icon::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 40px;
+        background: var(--nexus-accent); border-radius: 20px 20px 0 0;
+    }
+    .calendar-check {
+        position: absolute; top: 55%; left: 50%; transform: translate(-50%, -50%);
+        font-size: 3rem; color: white; opacity: 0.8;
+    }
+
+    .booking-btn {
+        display: inline-block; background: white; color: black;
+        padding: 15px 35px; border-radius: 12px; font-weight: 700;
+        text-decoration: none; transition: all 0.2s;
+    }
+    .booking-btn:hover {
+        background: var(--nexus-accent); color: white;
+    }
+
+    @media (max-width: 768px) {
+        .booking-card { flex-direction: column-reverse; text-align: center; padding: 40px 20px; }
+        .booking-visual { height: 150px; flex: none; }
+        .calendar-icon { width: 100px; height: 100px; }
+    }
+</style>
+
+<div class="nexus-booking-section">
+    <div class="booking-card">
+        <div class="booking-content">
+            <h3 class="booking-title">{{ component.title }}</h3>
+            {% if component.subtitle %}
+                <p class="booking-desc">{{ component.subtitle }}</p>
+            {% endif %}
+            <a href="{{ component.bookingUrl }}" class="booking-btn" target="_blank">
+                {{ component.buttonText }}
+            </a>
+        </div>
+        <div class="booking-visual">
+            <div class="calendar-icon">
+                <span class="calendar-check">✓</span>
+            </div>
+        </div>
+    </div>
+</div> 

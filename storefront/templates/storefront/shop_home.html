@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ business.business_name }} | Nexus Shop</title>
+    <link rel="icon" type="image/png" href="{% static 'icon.png' %}">
+
+    {# 1. Load Global Reset #}
+    {% include "storefront/theme_css.html" %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    {# 2. Dynamic Theme Engine #}
+    <style>
+        :root {
+            /* Static Fallbacks (Original Store Design) */
+            --bg-page: #E2E2E2;
+            --bg-card: #050623;
+            --text-main: #B4B0B0;
+            --accent-color: #22D5FF;
+            --secondary-color: #DA03D0;
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Force variables onto the main containers */
+        html,
+        body,
+        .main-wrapper,
+        .shop-home {
+            background-color: var(--bg-page) !important;
+            color: var(--text-main) !important;
+        }
+
+        #view-products,
+        #view-market {
+            display: none;
+            opacity: 0;
+        }
+
+        /* Smooth switching */
+        .view-content {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "storefront/partials/navbar.html" %}
+
+    <div class="main-wrapper shop-home">
+        {# VIEW 1: PROFILE #}
+        <div id="view-about" class="view-content">
+            {% include "storefront/partials/profile_view.html" %}
+        </div>
+
+        {# VIEW 2: PRODUCTS #}
+        <div id="view-products" class="view-content">
+            {% include "storefront/partials/mainstore/shop_home.html" %}
+        </div>
+
+        {# VIEW 3: MARKET #}
+        <div id="view-market" class="view-content">
+            {% include "storefront/partials/market_view.html" %}
+        </div>
+    </div>
+
+    {% include "storefront/partials/nexus_footer.html" %}
+
+    <script>
+        function switchView(viewId) {
+            console.log("Switching to view:", viewId);
+
+            // Hide all views
+            const views = ['view-about', 'view-products', 'view-market'];
+            views.forEach(v => {
+                const el = document.getElementById(v);
+                if (el) {
+                    el.style.display = 'none';
+                    el.style.opacity = '0';
+                }
+            });
+
+            // Show target
+            const target = document.getElementById(viewId);
+            if (target) {
+                target.style.display = 'block';
+                setTimeout(() => {
+                    target.style.opacity = '1';
+                }, 10);
+            }
+
+            // Update active state in nav if needed
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Handle URL Hash if present
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && ['view-about', 'view-products', 'view-market'].includes(hash)) {
+                switchView(hash);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

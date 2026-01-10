@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order | {{ product.name }}</title>
+    {% include "storefront/theme_css.html" %}
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+                {
+                % if theme_component %
+            }
+
+            /* Dynamic Theme from User Settings */
+            --bg-page: {
+                    {
+                    theme_component.backgroundColor|default: "#0d0f12"
+                }
+            }
+
+            ;
+
+            --bg-card: {
+                    {
+                    theme_component.surfaceColor|default: "#161a1f"
+                }
+            }
+
+            ;
+            --bg-glass: rgba(22, 26, 31, 0.7);
+
+            --accent-color: {
+                    {
+                    theme_component.primaryColor|default: "#f97316"
+                }
+            }
+
+            ;
+
+            --text-main: {
+                    {
+                    theme_component.textColor|default: "#ffffff"
+                }
+            }
+
+            ;
+
+            --text-sub: {
+                    {
+                    theme_component.secondaryTextColor|default: "#9ca3af"
+                }
+            }
+
+            ;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --nav-height: 64px;
+
+                {
+                % else %
+            }
+
+            /* Fallback Dark Theme */
+            --bg-page: #0d0f12;
+            --bg-card: #161a1f;
+            --bg-glass: rgba(22, 26, 31, 0.7);
+            --accent-color: #f97316;
+            --text-main: #ffffff;
+            --text-sub: #9ca3af;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --nav-height: 64px;
+
+                {
+                % endif %
+            }
+        }
+
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* --- LAYOUT WRAPPER --- */
+        .order-page-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- LEFT SIDE: PRODUCT PREVIEW (Desktop) --- */
+        .product-column {
+            flex: 1;
+            background: linear-gradient(135deg, #1a1e24 0%, #0d0f12 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            border-right: 1px solid var(--glass-border);
+        }
+
+        .preview-image-frame {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1/1;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+            border: 1px solid var(--glass-border);
+            animation: heroFadeUp 0.8s ease-out;
+        }
+
+        .preview-image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-info {
+            text-align: center;
+            max-width: 500px;
+            animation: heroFadeUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .preview-category {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .preview-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin: 0 0 16px 0;
+            line-height: 1.1;
+        }
+
+        .preview-price {
+            font-size: 28px;
+            font-weight: 300;
+            color: var(--text-sub);
+        }
+
+        .preview-price span {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        /* --- RIGHT SIDE: ORDER FORM --- */
+        .form-column {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--bg-page);
+        }
+
+        .form-container {
+            max-width: 480px;
+            width: 100%;
+            margin: 0 auto;
+            animation: heroFadeUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-sub);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 40px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--accent-color);
+            transform: translateX(-5px);
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .biz-tag {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .biz-logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--accent-color);
+        }
+
+        .biz-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-sub);
+        }
+
+        /* --- FORM ELEMENTS --- */
+        .type-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px;
+            border-radius: 14px;
+            margin-bottom: 32px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-sub);
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-color);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+        }
+
+        .field-wrap {
+            position: relative;
+        }
+
+        .field-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-sub);
+            font-size: 18px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            padding: 16px 16px 16px 48px;
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        }
+
+        textarea.form-control {
+            padding: 16px;
+            min-height: 100px;
+            resize: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 18px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 17px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.2);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(249, 115, 22, 0.4);
+            filter: brightness(1.1);
+        }
+
+        /* --- MESSAGES --- */
+        .status-msg {
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 500;
+        }
+
+        .error-msg {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .success-content {
+            text-align: center;
+            width: 100%;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            color: #4ade80;
+            margin-bottom: 24px;
+            animation: scaleUp 0.5s ease-out;
+        }
+
+        @keyframes scaleUp {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes heroFadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- RESPONSIVE POLISH --- */
+        @media (max-width: 900px) {
+            .order-page-wrapper {
+                flex-direction: column;
+            }
+
+            .product-column {
+                height: auto;
+                padding: 40px 20px;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .preview-image-frame {
+                max-width: 300px;
+                margin-bottom: 24px;
+            }
+
+            .preview-title {
+                font-size: 32px;
+            }
+
+            .form-column {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="order-page-wrapper">
+        <aside class="product-column">
+            <div class="preview-image-frame">
+                <img src="{{ product.image_url|default:'https://via.placeholder.com/600' }}" alt="{{ product.name }}">
+            </div>
+            <div class="preview-info">
+                <span class="preview-category">Order Checkout</span>
+                <h1 class="preview-title">{{ product.name }}</h1>
+                <div class="preview-price">Total Price: <span>{{ product.currency }} {{ product.price }}</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="form-column">
+            <div class="form-container">
+                <a href="{% url 'product_detail' product.id %}" class="back-link">
+                    <i class="fas fa-chevron-left"></i> Back to Listing
+                </a>
+
+                {% if success %}
+                <div class="form-card" style="text-align: center;">
+                    <div class="success-content">
+                        <i class="fas fa-check-circle success-icon"></i>
+                        <h2 style="margin: 0 0 12px 0; font-size: 28px;">Order Received!</h2>
+                        <p style="color: var(--text-sub); margin-bottom: 40px; line-height: 1.6;">
+                            The seller from <strong>{{ business.business_name }}</strong> will contact you on your phone
+                            number shortly.
+                        </p>
+                        <a href="{% url 'product_detail' product.id %}" class="submit-btn"
+                            style="text-decoration: none; display: block;">Return to Store</a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="form-card">
+                    <div class="biz-tag">
+                        <img src="{{ business.logo_url|default:'https://via.placeholder.com/50' }}" class="biz-logo">
+                        <span class="biz-name">Buying from {{ business.business_name }}</span>
+                    </div>
+
+                    {% if errors %}
+                    <div class="status-msg error-msg">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <ul style="margin: 0; padding-left: 20px;">
+                                {% for err in errors %}
+                                <li>{{ err }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    {% elif error %}
+                    <div class="status-msg error-msg">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>{{ error }}</span>
+                    </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="order_type" id="order_type_input" value="BID">
+                        <div class="input-group">
+                            <label class="input-label">Select Order Mode</label>
+                            <div class="type-tabs">
+                                <button type="button" class="tab-btn active"
+                                    onclick="setType('BID', this)">Offer</button>
+                                <button type="button" class="tab-btn"
+                                    onclick="setType('DEPOSIT', this)">Deposit</button>
+                                <button type="button" class="tab-btn" onclick="setType('FULL', this)">Buy Now</button>
+                            </div>
+                        </div>
+
+                        <div id="price_group" class="input-group">
+                            <label class="input-label" id="price_label">Your Offer Amount</label>
+                            <div class="field-wrap">
+                                <span class="field-icon">{{ product.currency }}</span>
+                                <input type="number" name="offer_price" class="form-control" placeholder="0.00"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Contact Phone</label>
+                            <div class="field-wrap">
+                                <i class="fas fa-phone field-icon"></i>
+                                <input type="tel" name="phone" class="form-control" placeholder="+256..." required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="input-label">Delivery Note (Optional)</label>
+                            <textarea name="note" class="form-control"
+                                placeholder="Any special requests for the seller?"></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Place Order</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function setType(type, btn) {
+            document.getElementById('order_type_input').value = type;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const priceGroup = document.getElementById('price_group');
+            const priceInput = priceGroup.querySelector('input');
+            const priceLabel = document.getElementById('price_label');
+            if (type === 'FULL') {
+                priceGroup.style.display = 'none';
+                priceInput.removeAttribute('required');
+            } else {
+                priceGroup.style.display = 'block';
+                priceInput.setAttribute('required', '');
+                priceLabel.innerText = type === 'BID' ? 'Your Offer Amount' : 'Deposit Amount';
+            }
+        }
+    </script>
+</body>
+
+</html>

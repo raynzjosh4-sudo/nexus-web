@@ -1,0 +1,180 @@
+<style>
+    /* --- GALLERY CONTAINER --- */
+    .nexus-gallery-section {
+        width: 100%;
+        position: relative;
+        padding: 40px 0;
+    }
+
+    .gallery-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .gallery-title {
+        color: var(--text-main);
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 800;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+    }
+
+    /* --- LAYOUT 1: MASONRY (Desktop Default) --- */
+    .gallery-grid {
+        /* Pinterest-style Masonry using Columns */
+        column-count: 4;
+        column-gap: 20px;
+        width: 100%;
+    }
+
+    .gallery-item {
+        position: relative;
+        break-inside: avoid;
+        /* Prevents split across columns */
+        margin-bottom: 20px;
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--bg-card);
+        border: 1px solid var(--glass-border);
+        cursor: pointer;
+        /* Premium Hover Transition */
+        transform: translateZ(0);
+        /* Hardware accel */
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .gallery-img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.6s ease;
+    }
+
+    /* Hover Effects */
+    .gallery-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        border-color: var(--nexus-accent);
+        z-index: 2;
+    }
+
+    .gallery-item:hover .gallery-img {
+        transform: scale(1.08);
+        /* Subtle Zoom */
+    }
+
+    /* Overlay on Hover */
+    .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+    }
+
+    /* --- LAYOUT 2: FILMSTRIP (Horizontal Scroll) --- */
+    .gallery-filmstrip {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding: 10px 4px 25px 4px;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: var(--nexus-accent) transparent;
+    }
+
+    .gallery-filmstrip .gallery-item {
+        flex: 0 0 280px;
+        margin-bottom: 0;
+        aspect-ratio: 16 / 10;
+    }
+
+    /* --- RESPONSIVE BREAKPOINTS --- */
+
+    /* Tablet */
+    @media (max-width: 1024px) {
+        .gallery-grid {
+            column-count: 3;
+        }
+    }
+
+    /* Mobile (Instagram Style) */
+    @media (max-width: 768px) {
+        .nexus-gallery-section {
+            padding: 20px 0;
+        }
+
+        .gallery-grid {
+            /* Switch to CSS Grid for rigid structure on mobile */
+            column-count: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            /* Tight gap */
+        }
+
+        .gallery-item {
+            margin-bottom: 0;
+            border-radius: 0;
+            /* Square edges for that Insta-feel */
+            border: none;
+            aspect-ratio: 1 / 1;
+            /* Force square */
+        }
+
+        .gallery-img {
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Disable complex hovers on mobile for performance */
+        .gallery-item:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .gallery-item:active {
+            filter: brightness(0.8);
+        }
+
+        .gallery-filmstrip .gallery-item {
+            flex: 0 0 85vw;
+            /* Full width cards on mobile filmstrip */
+            border-radius: 12px;
+        }
+    }
+</style>
+
+<div class="nexus-gallery-section">
+
+    {% if component.title %}
+    <div class="gallery-header">
+        <h4 class="gallery-title">{{ component.title }}</h4>
+    </div>
+    {% endif %}
+
+    <div class="{% if component.style == 'filmstrip' %}gallery-filmstrip{% else %}gallery-grid{% endif %}">
+
+        {% for url in component.imageUrls %}
+        <div class="gallery-item" onclick="openImageModal('{{ url }}')">
+            <img src="{{ url }}" alt="Gallery Image" class="gallery-img" loading="lazy">
+            <div class="gallery-overlay"></div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+<script>
+    function openImageModal(url) {
+        // You can connect this to a real lightbox if you have one.
+        // For now, opening in new tab is a safe fallback.
+        window.open(url, '_blank');
+    }
+</script>

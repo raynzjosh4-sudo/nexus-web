@@ -1,0 +1,399 @@
+import json
+import logging
+from django.shortcuts import render, redirect
+from django.http import Http404
+from ..client import get_supabase_client
+from .shop import normalize_component_data
+
+logger = logging.getLogger(__name__)
+
+
+def get_theme_component(business_data):
+    """
+    Extract the theme component from business components.
+    Returns the theme component dict or None if not found.
+    """
+    import json
+    components_raw = business_data.get('components')
+    biz_components = []
+    
+    # 1. robust parsing
+    if isinstance(components_raw, str):
+        try:
+            biz_components = json.loads(components_raw) or []
+        except json.JSONDecodeError:
+            print("Error decoding components JSON")
+            biz_components = []
+    elif isinstance(components_raw, list):
+        biz_components = components_raw
+    else:
+        print(f"Unknown components type: {type(components_raw)}")
+        return None
+
+    print(f"Searching for theme in {len(biz_components)} components...")
+    
+    # 2. Iterate and check
+    for c in biz_components:
+        if not isinstance(c, dict):
+            continue
+            
+        raw_type = c.get('type', '')
+        # Check raw type directly first (Most reliable)
+        if raw_type == 'ProfileWebsiteThemeComponent':
+            print(f"Found theme by raw type: {c.get('type')}")
+            return c
+            
+        # Check normalized/cleaned types
+        try:
+            normalized = normalize_component_data(c.copy())
+            clean_type = normalized.get('clean_type', '')
+            
+            if clean_type in ('websitetheme', 'webtheme'):
+                print(f"Found theme by cleanup: {clean_type} (was {raw_type})")
+                return c
+        except Exception as e:
+            print(f"Error normalizing component {raw_type}: {e}")
+            continue
+    
+    print("No theme component found.")
+    return None
+
+def product_detail(request, product_id):
+    subdomain = getattr(request, 'subdomain', None)
+    if not subdomain:
+        return redirect('http://localhost:8000') 
+
+    supabase = get_supabase_client()
+
+    # Fetch Business
+    biz_response = supabase.table('business_profiles').select('*').eq('domain', subdomain).execute()
+    if not biz_response.data:
+        raise Http404("Shop not found")
+    business_data = biz_response.data[0]
+    
+    # Parse and normalize components for theme detection
+    components_raw = business_data.get('components', [])
+    if isinstance(components_raw, str):
+        try: components_raw = json.loads(components_raw) or []
+        except: components_raw = []
+    
+    business_data['components'] = [normalize_component_data(c) for c in components_raw if isinstance(c, dict)]
+
+    # Fetch Product
+    prod_response = supabase.table('posts').select('*, categories(name)').eq('id', str(product_id)).execute()
+    if not prod_response.data:
+        raise Http404("Product not found")
+
+    post = prod_response.data[0]
+    post_data = post.get('data', {})
+
+    # Category Logic
+    cat_linked = post.get('categories')
+    if cat_linked and isinstance(cat_linked, dict):
+         cat_name = cat_linked.get('name', 'General')
+    else:
+        cat_data = post_data.get('category') or {}
+        cat_name = cat_data.get('name', 'General') if isinstance(cat_data, dict) else 'General'
+
+    # Components Parsing
+    components = post_data.get('components', [])
+    if isinstance(components, str):
+        try:
+            components = json.loads(components) or []
+        except json.JSONDecodeError:
+            components = []
+
+    # Markdown rendering
+    try:
+        import markdown as _md
+        for c in components:
+            if isinstance(c, dict) and c.get('type') == 'RichTextComponent' and c.get('markdownText'):
+                try:
+                    c['markdownText'] = _md.markdown(c['markdownText'])
+                except Exception:
+                    pass
+    except ImportError:
+        pass # Markdown not installed
+
+    # Images
+    images_raw = post_data.get('images') or []
+    images = []
+    if isinstance(images_raw, list):
+        for it in images_raw:
+            if isinstance(it, dict) and 'url' in it:
+                images.append(it)
+            elif isinstance(it, str):
+                images.append({'url': it})
+
+    display_image = images[0].get('url') if images else (post_data.get('thumbnailUrl') or post_data.get('imageUrl'))
+
+    product = {
+        'id': post.get('id'),
+        'name': post_data.get('productName', 'Untitled'),
+        'productName': post_data.get('productName', post.get('title')),
+        'description': post_data.get('textContent', ''),
+        'price': post_data.get('productPrice', 0),
+        'currency': post_data.get('productCurrency', 'UGX'),
+        'image_url': display_image,
+        'images': images,
+        'video_url': post_data.get('videoUrl'),
+        'components': components,
+        'category': {'name': cat_name},
+        'comments': post_data.get('comments') or [],
+        'author': post_data.get('author') or {},
+        'timestamp': post_data.get('timestamp') or post.get('created_at'),
+    }
+
+    # Fetch Related Products
+    related_products = []
+    posts_query = supabase.table('posts').select('*').eq('business_id', business_data.get('id')).order('created_at', desc=True).limit(20)
+    related_response = posts_query.execute()
+    
+    for p in related_response.data:
+        if p.get('id') == str(product_id): continue 
+        p_data = p.get('data', {})
+        p_cat = p_data.get('category', {}).get('name', 'General')
+        
+        if p_cat == cat_name:
+            img = p_data.get('thumbnailUrl') or p_data.get('imageUrl')
+            if p_data.get('images') and len(p_data['images']) > 0:
+                first = p_data['images'][0]
+                img = first.get('url') if isinstance(first, dict) else first
+
+            related_products.append({
+                'id': p.get('id'),
+                'name': p_data.get('productName'),
+                'price': p_data.get('productPrice'),
+                'currency': p_data.get('productCurrency'),
+                'image_url': img,
+                'category': p_cat
+            })
+            if len(related_products) >= 5: break
+
+
+    from ..utils.component_renderer import render_component_list
+
+    # Render Components to HTML
+    product['components_html'] = render_component_list(components)
+
+    context = {
+        'business': business_data,
+        'product': product,
+        'related_products': related_products,
+        'theme_component': get_theme_component(business_data),
+    }
+    
+    return render(request, 'storefront/partials/mainstore/product_detail.html', context)
+
+def category_view(request, category_name):
+    subdomain = getattr(request, 'subdomain', None)
+    if not subdomain:
+        return redirect('http://localhost:8000')
+
+    supabase = get_supabase_client()
+    
+    biz_response = supabase.table('business_profiles').select('*').eq('domain', subdomain).execute()
+    if not biz_response.data:
+        raise Http404("Shop not found")
+    business_data = biz_response.data[0]
+    business_id = business_data.get('id')
+
+    # Normalize components for theme detection
+    components_raw = business_data.get('components', [])
+    if isinstance(components_raw, str):
+        try: components_raw = json.loads(components_raw) or []
+        except: components_raw = []
+    
+    business_data['components'] = [normalize_component_data(c) for c in components_raw if isinstance(c, dict)]
+    
+    # Get Theme
+    theme_component = get_theme_component(business_data)
+
+    cat_resp = supabase.table('categories').select('id').ilike('name', category_name).execute()
+    
+    products = []
+    if cat_resp.data:
+        cat_id = cat_resp.data[0]['id']
+        posts_resp = supabase.table('posts').select('*').eq('business_id', business_id).eq('category_id', cat_id).execute()
+
+        for post in posts_resp.data:
+            post_data = post.get('data', {})
+            img = post_data.get('thumbnailUrl') or post_data.get('imageUrl')
+            if post_data.get('images') and len(post_data['images']) > 0:
+                first = post_data['images'][0]
+                img = first.get('url') if isinstance(first, dict) else first
+            
+            products.append({
+                'id': post['id'],
+                'name': post_data.get('productName', 'Untitled'),
+                'price': post_data.get('productPrice', 0),
+                'currency': post_data.get('productCurrency', 'UGX'),
+                'image_url': img,
+                'video_url': post_data.get('videoUrl'),
+            })
+
+    context = {
+        'business': business_data,
+        'theme_component': theme_component,
+        'category_name': category_name,
+        'products': products
+    }
+
+    return render(request, 'storefront/partials/mainstore/category_list.html', context)
+
+def create_order(request, product_id):
+    subdomain = getattr(request, 'subdomain', None)
+    if not subdomain:
+        return redirect('http://localhost:8000')
+
+    supabase = get_supabase_client()
+
+    # Fetch Business with error handling
+    try:
+        biz_response = supabase.table('business_profiles').select('*').eq('domain', subdomain).execute()
+        if not biz_response.data:
+            raise Http404("Shop not found")
+        business_data = biz_response.data[0]
+        business_id = business_data.get('id')
+    except Exception as e:
+        logger.error(f"Error fetching business: {e}")
+        raise Http404("Shop not found")
+
+    # Fetch Product with error handling
+    try:
+        prod_response = supabase.table('posts').select('*').eq('id', str(product_id)).execute()
+        if not prod_response.data:
+            raise Http404("Product not found")
+        post = prod_response.data[0]
+        post_data = post.get('data', {})
+    except Exception as e:
+        logger.error(f"Error fetching product {product_id}: {e}")
+        raise Http404("Product not found")
+
+    # Images logic for preview
+    images_raw = post_data.get('images') or []
+    display_image = None
+    if isinstance(images_raw, list) and images_raw:
+        first = images_raw[0]
+        display_image = first.get('url') if isinstance(first, dict) else first
+    if not display_image:
+        display_image = post_data.get('thumbnailUrl') or post_data.get('imageUrl')
+
+    product = {
+        'id': post.get('id'),
+        'name': post_data.get('productName', 'Untitled'),
+        'description': post_data.get('textContent', ''),
+        'price': post_data.get('productPrice', 0),
+        'currency': post_data.get('productCurrency', 'UGX'),
+        'image_url': display_image,
+        'category_id': post.get('category_id'),
+    }
+
+    # Get theme component for the order page
+    theme_component = get_theme_component(business_data)
+
+    if request.method == 'POST':
+        # Authentication check
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return render(request, 'storefront/partials/mainstore/create_order.html', {
+                'business': business_data,
+                'product': product,
+                'theme_component': theme_component,
+                'error': 'Please log in to place an order'
+            })
+
+        # Get form data
+        order_type = request.POST.get('order_type')
+        offer_price = request.POST.get('offer_price', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        note = request.POST.get('note', '').strip()
+
+        # Validation
+        errors = []
+        
+        if not order_type or order_type not in ['BID', 'DEPOSIT', 'FULL']:
+            errors.append('Please select a valid order type')
+        
+        if not phone:
+            errors.append('Phone number is required')
+        elif len(phone) < 10:
+            errors.append('Please enter a valid phone number')
+        
+        # Price validation
+        final_price = 0
+        if order_type == 'FULL':
+            final_price = float(product['price']) if product['price'] else 0
+        elif order_type in ['BID', 'DEPOSIT']:
+            if not offer_price:
+                errors.append('Please enter your offer price')
+            else:
+                try:
+                    final_price = float(offer_price)
+                    if final_price <= 0:
+                        errors.append('Offer price must be greater than zero')
+                except ValueError:
+                    errors.append('Invalid price format')
+        
+        # If there are validation errors, return them
+        if errors:
+            return render(request, 'storefront/partials/mainstore/create_order.html', {
+                'business': business_data,
+                'product': product,
+                'theme_component': theme_component,
+                'errors': errors,
+                'form_data': {
+                    'order_type': order_type,
+                    'offer_price': offer_price,
+                    'phone': phone,
+                    'note': note
+                }
+            })
+
+        # Create order
+        order_data = {
+            'product_id': str(product_id),
+            'business_id': business_id,
+            'order_type': order_type,
+            'offer_price': final_price,
+            'buyer_phone': phone,
+            'note': note,
+            'status': 'PENDING',
+            'payment_method': 'CASH',
+            'buyer_id': user_id,
+        }
+        
+        # Only add category_id if it exists (matching Dart implementation)
+        if product.get('category_id'):
+            order_data['category_id'] = product['category_id']
+        
+        try:
+            result = supabase.table('market_orders').insert(order_data).execute()
+            logger.info(f"Order created successfully for user {user_id}, product {product_id}")
+            
+            return render(request, 'storefront/partials/mainstore/create_order.html', {
+                'business': business_data,
+                'product': product,
+                'theme_component': theme_component,
+                'success': True,
+                'order_id': result.data[0].get('id') if result.data else None
+            })
+        except Exception as e:
+            import traceback
+            error_detail = traceback.format_exc()
+            logger.error(f"Error creating order for user {user_id}: {e}")
+            logger.error(f"Full traceback: {error_detail}")
+            logger.error(f"Order data that failed: {order_data}")
+            return render(request, 'storefront/partials/mainstore/create_order.html', {
+                'business': business_data,
+                'product': product,
+                'theme_component': theme_component,
+                'error': f'Unable to place order: {str(e)}'
+            })
+
+
+    return render(request, 'storefront/partials/mainstore/create_order.html', {
+        'business': business_data,
+        'product': product,
+        'theme_component': theme_component,
+    })

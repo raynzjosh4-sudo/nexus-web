@@ -1,0 +1,77 @@
+{# Renders a single product component by delegating to a per-type partial #}
+{% comment %}
+Expected to be included with `comp` in context:
+{% include "product_components/_render_component.html" with comp=child only %}
+{% endcomment %}
+
+{% if comp.type == 'ProductHeaderComponent' %}
+    {% include 'storefront/partials/product_components/product_header.html' with comp=comp only %}
+
+{% elif comp.type == 'TextComponent' %}
+    {% include 'storefront/partials/product_components/text.html' with comp=comp only %}
+
+{% elif comp.type == 'RichTextComponent' %}
+    {% include 'storefront/partials/product_components/richtext.html' with comp=comp only %}
+
+{% elif comp.type == 'PriceComponent' %}
+    {% include 'storefront/partials/product_components/price.html' with comp=comp only %}
+
+{% elif comp.type == 'SpecTableComponent' %}
+    {% include 'storefront/partials/product_components/spec_table.html' with comp=comp only %}
+
+{% elif comp.type == 'BulletedListComponent' %}
+    {% include 'storefront/partials/product_components/bulleted_list.html' with comp=comp only %}
+
+{% elif comp.type == 'DividerComponent' %}
+    {% include 'storefront/components/divider.html' with component=comp only %}
+
+{% elif comp.type == 'ImageComponent' %}
+    {% include 'storefront/partials/product_components/image.html' with comp=comp only %}
+
+{% elif comp.type == 'ImageGalleryComponent' %}
+    {% include 'storefront/partials/product_components/image_gallery.html' with comp=comp only %}
+
+{% elif comp.type == 'VideoComponent' %}
+    {% include 'storefront/components/video.html' with component=comp only %}
+
+{% elif comp.type == 'AudioComponent' %}
+    {% include 'storefront/partials/product_components/audio.html' with comp=comp only %}
+
+{% elif comp.type == 'PdfComponent' %}
+    {% include 'storefront/partials/product_components/pdf.html' with comp=comp only %}
+{% elif comp.type == 'ImageComponent' %}
+    {# Pass product here so image.html can see product.name #}
+    {% include 'storefront/partials/product_components/image.html' with comp=comp product=product only %}
+{% elif comp.type == 'MapLocationComponent' %}
+    {% include 'storefront/partials/product_components/map_location.html' with comp=comp only %}
+
+{% elif comp.type == 'ContactComponent' %}
+    {% include 'storefront/components/contact.html' with component=comp only %}
+
+{% elif comp.type == 'CallToActionComponent' %}
+    {% include 'storefront/components/cta.html' with component=comp only %}
+
+{% elif comp.type == 'BookingComponent' %}
+    {% include 'storefront/components/booking.html' with component=comp only %}
+
+{% elif comp.type == 'CommentsComponent' %}
+    {% include 'storefront/partials/product_components/comments.html' with comp=comp only %}
+
+{% elif comp.type == 'CardComponent' %}
+    {% include 'storefront/partials/product_components/card.html' with comp=comp only %}
+
+{% elif comp.type == 'ExpandableComponent' %}
+    {% include 'storefront/partials/product_components/expandable.html' with comp=comp only %}
+
+{% elif comp.type == 'ColumnComponent' %}
+    {% include 'storefront/partials/product_components/column.html' with comp=comp only %}
+
+{% elif comp.type == 'RowComponent' %}
+    {% include 'storefront/partials/product_components/row.html' with comp=comp only %}
+
+{% else %}
+    {# Unknown component type - optionally render debug info #}
+    <div class="sc-comp unknown-component">
+        <strong>Unknown component:</strong> {{ comp.type }}
+    </div>
+{% endif %}

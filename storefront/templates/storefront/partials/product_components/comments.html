@@ -1,0 +1,17 @@
+<div class="sc-comp comments-component">
+    <h4>Comments</h4>
+    <div class="comments-list">
+        {% for c in comp.comments %}
+            <div class="comment">
+                <img src="{{ c.userAvatarUrl }}" alt="{{ c.userName }}" class="comment-avatar">
+                <div class="comment-body">
+                    <strong>{{ c.userName }}</strong>
+                    <p>{{ c.commentText }}</p>
+                    <small class="muted">{{ c.timestamp }}</small>
+                </div>
+            </div>
+        {% empty %}
+            <p class="muted">No comments yet.</p>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<style>
+    .nexus-heading-wrapper { padding: 30px 0 10px 0; width: 100%; }
+    .nexus-standalone-title { color: var(--nexus-text, white); font-weight: 700; line-height: 1.2; margin: 0; }
+    .nexus-standalone-subtitle { color: #9ca3af; font-size: 1.1rem; margin-top: 10px; max-width: 800px; }
+    
+    .text-left { text-align: left; }
+    .text-center { text-align: center; margin-left: auto; margin-right: auto; }
+    .text-right { text-align: right; margin-left: auto; }
+</style>
+
+<div class="nexus-heading-wrapper text-{{ component.alignment|default:'center' }}">
+    {% if component.size == 'h1' %}
+        <h1 class="nexus-standalone-title" style="font-size: 3rem;">{{ component.text }}</h1>
+    {% elif component.size == 'h3' %}
+        <h3 class="nexus-standalone-title" style="font-size: 1.8rem;">{{ component.text }}</h3>
+    {% else %}
+        <h2 class="nexus-standalone-title" style="font-size: 2.4rem;">{{ component.text }}</h2>
+    {% endif %}
+
+    {% if component.subtitle %}
+        <p class="nexus-standalone-subtitle">{{ component.subtitle }}</p>
+    {% endif %}
+</div>

@@ -1,0 +1,72 @@
+<style>
+    :root {
+        --map-bg: var(--nexus-card-bg, #181b21);
+        --map-border: var(--nexus-border, rgba(255, 255, 255, 0.1));
+        --nexus-accent: var(--nexus-accent, #f97316);
+    }
+
+    .nexus-map-section { padding: 40px 0; width: 100%; }
+    .nexus-section-title { font-size: 2rem; color: var(--nexus-text, white); margin-bottom: 30px; text-align: center; }
+
+    .map-container {
+        position: relative; width: 100%; height: 450px;
+        background: var(--map-bg); border-radius: 24px; overflow: hidden;
+        border: 1px solid var(--map-border);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    /* Grayscale Map */
+    .map-frame {
+        width: 100%; height: 100%; border: 0;
+        filter: grayscale(100%) invert(92%) contrast(83%);
+        transition: filter 0.5s ease;
+    }
+    .map-container:hover .map-frame { filter: grayscale(0%); }
+
+    /* Info Card */
+    .map-info-card {
+        position: absolute; top: 30px; left: 30px;
+        background: var(--nexus-card-bg); /* Theme aware */
+        backdrop-filter: blur(10px); padding: 25px;
+        border-radius: 16px; border: 1px solid var(--nexus-border);
+        max-width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10;
+    }
+
+    .location-title { color: var(--nexus-text, white); font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+    .location-pin-icon { color: var(--nexus-accent); }
+    .location-address { color: #9ca3af; margin-bottom: 20px; line-height: 1.5; }
+
+    .directions-btn {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        background: var(--nexus-accent); color: white;
+        text-decoration: none; padding: 10px 0; border-radius: 8px; font-weight: 600;
+        transition: transform 0.2s;
+    }
+    .directions-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+    @media (max-width: 768px) {
+        .map-container { height: 400px; }
+        .map-info-card { position: relative; top: 0; left: 0; width: 100%; max-width: 100%; border-radius: 0; border-bottom: 1px solid var(--map-border); }
+    }
+</style>
+
+<div class="nexus-map-section">
+    {% if component.title %}
+        <h3 class="nexus-section-title">{{ component.title }}</h3>
+    {% endif %}
+
+    <div class="map-container">
+        {% for loc in component.locations|slice:":1" %}
+            <div class="map-info-card">
+                <h4 class="location-title">
+                    <span class="location-pin-icon">📍</span> {{ loc.title }}
+                </h4>
+                <p class="location-address">{{ loc.description }}</p>
+                <a href="https://www.google.com/maps/search/?api=1&query={{ loc.latitude }},{{ loc.longitude }}" target="_blank" class="directions-btn">
+                    Get Directions ↗
+                </a>
+            </div>
+            <iframe class="map-frame" loading="lazy" allowfullscreen src="https://maps.google.com/maps?q={{ loc.latitude }},{{ loc.longitude }}&hl=en&z=14&output=embed"></iframe>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,199 @@
+{% for category, products in products_by_category.items %}
+    {% for product in products %}
+    <div id="modal-product-{{ product.id }}" class="product-modal-backdrop" onclick="closeProductModal('{{ product.id }}')">
+        
+        <div class="product-modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeProductModal('{{ product.id }}')">&times;</button>
+            
+            <div class="modal-scroll-area">
+                
+                <div class="pm-header">
+                    <span class="pm-category">{{ category }}</span>
+                    <h2 class="pm-title">{{ product.name }}</h2>
+                    <div class="pm-price-row">
+                        <span class="pm-price">{{ product.currency }} {{ product.price }}</span>
+                    </div>
+                </div>
+
+                <div class="pm-components">
+                    {% for comp in product.components %}
+                        
+                        {% if comp.type == 'ImageGalleryComponent' %}
+                        <div class="comp-gallery">
+                            <div class="gallery-main">
+                                <img src="{{ comp.imageUrls.0 }}" id="main-img-{{ product.id }}-{{ forloop.counter }}" class="main-img">
+                            </div>
+                            {% if comp.imageUrls|length > 1 %}
+                            <div class="gallery-thumbs">
+                                {% for img in comp.imageUrls %}
+                                <img src="{{ img }}" onclick="changeMainImage('{{ product.id }}-{{ forloop.parentloop.counter }}', '{{ img }}')" class="thumb-img">
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        {% elif comp.type == 'SpecTableComponent' %}
+                        <div class="comp-specs">
+                            {% if comp.title %}<h4>{{ comp.title }}</h4>{% endif %}
+                            <table>
+                                {% for key, value in comp.specs.items %}
+                                <tr>
+                                    <td class="spec-key">{{ key }}</td>
+                                    <td class="spec-val">{{ value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+
+                        {% elif comp.type == 'MapLocationComponent' %}
+                        <div class="comp-map">
+                            <div class="map-visual">
+                                <span>📍</span>
+                            </div>
+                            <div class="map-info">
+                                <strong>Store Location</strong>
+                                <p>{{ comp.address }}</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query={{ comp.latitude }},{{ comp.longitude }}" target="_blank" class="map-link">Open in Google Maps</a>
+                            </div>
+                        </div>
+
+                        {% elif comp.type == 'TextComponent' %}
+                        <div class="comp-text {{ comp.style }}">
+                            {{ comp.text }}
+                        </div>
+
+                        {% elif comp.type == 'ContactComponent' %}
+                        <div class="comp-contact">
+                            <strong>{{ comp.label|default:"Contact Seller" }}</strong>
+                            <div class="contact-actions">
+                                {% if comp.phone %}
+                                    <a href="tel:{{ comp.phone }}" class="c-btn phone">📞 Call</a>
+                                {% endif %}
+                                {% if comp.whatsapp %}
+                                    <a href="https://wa.me/{{ comp.whatsapp }}" target="_blank" class="c-btn whatsapp">💬 WhatsApp</a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% elif comp.type == 'DividerComponent' %}
+                        <hr class="comp-divider">
+
+                        {% elif comp.type == 'CallToActionComponent' %}
+                        <div class="comp-cta">
+                            <button class="cta-btn {{ comp.buttonStyle }}">{{ comp.buttonText }}</button>
+                        </div>
+
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endfor %}
+
+<style>
+    /* Modal Backdrop */
+    .product-modal-backdrop {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.8);
+        z-index: 20000; /* Above Navbar */
+        display: none; /* Hidden by default */
+        align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.3s ease;
+    }
+    .product-modal-backdrop.open { display: flex; opacity: 1; }
+
+    /* Modal Content */
+    .product-modal-content {
+        width: 90%; max-width: 600px; height: 90vh;
+        background: white;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        display: flex; flex-direction: column;
+        animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp { from { transform: translateY(50px); } to { transform: translateY(0); } }
+
+    .modal-close-btn {
+        position: absolute; top: 15px; right: 15px;
+        background: rgba(0,0,0,0.1); border: none;
+        width: 35px; height: 35px; border-radius: 50%;
+        font-size: 1.5rem; line-height: 1; cursor: pointer; z-index: 10;
+    }
+
+    .modal-scroll-area {
+        padding: 30px;
+        overflow-y: auto;
+        height: 100%;
+    }
+
+    /* --- COMPONENTS STYLING --- */
+    
+    /* Header */
+    .pm-header { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+    .pm-category { color: #f97316; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+    .pm-title { margin: 5px 0; font-size: 1.8rem; }
+    .pm-price { font-size: 1.4rem; font-weight: 700; color: #111827; }
+
+    /* Gallery */
+    .comp-gallery { margin-bottom: 25px; }
+    .gallery-main { width: 100%; height: 300px; background: #f3f4f6; border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+    .main-img { width: 100%; height: 100%; object-fit: contain; }
+    .gallery-thumbs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
+    .thumb-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; }
+    .thumb-img:hover { border-color: #f97316; }
+
+    /* Specs Table */
+    .comp-specs { margin-bottom: 25px; background: #f9fafb; padding: 15px; border-radius: 12px; }
+    .comp-specs h4 { margin: 0 0 10px 0; font-size: 0.95rem; }
+    .comp-specs table { width: 100%; border-collapse: collapse; }
+    .comp-specs td { padding: 8px 0; font-size: 0.9rem; border-bottom: 1px solid #e5e7eb; }
+    .comp-specs tr:last-child td { border-bottom: none; }
+    .spec-key { color: #6b7280; font-weight: 500; width: 40%; text-transform: capitalize; }
+    .spec-val { color: #111827; font-weight: 600; }
+
+    /* Map */
+    .comp-map { display: flex; gap: 15px; margin-bottom: 25px; background: #eff6ff; padding: 15px; border-radius: 12px; border: 1px solid #dbeafe; }
+    .map-visual { font-size: 2rem; }
+    .map-info p { margin: 2px 0 8px 0; font-size: 0.9rem; color: #1e3a8a; }
+    .map-link { font-size: 0.85rem; font-weight: 700; color: #2563eb; text-decoration: none; }
+
+    /* Text */
+    .comp-text { margin-bottom: 20px; color: #374151; line-height: 1.6; }
+    .comp-text.h2 { font-size: 1.4rem; font-weight: 700; color: #111827; margin-top: 20px; }
+    .comp-text.quote { font-style: italic; border-left: 3px solid #f97316; padding-left: 15px; color: #4b5563; }
+
+    /* Contact */
+    .comp-contact { margin-bottom: 25px; text-align: center; }
+    .contact-actions { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+    .c-btn { padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+    .c-btn.phone { background: #f3f4f6; color: #111827; }
+    .c-btn.whatsapp { background: #25D366; color: white; }
+
+    /* Divider */
+    .comp-divider { border: 0; border-top: 1px solid #e5e7eb; margin: 30px 0; }
+
+    /* CTA */
+    .comp-cta .cta-btn { width: 100%; padding: 15px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; border: none; }
+    .comp-cta .cta-btn.primary { background: #111827; color: white; }
+    .comp-cta .cta-btn.outlined { background: transparent; border: 2px solid #111827; color: #111827; }
+</style>
+
+<script>
+    function openProductModal(id) {
+        document.getElementById('modal-product-' + id).classList.add('open');
+        document.body.style.overflow = 'hidden'; // Stop background scrolling
+    }
+
+    function closeProductModal(id) {
+        document.getElementById('modal-product-' + id).classList.remove('open');
+        document.body.style.overflow = 'auto';
+    }
+
+    function changeMainImage(uniqueId, url) {
+        document.getElementById('main-img-' + uniqueId).src = url;
+    }
+</script>

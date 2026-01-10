@@ -1,0 +1,322 @@
+{# Floating nav removed as it is redundant with the main navbar #}
+{% if products_by_category %}
+<div class="store-layout" style="padding-top: 40px;">
+    {% for category_name, products in products_by_category.items %}
+    <div class="store-category-section">
+        <div class="store-section-header">
+            <h3 class="nexus-section-title">{{ category_name }}</h3>
+            <a href="{% url 'category_view' category_name %}" class="see-more-link">See all <i
+                    class="fas fa-chevron-right"></i></a>
+        </div>
+
+        <div class="store-horizontal-scroll">
+            {% for product in products %}
+            <div class="store-card-wrapper">
+                <a href="{% url 'product_detail' product.id %}" class="google-product-card">
+                    <div class="media-wrapper">
+                        <div class="product-media-wrapper skeleton">
+                            {% if product.video_url %}
+                            <video class="product-media img-loading" muted loop
+                                onloadeddata="this.classList.add('img-loaded'); this.parentElement.classList.remove('skeleton')"
+                                onmouseover="this.play()" onmouseout="this.pause()">
+                                <source src="{{ product.video_url }}">
+                            </video>
+                            {% else %}
+                            <img src="{{ product.image_url }}" class="product-media img-loading"
+                                onload="this.classList.add('img-loaded'); this.parentElement.classList.remove('skeleton')"
+                                onerror="this.parentElement.classList.remove('skeleton'); this.src='https://via.placeholder.com/300?text=No+Image'">
+                            {% endif %}
+                        </div>
+                        {% if product.video_url %}
+                        <div class="media-badge"><i class="fas fa-play"></i></div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-details">
+                        <div class="top-info">
+                            <span class="card-category">{{ product.category.name|default:"General" }}</span>
+                            <h4 class="card-title">{{ product.name }}</h4>
+                        </div>
+
+                        <div class="price-row">
+                            <span class="currency">{{ product.currency }}</span>
+                            <span class="amount">{{ product.price|floatformat:0 }}</span>
+                        </div>
+
+                        <div class="card-footer">
+                            <span class="shop-name">{{ business.business_name|default:"Official Store" }}</span>
+                            <div class="shop-now-link">
+                                Shop Now <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-store-state">
+    <h3>No items found</h3>
+    <p>Check back later for new products.</p>
+</div>
+{% endif %}
+
+<div class="bottom-feed-loader">
+    <p>End of Catalog</p>
+</div>
+
+<style>
+    /* --- STORE LAYOUT --- */
+    .store-layout {
+        padding-bottom: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        /* Reduced gap between categories */
+        max-width: 1400px;
+        /* Constrain max width for large screens */
+        margin: 0 auto;
+        width: 100%;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+
+
+    .store-section-header {
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .nexus-section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin: 0;
+        text-transform: capitalize;
+    }
+
+    .see-more-link {
+        font-size: 0.9rem;
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: opacity 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .see-more-link:hover {
+        opacity: 0.8;
+    }
+
+    .see-more-link i {
+        font-size: 0.8rem;
+    }
+
+    /* HORIZONTAL SCROLL LAYOUT */
+    .store-horizontal-scroll {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding-bottom: 16px;
+        /* Space for scrollbar */
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        /* Hide scrollbar by default for cleaner look, show on hover if preferred */
+        scrollbar-width: thin;
+        scrollbar-color: var(--glass-border) transparent;
+    }
+
+    .store-horizontal-scroll::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .store-horizontal-scroll::-webkit-scrollbar-thumb {
+        background: var(--glass-border);
+        border-radius: 3px;
+    }
+
+    /* Card Wrapper - Fixed Width for Scroll */
+    .store-card-wrapper {
+        min-width: 240px;
+        width: 240px;
+        scroll-snap-align: start;
+        flex-shrink: 0;
+    }
+
+    .google-product-card {
+        height: 100%;
+    }
+
+    /* Mobile Breakpoint */
+    @media (max-width: 768px) {
+        .store-horizontal-scroll {
+            gap: 12px;
+            /* Ensure it bleeds to edge */
+            margin-right: -16px;
+            padding-right: 16px;
+        }
+
+        .store-card-wrapper {
+            min-width: 180px;
+            width: 180px;
+        }
+
+        .market-header-container {
+            padding: 20px 16px;
+            /* Reduced header padding on mobile */
+        }
+
+        .market-title {
+            font-size: 1.4rem;
+        }
+    }
+
+    .bottom-feed-loader {
+        text-align: center;
+        padding: 20px;
+        opacity: 0.5;
+        font-size: 0.9rem;
+        color: var(--text-main);
+    }
+
+    /* --- INLINED CARD STYLES --- */
+    .google-product-card {
+        display: flex;
+        flex-direction: column;
+        background: var(--bg-card);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        text-decoration: none;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100%;
+    }
+
+    .google-product-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--accent-color);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .media-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        background: var(--bg-page);
+        overflow: hidden;
+    }
+
+    .card-media {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .google-product-card:hover .card-media {
+        transform: scale(1.08);
+    }
+
+    .media-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+    }
+
+    .card-details {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        gap: 12px;
+    }
+
+    .card-category {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--accent-color);
+        font-weight: 700;
+    }
+
+    .card-title {
+        margin: 4px 0 0 0;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-main);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        line-height: 1.4;
+    }
+
+    .price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+        color: #ffffff;
+    }
+
+    .price-row .currency {
+        font-size: 12px;
+        font-weight: 500;
+        color: #9ca3af;
+    }
+
+    .price-row .amount {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .card-footer {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .shop-name {
+        font-size: 12px;
+        color: #9ca3af;
+    }
+
+    .shop-now-link {
+        font-size: 12px;
+        font-weight: 600;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .google-product-card:hover .shop-now-link {
+        opacity: 1;
+        transform: translateX(0);
+        color: #f97316;
+    }
+</style>

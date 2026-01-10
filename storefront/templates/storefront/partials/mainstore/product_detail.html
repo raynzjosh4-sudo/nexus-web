@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} | {{ business.business_name }}</title>
+
+    {% include "storefront/theme_css.html" %}
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-page: {{ theme_component.backgroundColor|default:"#121418" }};
+            --bg-card: {{ theme_component.surfaceColor|default:"#181b21" }};
+            --text-main: {{ theme_component.textColor|default:"#ffffff" }};
+            --text-sub: {{ theme_component.secondaryTextColor|default:"#9ca3af" }};
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-color: {{ theme_component.accentColor|default:"#f97316" }};
+            --secondary-color: {{ theme_component.secondaryColor|default:"#DA03D0" }};
+        }
+
+        html, body, .main-wrapper, .product-dynamic-content {
+            background-color: var(--bg-page) !important;
+            color: var(--text-main) !important;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .product-dynamic-content {
+            max-width: 800px;
+            margin: 40px auto 80px auto;
+            padding: 0 20px;
+        }
+
+        .sc-comp-wrapper {
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .product-dynamic-content {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% include "storefront/partials/navbar.html" %}
+    {% include "storefront/partials/mainstore/components/product_hero.html" %}
+
+    <div class="product-dynamic-content">
+        {{ product.components_html|safe }}
+
+        <style>
+            .video-component video { width: 100%; border-radius: 12px; margin-bottom: 24px; display: block; border: 1px solid var(--glass-border); }
+            .audio-component { background: var(--bg-card); padding: 16px; border-radius: 12px; margin-bottom: 24px; border: 1px solid var(--glass-border); }
+            .audio-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-weight: 600; color: var(--text-main); }
+            .comp-audio { width: 100%; margin-top: 8px; }
+            .map-component { margin-bottom: 24px; }
+            .map-card-link { display: flex; align-items: center; gap: 16px; background: var(--bg-card); padding: 16px; border-radius: 12px; border: 1px solid var(--glass-border); text-decoration: none; color: var(--text-main); transition: 0.2s; }
+            .map-card-link:hover { border-color: var(--accent-color); transform: translateY(-2px); }
+            .map-icon { font-size: 24px; color: var(--accent-color); }
+            .map-info { flex: 1; display: flex; flex-direction: column; }
+            .map-label { font-size: 10px; text-transform: uppercase; color: var(--text-sub); font-weight: 700; letter-spacing: 1px; }
+            .map-address { font-size: 15px; font-weight: 500; }
+            .contact-component { margin-bottom: 30px; }
+            .contact-title { font-size: 18px; font-weight: 600; color: var(--text-main); margin-bottom: 16px; }
+            .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+            .contact-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.2s; border: 1px solid transparent; }
+            .contact-btn.phone { background: rgba(34, 197, 94, 0.1); color: #4ade80; border-color: rgba(34, 197, 94, 0.2); }
+            .contact-btn.whatsapp { background: rgba(37, 211, 102, 0.1); color: #25d366; border-color: rgba(37, 211, 102, 0.2); }
+            .contact-btn.email { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border-color: rgba(59, 130, 246, 0.2); }
+            .contact-btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+            .cta-component { margin: 24px 0; }
+            .btn-cta { display: block; width: 100%; background: var(--accent-color); color: #fff; text-align: center; padding: 16px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 16px; border: none; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3); }
+            .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5); }
+            .card-component { background: var(--bg-card); border-radius: 16px; padding: 20px; border: 1px solid var(--glass-border); margin-bottom: 24px; }
+            .row-component { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+            .column-component { display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+            .expandable-component { margin-bottom: 16px; }
+            .comp-details { background: var(--glass-border); border-radius: 8px; overflow: hidden; }
+            .comp-summary { padding: 16px; cursor: pointer; font-weight: 600; color: var(--text-main); list-style: none; display: flex; justify-content: space-between; align-items: center; outline: none; }
+            .comp-summary::after { content: '+'; font-size: 20px; font-weight: 300; }
+            .comp-details-content { padding: 0 16px 16px 16px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+            .booking-component { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--glass-border); margin-bottom: 24px; display: flex; flex-direction: column; }
+            .booking-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+            .booking-details { padding: 16px; }
+            .booking-name { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+            .booking-desc { font-size: 14px; color: var(--text-sub); line-height: 1.5; margin-bottom: 12px; }
+            .booking-price { font-size: 16px; font-weight: 600; color: var(--accent-color); margin-bottom: 16px; }
+            .btn-booking { display: inline-block; background: var(--accent-color); color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.2s; text-align: center; }
+            .comment-item { display: flex; gap: 12px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+            .comment-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: #333; flex-shrink: 0; }
+            .comment-user { display: block; font-weight: 600; font-size: 14px; color: var(--text-main); margin-bottom: 4px; }
+            .comment-text { font-size: 14px; color: var(--text-sub); line-height: 1.4; margin: 0; }
+        </style>
+    </div>
+
+    <style>
+        .header-component .ph-title { font-size: 24px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; }
+        .header-component .ph-pricing { display: flex; gap: 12px; align-items: baseline; }
+        .ph-price { font-size: 20px; font-weight: 700; color: var(--text-main); }
+        .ph-original { font-size: 16px; color: var(--text-sub); text-decoration: line-through; }
+        .text-component { margin-bottom: 16px; color: var(--text-sub); }
+        .text-h1 { font-size: 28px; font-weight: 700; color: var(--text-main); margin-top: 20px; }
+        .text-body { font-size: 16px; line-height: 1.5; }
+        .image-component { margin-bottom: 24px; border-radius: 12px; overflow: hidden; }
+        .image-wrap img { width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid var(--glass-border); }
+        .spec-table-wrapper { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden; }
+        .spec-table { width: 100%; border-collapse: collapse; }
+        .spec-key { padding: 12px 16px; color: var(--text-sub); width: 40%; background: rgba(255, 255, 255, 0.02); font-size: 14px; }
+        .spec-val { padding: 12px 16px; color: var(--text-main); font-weight: 500; font-size: 14px; }
+        .styled-list li { color: var(--text-sub); font-size: 0.95rem; line-height: 1.5; display: flex; align-items: flex-start; gap: 12px; }
+    </style>
+
+    {% if related_products %}
+    <section class="pro-related-section">
+        <div class="related-container">
+            <h3 class="section-title">Similar Products</h3>
+            <div class="related-product-grid">
+                {% for p in related_products %}
+                <a href="{% url 'product_detail' p.id %}" class="google-product-card">
+                    <div class="media-wrapper">
+                        <img src="{{ p.image_url }}" alt="{{ p.name }}" class="card-media">
+                    </div>
+                    <div class="card-details">
+                        <h4 class="card-title">{{ p.name }}</h4>
+                        <div class="price-row"><span class="amount">{{ p.price|floatformat:0 }}</span></div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <style>
+        .pro-related-section { padding: 80px 0; border-top: 1px solid var(--glass-border); }
+        .related-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .related-product-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+        .google-product-card { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 16px; text-decoration: none; overflow: hidden; display: flex; flex-direction: column; }
+        .media-wrapper { aspect-ratio: 1/1; overflow: hidden; }
+        .card-media { width: 100%; height: 100%; object-fit: cover; }
+        .card-details { padding: 16px; }
+        .card-title { font-size: 15px; color: var(--text-main); margin: 0; }
+    </style>
+    {% endif %}
+
+    {% include "storefront/partials/nexus_footer.html" %}
+</body>
+</html>

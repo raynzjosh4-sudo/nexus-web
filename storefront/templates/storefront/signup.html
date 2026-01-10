@@ -1,0 +1,189 @@
+{% extends "storefront/base.html" %}
+
+{% block content %}
+<div class="signup-container">
+    <div class="signup-card">
+        <h2 class="signup-title">Create Account</h2>
+        <p class="signup-subtitle">Join us to track orders and save your wishlist</p>
+
+        {% if error %}
+        <div class="alert-error">
+            <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'signup' %}" class="signup-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <div class="input-wrap">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="name" name="name" required placeholder="John Doe">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrap">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" required placeholder="••••••••">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <div class="input-wrap">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="confirm_password" name="confirm_password" required
+                        placeholder="••••••••">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Sign Up</button>
+        </form>
+
+        <div class="signup-footer">
+            <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .signup-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bg-page);
+        padding: 24px;
+    }
+
+    .signup-card {
+        background: var(--bg-card);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 40px;
+        width: 100%;
+        max-width: 480px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+    }
+
+    .signup-title {
+        color: var(--text-main);
+        font-size: 2rem;
+        font-weight: 800;
+        margin: 0 0 8px 0;
+        text-align: center;
+    }
+
+    .signup-subtitle {
+        color: var(--text-sub);
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: var(--text-sub);
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+
+    .input-wrap {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-sub);
+        font-size: 1rem;
+        pointer-events: none;
+    }
+
+    .input-wrap input {
+        width: 100%;
+        padding: 14px 16px 14px 48px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        color: var(--text-main);
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.2s ease;
+    }
+
+    .input-wrap input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 0 0 3px rgba(34, 213, 255, 0.1);
+        /* Fallback accent color */
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        border: none;
+        background: var(--accent-color);
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: 12px;
+    }
+
+    .btn-submit:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .signup-footer {
+        margin-top: 24px;
+        text-align: center;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+    }
+
+    .signup-footer a {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .signup-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

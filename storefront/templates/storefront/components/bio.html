@@ -1,0 +1,23 @@
+<div class="nexus-bio-wrapper">
+    <p class="nexus-bio-text" style="text-align: {{ component.alignment|default:'left' }};">
+        {{ component.text }}
+    </p>
+</div>
+
+<style>
+    .nexus-bio-wrapper {
+        padding: 20px;
+        background-color: transparent; /* No background color to be safe */
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+
+    .nexus-bio-text {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #e5e7eb; /* Light gray text */
+        margin: 0;
+        white-space: pre-wrap; /* Preserves line breaks from the database */
+    }
+</style>

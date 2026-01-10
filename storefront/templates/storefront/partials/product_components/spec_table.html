@@ -1,0 +1,48 @@
+<div class="sc-comp spec-component">
+    {% if comp.title %}
+        <h3 class="spec-header">{{ comp.title }}</h3>
+    {% endif %}
+
+    <div class="spec-table-wrapper">
+        <table class="spec-table">
+            <tbody>
+                {% for key, val in comp.specs.items %}
+                <tr>
+                    <td class="spec-key">{{ key }}</td>
+                    <td class="spec-val">{{ val }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .spec-component { margin-bottom: 30px; }
+    .spec-header { color: white; margin-bottom: 12px; font-size: 18px; }
+
+    .spec-table-wrapper {
+        background: #181b21;
+        border: 1px solid #27272a;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .spec-table { width: 100%; border-collapse: collapse; }
+    
+    .spec-table tr { border-bottom: 1px solid #27272a; }
+    .spec-table tr:last-child { border-bottom: none; }
+    
+    .spec-key {
+        padding: 12px 16px;
+        color: #9ca3af; /* Muted text */
+        width: 40%;
+        background: rgba(255,255,255,0.02);
+        font-size: 14px;
+    }
+    .spec-val {
+        padding: 12px 16px;
+        color: #ffffff;
+        font-weight: 500;
+        font-size: 14px;
+    }
+</style>

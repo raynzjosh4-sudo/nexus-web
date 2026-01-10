@@ -1,0 +1,12 @@
+<div class="sc-comp audio-component">
+    {% if comp.title %}<h4>{{ comp.title }}</h4>{% endif %}
+    <div class="audio-wrap">
+        <audio controls preload="metadata">
+            <source src="{{ comp.audioUrl|default:comp.audio_url }}">
+            Your browser does not support the audio element.
+        </audio>
+        {% if comp.isDownloadable and comp.audioUrl %}
+            <a href="{{ comp.audioUrl|default:comp.audio_url }}" download class="btn">Download</a>
+        {% endif %}
+    </div>
+</div>

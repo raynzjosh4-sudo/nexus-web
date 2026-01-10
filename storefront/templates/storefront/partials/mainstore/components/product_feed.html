@@ -1,0 +1,8 @@
+<div class="components-wrapper">
+    {% if product.components %}
+        {% for comp in product.components %}
+            {# Delegates to your uploaded _render_component.html #}
+            {% include "storefront/partials/product_components/_render_component.html" with comp=comp only %}
+        {% endfor %}
+    {% endif %}
+</div>

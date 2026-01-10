@@ -1,0 +1,18 @@
+<div class="sc-comp image-component" {% if comp.stretchToEdges %}style="width:100%;"{% endif %}>
+    {% if comp.caption %}
+        <h4 class="image-caption">{{ comp.caption }}</h4>
+    {% endif %}
+    
+    <div class="image-wrap">
+        {# Using firstof prevents the VariableDoesNotExist crash #}
+        <img src="{% firstof comp.imageUrl comp.image_url %}" 
+             alt="{{ comp.caption|default:product.name }}"
+             loading="lazy">
+    </div>
+</div>
+
+<style>
+    .image-component { margin-bottom: 24px; border-radius: 12px; overflow: hidden; }
+    .image-caption { color: #9ca3af; font-size: 14px; margin-bottom: 8px; font-weight: 500; }
+    .image-wrap img { width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+</style>
