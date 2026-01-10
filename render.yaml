@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: nexas-web
+    runtime: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "core.wsgi:application" # 

@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ business.business_name|default:"Nexus Shop" }}{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'icon.png' %}">
+
+    <!-- Global Theme & Fonts -->
+    {% include "storefront/theme_css.html" %}
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+    {% include "storefront/partials/navbar.html" %}
+
+    <div class="main-wrapper">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% include "storefront/partials/nexus_footer.html" %}
+</body>
+
+</html>

@@ -1,21 +1,24 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ business.business_name }} - Profile</title>
-    
+    <link rel="icon" type="image/png" href="{% static 'icon.png' %}">
+
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* --- 1. GLOBAL VARIABLES & DYNAMIC THEME --- */
         :root {
             /* Fallback Colors (Static) */
-            --nexus-bg-dark: #121418;       
-            --nexus-card-bg: #181b21;       
-            --nexus-hover-bg: #1f232b;      
-            --nexus-accent: #f97316;        
-            --nexus-text-main: #ffffff;     
+            --nexus-bg-dark: #121418;
+            --nexus-card-bg: #181b21;
+            --nexus-hover-bg: #1f232b;
+            --nexus-accent: #f97316;
+            --nexus-text-main: #ffffff;
             --nexus-text-muted: #9ca3af;
             --nexus-border: rgba(255, 255, 255, 0.08);
             --icon-bg: rgba(249, 115, 22, 0.1);
@@ -26,20 +29,107 @@
         }
 
         /* 🟢 THEME INJECTOR: This applies your JSON Green/White/Black theme */
-        {% for block in components %}
-            {% if block.type == 'ProfileWebsiteThemeComponent' or block.clean_type == 'websitetheme' %}
-            :root {
-                {% if block.primaryColor %} --nexus-accent: {{ block.primaryColor }} !important; {% endif %}
-                {% if block.backgroundColor %} --nexus-bg-dark: {{ block.backgroundColor }} !important; {% endif %}
-                {% if block.surfaceColor %} --nexus-card-bg: {{ block.surfaceColor }} !important; {% endif %}
-                {% if block.textColor %} --nexus-text-main: {{ block.textColor }} !important; {% endif %}
-                {% if block.textColor %} --nexus-text-muted: {{ block.textColor }}99 !important; {% endif %}
+            {
+            % for block in components %
+        }
+
+            {
+            % if block.type=='ProfileWebsiteThemeComponent' or block.clean_type=='websitetheme' %
+        }
+
+        :root {
+                {
+                % if block.primaryColor %
             }
-            {% endif %}
-        {% endfor %}
+
+            --nexus-accent: {
+                    {
+                    block.primaryColor
+                }
+            }
+
+            !important;
+
+                {
+                % endif %
+            }
+
+                {
+                % if block.backgroundColor %
+            }
+
+            --nexus-bg-dark: {
+                    {
+                    block.backgroundColor
+                }
+            }
+
+            !important;
+
+                {
+                % endif %
+            }
+
+                {
+                % if block.surfaceColor %
+            }
+
+            --nexus-card-bg: {
+                    {
+                    block.surfaceColor
+                }
+            }
+
+            !important;
+
+                {
+                % endif %
+            }
+
+                {
+                % if block.textColor %
+            }
+
+            --nexus-text-main: {
+                    {
+                    block.textColor
+                }
+            }
+
+            !important;
+
+                {
+                % endif %
+            }
+
+                {
+                % if block.textColor %
+            }
+
+            --nexus-text-muted: {
+                    {
+                    block.textColor
+                }
+            }
+
+            99 !important;
+
+                {
+                % endif %
+            }
+        }
+
+            {
+            % endif %
+        }
+
+            {
+            % endfor %
+        }
 
         body {
-            margin: 0; padding: 0;
+            margin: 0;
+            padding: 0;
             background-color: var(--nexus-bg-dark);
             color: var(--nexus-text-main);
             font-family: 'Outfit', sans-serif;
@@ -48,89 +138,267 @@
 
         /* --- 2. FLOATING NAVBAR --- */
         .navbar-fixed {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 900px; height: var(--nav-height);
-            background: var(--nav-bg); border: 1px solid var(--nav-border);
-            backdrop-filter: blur(16px); border-radius: 50px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5); z-index: 9999;
-            display: grid; grid-template-columns: 1fr auto 1fr;
-            align-items: center; padding: 0 10px;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 900px;
+            height: var(--nav-height);
+            background: var(--nav-bg);
+            border: 1px solid var(--nav-border);
+            backdrop-filter: blur(16px);
+            border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 0 10px;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .nav-left { display: flex; align-items: center; gap: 12px; padding-left: 10px; }
-        .nav-logo-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(255,255,255,0.2); }
-        .nav-brand-text { font-weight: 700; font-size: 1.1rem; color: white; white-space: nowrap; }
-
-        .nav-center { display: flex; justify-content: center; }
-        .nav-switcher { 
-            background: rgba(0,0,0,0.4); padding: 4px; border-radius: 30px; 
-            display: flex; gap: 4px; border: 1px solid rgba(255,255,255,0.05); 
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 10px;
         }
 
-        .switch-btn { 
-            background: transparent; border: none; color: #9ca3af; 
-            padding: 8px 24px; border-radius: 20px; cursor: pointer; 
-            font-weight: 600; font-family: 'Outfit', sans-serif; font-size: 0.9rem; 
-            transition: all 0.3s ease; 
+        .nav-logo-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        .switch-btn:hover { color: white; }
-        .switch-btn.active { background: var(--nexus-accent); color: white; }
 
-        .nav-right { display: flex; justify-content: flex-end; align-items: center; gap: 15px; padding-right: 15px; }
-        .btn-signup { text-decoration: none; background: white; color: black; padding: 8px 20px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; }
+        .nav-brand-text {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .nav-center {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-switcher {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px;
+            border-radius: 30px;
+            display: flex;
+            gap: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .switch-btn {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            padding: 8px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .switch-btn:hover {
+            color: white;
+        }
+
+        .switch-btn.active {
+            background: var(--nexus-accent);
+            color: white;
+        }
+
+        .nav-right {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+            padding-right: 15px;
+        }
+
+        .btn-signup {
+            text-decoration: none;
+            background: white;
+            color: black;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
 
         /* Scroll Morph */
-        .navbar-fixed.scroll-morph { width: 65px; padding: 0; border-color: var(--nexus-accent); background: #000; grid-template-columns: 1fr; }
-        .navbar-fixed.scroll-morph .nav-brand-text, .navbar-fixed.scroll-morph .nav-center, .navbar-fixed.scroll-morph .nav-right { opacity: 0; pointer-events: none; position: absolute; }
-        .navbar-fixed.scroll-morph .nav-left { justify-content: center; padding: 0; width: 100%; }
+        .navbar-fixed.scroll-morph {
+            width: 65px;
+            padding: 0;
+            border-color: var(--nexus-accent);
+            background: #000;
+            grid-template-columns: 1fr;
+        }
+
+        .navbar-fixed.scroll-morph .nav-brand-text,
+        .navbar-fixed.scroll-morph .nav-center,
+        .navbar-fixed.scroll-morph .nav-right {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .navbar-fixed.scroll-morph .nav-left {
+            justify-content: center;
+            padding: 0;
+            width: 100%;
+        }
 
         /* --- 3. IDENTITY CARD & HEADER --- */
-        .page-container { width: 100%; max-width: 1200px; margin: 0 auto; padding-bottom: 100px; }
-        .nexus-header-container { width: 100%; margin-bottom: 60px; }
-        .nexus-cover-banner {
-            width: 100%; height: 350px; background-color: #0f1115;
-            background-image: url('{{ business.cover_image_url|default:"https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" }}');
-            background-size: cover; background-position: center; position: relative;
+        .page-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 100px;
         }
-        .nexus-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--nexus-bg-dark)); }
-        
-        .nexus-profile-wrapper { max-width: 1100px; margin: -100px auto 0; padding: 0 20px; position: relative; z-index: 10; }
+
+        .nexus-header-container {
+            width: 100%;
+            margin-bottom: 60px;
+        }
+
+        .nexus-cover-banner {
+            width: 100%;
+            height: 350px;
+            background-color: #0f1115;
+            background-image: url('{{ business.cover_image_url|default:"https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" }}');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .nexus-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), var(--nexus-bg-dark));
+        }
+
+        .nexus-profile-wrapper {
+            max-width: 1100px;
+            margin: -100px auto 0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
         .nexus-profile-card {
-            background: var(--nexus-card-bg); border: 1px solid var(--nexus-border);
-            border-radius: 24px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            display: flex; flex-wrap: wrap; align-items: center; gap: 30px;
+            background: var(--nexus-card-bg);
+            border: 1px solid var(--nexus-border);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 30px;
             color: var(--nexus-text-main);
         }
 
-        .nexus-identity { display: flex; align-items: center; gap: 20px; flex: 2; min-width: 300px; }
-        .nexus-logo-frame { width: 110px; height: 110px; border-radius: 20px; background: #000; border: 2px solid var(--nexus-border); overflow: hidden; }
-        .nexus-logo-frame img { width: 100%; height: 100%; object-fit: cover; }
-        
+        .nexus-identity {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .nexus-logo-frame {
+            width: 110px;
+            height: 110px;
+            border-radius: 20px;
+            background: #000;
+            border: 2px solid var(--nexus-border);
+            overflow: hidden;
+        }
+
+        .nexus-logo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         /* THE FIX: Heading and category pulling from Business Data */
-        .nexus-title-block h1 { margin: 0; font-size: 2.2rem; font-weight: 700; color: var(--nexus-text-main); }
+        .nexus-title-block h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--nexus-text-main);
+        }
+
         .nexus-category-badge {
-            display: inline-block; background: rgba(0,0,0,0.05);
-            color: var(--nexus-accent); padding: 4px 12px; border-radius: 6px;
-            font-size: 0.75rem; text-transform: uppercase; font-weight: 700; margin-top: 8px;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--nexus-accent);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-top: 8px;
             border: 1px solid var(--nexus-border);
         }
-        .nexus-tagline { color: var(--nexus-text-muted); font-size: 0.95rem; margin: 10px 0 0 0; }
+
+        .nexus-tagline {
+            color: var(--nexus-text-muted);
+            font-size: 0.95rem;
+            margin: 10px 0 0 0;
+        }
 
         .nexus-info-grid {
-            flex: 3; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 25px; border-left: 1px solid var(--nexus-border); padding-left: 30px;
+            flex: 3;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            border-left: 1px solid var(--nexus-border);
+            padding-left: 30px;
         }
-        .nexus-info-item { display: flex; align-items: center; gap: 15px; }
-        .nexus-icon { font-size: 1.4rem; color: var(--nexus-accent); }
-        .nexus-info-item small { color: var(--nexus-text-muted); font-size: 0.7rem; text-transform: uppercase; }
+
+        .nexus-info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nexus-icon {
+            font-size: 1.4rem;
+            color: var(--nexus-accent);
+        }
+
+        .nexus-info-item small {
+            color: var(--nexus-text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
 
         @media (max-width: 900px) {
-            .nexus-profile-card { flex-direction: column; align-items: flex-start; }
-            .nexus-info-grid { border-left: none; padding-left: 0; border-top: 1px solid var(--nexus-border); padding-top: 25px; }
+            .nexus-profile-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nexus-info-grid {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid var(--nexus-border);
+                padding-top: 25px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar-fixed" id="main-navbar">
@@ -163,7 +431,8 @@
                     <div class="nexus-title-block">
                         <h1>{{ business.business_name|default:"Nexus Businesses" }}</h1>
                         <span class="nexus-category-badge">{{ business.category|default:"General" }}</span>
-                        <p class="nexus-tagline">{{ business.business_description|default:"Welcome to our official business profile." }}</p>
+                        <p class="nexus-tagline">{{ business.business_description|default:"Welcome to our official
+                            business profile." }}</p>
                     </div>
                 </div>
                 <div class="nexus-info-grid">
@@ -193,21 +462,21 @@
     <div class="page-container">
         <div id="view-about">
             {% for component in components %}
-                {% if component.clean_type == 'hero' %}
-                    {% include "storefront/components/hero.html" %}
-                {% elif component.clean_type == 'tabbedcontent' %}
-                    {% include "storefront/components/tabs.html" %}
-                {% elif component.clean_type == 'servicelist' %}
-                    {% include "storefront/components/services.html" %}
-                {% elif component.clean_type == 'featurelist' %}
-                    {% include "storefront/components/features.html" %}
-                {% elif component.clean_type == 'gallery' %}
-                    {% include "storefront/components/gallery.html" %}
-                {% elif component.clean_type == 'contact' %}
-                    {% include "storefront/components/contact.html" %}
-                {% elif component.clean_type == 'calltoaction' %}
-                    {% include "storefront/components/cta.html" %}
-                {% endif %}
+            {% if component.clean_type == 'hero' %}
+            {% include "storefront/components/hero.html" %}
+            {% elif component.clean_type == 'tabbedcontent' %}
+            {% include "storefront/components/tabs.html" %}
+            {% elif component.clean_type == 'servicelist' %}
+            {% include "storefront/components/services.html" %}
+            {% elif component.clean_type == 'featurelist' %}
+            {% include "storefront/components/features.html" %}
+            {% elif component.clean_type == 'gallery' %}
+            {% include "storefront/components/gallery.html" %}
+            {% elif component.clean_type == 'contact' %}
+            {% include "storefront/components/contact.html" %}
+            {% elif component.clean_type == 'calltoaction' %}
+            {% include "storefront/components/cta.html" %}
+            {% endif %}
             {% endfor %}
         </div>
 
@@ -227,10 +496,10 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const navbar = document.getElementById('main-navbar');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 100) { navbar.classList.add('scroll-morph'); } 
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 100) { navbar.classList.add('scroll-morph'); }
                 else { navbar.classList.remove('scroll-morph'); }
             });
         });
@@ -238,19 +507,20 @@
         function switchView(viewName, btnElement) {
             const buttons = document.querySelectorAll('.switch-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
-            if(btnElement) btnElement.classList.add('active');
+            if (btnElement) btnElement.classList.add('active');
 
             ['view-about', 'view-products', 'view-market'].forEach(id => {
                 const el = document.getElementById(id);
-                if(el) el.style.display = 'none';
+                if (el) el.style.display = 'none';
             });
 
             const target = document.getElementById('view-' + viewName);
-            if(target) {
+            if (target) {
                 target.style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
         }
     </script>
 </body>
+
 </html>
