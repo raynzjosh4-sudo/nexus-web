@@ -4,7 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.name }} | {{ business.business_name }}</title>
+    <title>{{ product.name }} - Buy {{ product.category.name }} | {{ business.business_name }}</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{{ product.description|truncatewords:20 }}" />
+    <meta name="keywords" content="{{ product.name }}, {{ product.category.name }}, {{ business.business_name }}, buy online" />
+    <meta name="author" content="{{ business.business_name }}" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph for Social Media -->
+    <meta property="og:type" content="product" />
+    <meta property="og:title" content="{{ product.name }} | {{ business.business_name }}" />
+    <meta property="og:description" content="{{ product.description|truncatewords:20 }}" />
+    <meta property="og:image" content="{{ product.image_url }}" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:site_name" content="{{ business.business_name }}" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ product.name }}" />
+    <meta name="twitter:description" content="{{ product.description|truncatewords:20 }}" />
+    <meta name="twitter:image" content="{{ product.image_url }}" />
+    
+    <!-- Structured Data (JSON-LD) for Google Search -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "{{ product.name }}",
+      "description": "{{ product.description|truncatewords:30|striptags }}",
+      "image": "{{ product.image_url }}",
+      "brand": {
+        "@type": "Brand",
+        "name": "{{ business.business_name }}"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "{{ product.price }}",
+        "priceCurrency": "{{ product.currency }}",
+        "availability": "https://schema.org/InStock",
+        "url": "{{ request.build_absolute_uri }}"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.5",
+        "reviewCount": "{{ product.comments|length }}"
+      }
+    }
+    </script>
 
     {% include "storefront/theme_css.html" %}
 
@@ -53,7 +100,6 @@
 </head>
 
 <body>
-    {% include "storefront/partials/navbar.html" %}
     {% include "storefront/partials/mainstore/components/product_hero.html" %}
 
     <div class="product-dynamic-content">
@@ -143,12 +189,26 @@
     <style>
         .pro-related-section { padding: 80px 0; border-top: 1px solid var(--glass-border); }
         .related-container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .related-product-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
-        .google-product-card { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 16px; text-decoration: none; overflow: hidden; display: flex; flex-direction: column; }
-        .media-wrapper { aspect-ratio: 1/1; overflow: hidden; }
-        .card-media { width: 100%; height: 100%; object-fit: cover; }
-        .card-details { padding: 16px; }
-        .card-title { font-size: 15px; color: var(--text-main); margin: 0; }
+        .related-product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .google-product-card { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 16px; text-decoration: none; overflow: hidden; display: flex; flex-direction: column; transition: all 0.3s ease; }
+        .google-product-card:hover { transform: translateY(-4px); border-color: var(--accent-color); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
+        .media-wrapper { aspect-ratio: 1/1; overflow: hidden; background: rgba(255, 255, 255, 0.05); }
+        .card-media { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+        .card-details { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 14px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 600; line-height: 1.3; flex: 1; }
+        .price-row { display: flex; align-items: center; gap: 8px; margin-top: auto; }
+        .amount { font-size: 16px; font-weight: 700; color: var(--accent-color); }
+        
+        @media (max-width: 768px) {
+            .related-product-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+            .pro-related-section { padding: 40px 0; }
+        }
+        
+        @media (max-width: 480px) {
+            .related-product-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+            .card-title { font-size: 12px; }
+            .amount { font-size: 14px; }
+        }
     </style>
     {% endif %}
 

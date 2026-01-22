@@ -183,6 +183,7 @@ def shop_home(request):
         'components_html': components_html,
         'products_by_category': products_by_category,
         'search_query': search_query,
+        'theme_component': theme_component,
     }
     
     return render(request, 'storefront/shop_home.html', context) 

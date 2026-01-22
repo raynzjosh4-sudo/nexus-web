@@ -5,8 +5,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{{ business.business_name|default:"Nexus Shop" }}{% endblock %}</title>
+    
+    <!-- Basic SEO Meta Tags -->
+    <meta name="description" content="{% block meta_description %}{{ business.business_description|default:"Shop premium products online" }}{% endblock %}" />
+    <meta name="keywords" content="{% block meta_keywords %}online shopping, products, {{ business.business_name|default:'shop' }}{% endblock %}" />
+    <meta name="author" content="{{ business.business_name|default:'Nexus' }}" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+    
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
+    <meta property="og:title" content="{% block og_title %}{{ business.business_name|default:'Nexus Shop' }}{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}{{ business.business_description|default:'Shop online' }}{% endblock %}" />
+    <meta property="og:image" content="{% block og_image %}{{ business.logo_url|default:'' }}{% endblock %}" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:site_name" content="{{ business.business_name|default:'Nexus' }}" />
+    
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}" />
+    <meta name="twitter:title" content="{% block twitter_title %}{{ business.business_name|default:'Nexus Shop' }}{% endblock %}" />
+    <meta name="twitter:description" content="{% block twitter_description %}{{ business.business_description|default:'Shop online' }}{% endblock %}" />
+    <meta name="twitter:image" content="{% block twitter_image %}{{ business.logo_url|default:'' }}{% endblock %}" />
+    
+    <!-- Mobile App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="{{ business.business_name|default:'Nexus' }}" />
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "{{ business.business_name|default:'Nexus' }}",
+      "description": "{{ business.business_description|default:'Online store' }}",
+      "url": "{{ request.build_absolute_uri }}",
+      "logo": "{{ business.logo_url|default:'' }}"
+    }
+    </script>
+    
     <link rel="icon" type="image/png" href="{% static 'icon.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Global Theme & Fonts -->
     {% include "storefront/theme_css.html" %}

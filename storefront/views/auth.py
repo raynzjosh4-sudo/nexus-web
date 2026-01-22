@@ -160,21 +160,44 @@ from django.urls import reverse
 
 def google_login_view(request):
     supabase = get_supabase_client()
+    
+    # Get the proper callback URL - must match Supabase OAuth redirect URIs
     callback_url = request.build_absolute_uri(reverse('auth_callback'))
     
     try:
-        res = supabase.auth.sign_in_with_oauth({
+        # Prepare OAuth options with proper redirect URL
+        oauth_options = {
             "provider": "google",
             "options": {
-                "redirectTo": callback_url
+                "redirectTo": callback_url,
+                "skipBrowserRedirect": False,
+                "scopes": "openid email profile"  # Explicit scopes
             }
-        })
-        if res.url:
-            return redirect(res.url)
-    except Exception as e:
-        logger.error(f"Google Login Error: {e}")
+        }
         
-    return redirect('login')
+        # Get OAuth URL from Supabase
+        res = supabase.auth.sign_in_with_oauth(oauth_options)
+        
+        if res and hasattr(res, 'url') and res.url:
+            logger.info(f"Google OAuth redirect initiated to: {res.url}")
+            return redirect(res.url)
+        else:
+            logger.error(f"Invalid Supabase OAuth response: {res}")
+            return render(request, 'storefront/login.html', {
+                'error': 'Google login service temporarily unavailable. Please try email login.'
+            })
+            
+    except AttributeError as e:
+        logger.error(f"Supabase OAuth method error (check auth config): {e}")
+        return render(request, 'storefront/login.html', {
+            'error': 'OAuth configuration error. Please contact support or use email login.'
+        })
+    except Exception as e:
+        logger.error(f"Google Login Error: {type(e).__name__}: {str(e)}", exc_info=True)
+        return render(request, 'storefront/login.html', {
+            'error': f'Google login failed. Please try again or use email login.'
+        })
+
 
 def auth_callback_view(request):
     return render(request, 'storefront/auth_callback.html')

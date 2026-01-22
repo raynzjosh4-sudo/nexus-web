@@ -20,12 +20,13 @@
     {# 2. Dynamic Theme Engine #}
     <style>
         :root {
-            /* Static Fallbacks (Original Store Design) */
-            --bg-page: #E2E2E2;
-            --bg-card: #050623;
-            --text-main: #B4B0B0;
-            --accent-color: #22D5FF;
-            --secondary-color: #DA03D0;
+            /* Apply theme from database, fall back to defaults */
+            --bg-page: {{ theme_component.backgroundColor|default:"#121418" }};
+            --bg-card: {{ theme_component.surfaceColor|default:"#181b21" }};
+            --text-main: {{ theme_component.textColor|default:"#ffffff" }};
+            --text-sub: {{ theme_component.secondaryTextColor|default:"#9ca3af" }};
+            --accent-color: {{ theme_component.accentColor|default:"#f97316" }};
+            --secondary-color: {{ theme_component.secondaryColor|default:"#DA03D0" }};
             --glass-border: rgba(255, 255, 255, 0.08);
         }
 

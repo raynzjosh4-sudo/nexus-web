@@ -9,78 +9,203 @@
     <link rel="icon" type="image/png" href="{% static 'icon.png' %}">
     <style>
         body {
-            font-family: sans-serif;
-            background: #f0f2f5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #121418;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            color: #ffffff;
+        }
+
+        .auth-container {
+            text-align: center;
+            max-width: 400px;
         }
 
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #007bff;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #f97316;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             animation: spin 1s linear infinite;
+            margin: 0 auto 24px;
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .message {
+            margin-top: 16px;
+            color: #9ca3af;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .error-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            padding: 16px;
+            border-radius: 12px;
             margin-top: 20px;
-            color: #666;
             font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 24px;
+            padding: 12px 24px;
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid #f97316;
+            color: #f97316;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: #f97316;
+            color: white;
         }
     </style>
 </head>
 
 <body>
-    <div style="text-align:center;">
-        <div class="spinner" style="margin:0 auto;"></div>
+    <div class="auth-container" id="auth-status">
+        <div class="spinner"></div>
         <p class="message">Completing your sign in...</p>
+        <p class="message" id="status-detail" style="font-size: 0.85rem; opacity: 0.7;"></p>
     </div>
 
     <script>
         // Parse hash fragment from Supabase redirect
-        const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const accessToken = params.get('access_token');
+        function handleAuthCallback() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get('access_token');
+            const error = params.get('error');
+            const errorDescription = params.get('error_description');
 
-        if (accessToken) {
+            const container = document.getElementById('auth-status');
+            const statusDetail = document.getElementById('status-detail');
+
+            // Handle error response from Supabase
+            if (error) {
+                const errorMsg = errorDescription || error;
+                console.error('OAuth Error:', errorMsg);
+                statusDetail.textContent = errorMsg;
+                
+                container.innerHTML = `
+                    <div style="text-align: center; margin: 40px 0;">
+                        <p style="font-size: 32px; margin-bottom: 16px;">⚠️</p>
+                        <h2 style="color: #fca5a5; margin: 0 0 12px 0;">Authentication Failed</h2>
+                        <div class="error-box">
+                            <strong>Error:</strong> ${escapeHtml(errorMsg)}<br>
+                            <small style="display: block; margin-top: 8px;">If this persists, please contact support or try email login.</small>
+                        </div>
+                        <a href="/login/" class="back-link" style="margin-top: 24px;">← Return to Login</a>
+                    </div>
+                `;
+                return;
+            }
+
+            if (!accessToken) {
+                console.error('No access token found in URL');
+                statusDetail.textContent = 'Invalid response from authentication service';
+                
+                container.innerHTML = `
+                    <div style="text-align: center; margin: 40px 0;">
+                        <p style="font-size: 32px; margin-bottom: 16px;">❌</p>
+                        <h2 style="color: #fca5a5; margin: 0 0 12px 0;">Authentication Error</h2>
+                        <div class="error-box">
+                            <strong>Error:</strong> No authentication token received.<br>
+                            <small style="display: block; margin-top: 8px;">Please try again or use email login.</small>
+                        </div>
+                        <a href="/login/" class="back-link" style="margin-top: 24px;">← Return to Login</a>
+                    </div>
+                `;
+                return;
+            }
+
             // Send token to backend to set Django session
+            statusDetail.textContent = 'Verifying credentials...';
+            
             fetch('{% url "confirm_auth" %}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
+                    'X-CSRFToken': getCsrfToken()
                 },
-                body: JSON.stringify({ access_token: accessToken })
-            }).then(response => {
-                if (response.ok) {
-                    window.location.href = '{% url "profile" %}';
-                } else {
-                    console.error("Auth Confirmation Failed");
-                    window.location.href = '{% url "login" %}?error=auth_failed';
-                }
-            }).catch(err => {
-                console.error("Auth Request Error", err);
-                window.location.href = '{% url "login" %}?error=network_error';
-            });
-        } else {
-            console.error("No access token found in URL");
-            window.location.href = '{% url "login" %}?error=no_token';
+                body: JSON.stringify({ access_token: accessToken }),
+                credentials: 'same-origin'
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === 'ok') {
+                        statusDetail.textContent = 'Redirecting to your profile...';
+                        setTimeout(() => {
+                            window.location.href = '/profile/';
+                        }, 500);
+                    } else {
+                        throw new Error(data.message || 'Authentication confirmation failed');
+                    }
+                })
+                .catch(err => {
+                    console.error('Auth confirmation error:', err);
+                    
+                    container.innerHTML = `
+                        <div style="text-align: center; margin: 40px 0;">
+                            <p style="font-size: 32px; margin-bottom: 16px;">⚠️</p>
+                            <h2 style="color: #fca5a5; margin: 0 0 12px 0;">Verification Failed</h2>
+                            <div class="error-box">
+                                <strong>Error:</strong> ${escapeHtml(err.message)}<br>
+                                <small style="display: block; margin-top: 8px;">The server could not verify your credentials. Please try logging in again.</small>
+                            </div>
+                            <a href="/login/" class="back-link" style="margin-top: 24px;">← Return to Login</a>
+                        </div>
+                    `;
+                });
         }
+
+        function getCsrfToken() {
+            const name = 'csrftoken';
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue || '{{ csrf_token }}';
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        // Start auth callback handling when page loads
+        document.addEventListener('DOMContentLoaded', handleAuthCallback);
     </script>
 </body>
 

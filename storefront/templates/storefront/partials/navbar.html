@@ -59,32 +59,32 @@
     /* Switcher Container */
     .nav-switcher { 
         display: flex; 
-        gap: 8px; 
+        gap: 0; 
     }
 
     .switch-btn { 
         background: transparent; 
         border: none; 
-        color: #8b949e; /* GitHub muted text color */
-        padding: 6px 16px; 
-        border-radius: 6px; /* Slightly squared corners like GitHub */
+        color: var(--text-sub);
+        padding: 12px 20px; 
+        border-radius: 0;
         cursor: pointer; 
-        font-weight: 500; 
-        font-size: 0.9rem; 
-        transition: all 0.2s ease; 
+        font-weight: 600; 
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        border-bottom: 3px solid transparent;
     }
 
     .switch-btn:hover { 
         color: white; 
-        background: rgba(255,255,255,0.1); 
+        background: rgba(255,255,255,0.05);
     }
 
     .switch-btn.active { 
-        color: white; 
-        font-weight: 600;
-        /* Highlight style: orange underline */
-        border-bottom: 2px solid var(--accent-color);
-        border-radius: 0; 
+        color: white;
+        border-bottom-color: var(--accent-color);
+        background: rgba(255, 115, 22, 0.05);
     }
 
     /* --- 4. RIGHT SIDE (Actions) --- */
@@ -184,7 +184,7 @@
                     <i class="fas fa-user"></i>
                     <span>My Profile</span>
                 </a>
-                <a href="{% url 'shop_home' %}" class="dropdown-item">
+                <a href="{% url 'shop_home' %}#view-products" class="dropdown-item">
                     <i class="fas fa-store"></i>
                     <span>Shop</span>
                 </a>

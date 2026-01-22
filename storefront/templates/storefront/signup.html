@@ -1,6 +1,18 @@
 {% extends "storefront/base.html" %}
 
 {% block content %}
+<style>
+    :root {
+        --bg-page: {{ business.theme_component.backgroundColor|default:"#121418" }};
+        --bg-card: {{ business.theme_component.surfaceColor|default:"#181b21" }};
+        --text-main: {{ business.theme_component.textColor|default:"#ffffff" }};
+        --text-sub: {{ business.theme_component.secondaryTextColor|default:"#9ca3af" }};
+        --accent-color: {{ business.theme_component.accentColor|default:"#f97316" }};
+        --secondary-color: {{ business.theme_component.secondaryColor|default:"#DA03D0" }};
+        --glass-border: rgba(255, 255, 255, 0.08);
+    }
+</style>
+
 <div class="signup-container">
     <div class="signup-card">
         <h2 class="signup-title">Create Account</h2>

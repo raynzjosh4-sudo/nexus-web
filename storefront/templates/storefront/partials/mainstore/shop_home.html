@@ -12,27 +12,41 @@
         <div class="store-horizontal-scroll">
             {% for product in products %}
             <div class="store-card-wrapper">
-                <a href="{% url 'product_detail' product.id %}" class="google-product-card">
+                <div class="google-product-card">
                     <div class="media-wrapper">
-                        <div class="product-media-wrapper skeleton">
+                        <a href="{% url 'product_detail' product.id %}" class="product-media-wrapper skeleton" style="height: 100%;">
                             {% if product.video_url %}
                             <video class="product-media img-loading" muted loop
-                                onloadeddata="this.classList.add('img-loaded'); this.parentElement.classList.remove('skeleton')"
+                                onloadeddata="this.classList.add('img-loaded'); this.parentElement.parentElement.classList.remove('skeleton')"
                                 onmouseover="this.play()" onmouseout="this.pause()">
                                 <source src="{{ product.video_url }}">
                             </video>
                             {% else %}
                             <img src="{{ product.image_url }}" class="product-media img-loading"
-                                onload="this.classList.add('img-loaded'); this.parentElement.classList.remove('skeleton')"
-                                onerror="this.parentElement.classList.remove('skeleton'); this.src='https://via.placeholder.com/300?text=No+Image'">
+                                onload="this.classList.add('img-loaded'); this.parentElement.parentElement.classList.remove('skeleton')"
+                                onerror="this.parentElement.parentElement.classList.remove('skeleton'); this.src='https://via.placeholder.com/300?text=No+Image'">
                             {% endif %}
-                        </div>
+                        </a>
+                        
                         {% if product.video_url %}
                         <div class="media-badge"><i class="fas fa-play"></i></div>
                         {% endif %}
+
+                        <button class="share-btn-overlay" 
+                            onclick="openShareModal(event)"
+                            data-name="{{ product.name }}"
+                            data-price="{{ product.price|floatformat:0 }}"
+                            data-currency="{{ product.currency }}"
+                            data-image="{{ product.image_url }}"
+                            data-business="{{ business.business_name }}"
+                            data-logo="{{ business.logo_url|default:'' }}"
+                            data-domain="{{ request.get_host }}"
+                            data-link="http://{{ request.get_host }}{% url 'product_detail' product.id %}">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
                     </div>
 
-                    <div class="card-details">
+                    <a href="{% url 'product_detail' product.id %}" class="card-details" style="text-decoration: none;">
                         <div class="top-info">
                             <span class="card-category">{{ product.category.name|default:"General" }}</span>
                             <h4 class="card-title">{{ product.name }}</h4>
@@ -49,8 +63,8 @@
                                 Shop Now <i class="fas fa-arrow-right"></i>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -64,9 +78,129 @@
 </div>
 {% endif %}
 
-<div class="bottom-feed-loader">
-    <p>End of Catalog</p>
+<div id="shareModal" class="share-modal-overlay" onclick="closeShareModal(event)">
+    <div class="share-card-container">
+        <button class="close-modal-btn" onclick="closeShareModal(event)">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="generated-share-card">
+            <div class="g-card-header">
+                <div class="g-biz-logo">
+                    <img id="modalBizLogo" src="" alt="Logo" onerror="this.style.display='none'">
+                    <span id="modalBizLetter" class="fallback-logo">N</span>
+                </div>
+                <div class="g-biz-info">
+                    <h3 id="modalBizName">Business Name</h3>
+                    <span id="modalBizDomain">shop.nexus.com</span>
+                </div>
+            </div>
+
+            <div class="g-card-image">
+                <img id="modalProdImage" src="" alt="Product">
+                <div class="g-price-tag">
+                    <span id="modalCurrency">USh</span> <span id="modalPrice">0</span>
+                </div>
+            </div>
+
+            <div class="g-card-details">
+                <h2 id="modalProdName">Product Name</h2>
+            </div>
+
+            <div class="g-card-footer">
+                <div class="app-promo-row">
+                    <div class="nexus-brand">
+                        <i class="fas fa-cubes"></i> <span>Nexus</span>
+                    </div>
+                    <div class="get-app-text">
+                        <span>Get the app now</span>
+                        <i class="fab fa-google-play"></i>
+                    </div>
+                </div>
+                
+                <div class="share-link-box" onclick="triggerNativeShare(event)">
+                    <i class="fas fa-link"></i>
+                    <span id="modalShareLink">nexus.com/product/...</span>
+                    <button class="action-share-btn">SHARE</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    let currentShareUrl = "";
+    let currentShareTitle = "";
+
+    function openShareModal(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const btn = event.target.closest('.share-btn-overlay');
+        const modal = document.getElementById('shareModal');
+        
+        // Populate Data
+        document.getElementById('modalProdName').innerText = btn.dataset.name;
+        document.getElementById('modalPrice').innerText = btn.dataset.price;
+        document.getElementById('modalCurrency').innerText = btn.dataset.currency;
+        document.getElementById('modalProdImage').src = btn.dataset.image;
+        
+        document.getElementById('modalBizName').innerText = btn.dataset.business;
+        document.getElementById('modalBizDomain').innerText = btn.dataset.domain;
+        document.getElementById('modalShareLink').innerText = btn.dataset.domain + "/...";
+        
+        // Handle Logo
+        const logo = document.getElementById('modalBizLogo');
+        const letter = document.getElementById('modalBizLetter');
+        if (btn.dataset.logo) {
+            logo.src = btn.dataset.logo;
+            logo.style.display = 'block';
+            letter.style.display = 'none';
+        } else {
+            logo.style.display = 'none';
+            letter.style.display = 'block';
+            letter.innerText = btn.dataset.business.charAt(0);
+        }
+
+        // Store actual link for sharing
+        currentShareUrl = btn.dataset.link;
+        currentShareTitle = `Check out ${btn.dataset.name} on ${btn.dataset.business}`;
+
+        // Show Modal
+        modal.classList.add('active');
+    }
+
+    function closeShareModal(e) {
+        if (e.target.classList.contains('share-modal-overlay') || e.target.closest('.close-modal-btn')) {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+    }
+
+    async function triggerNativeShare(event) {
+        event.stopPropagation();
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: currentShareTitle,
+                    text: `Buy ${document.getElementById('modalProdName').innerText} on Nexus!`,
+                    url: currentShareUrl
+                });
+            } catch (err) {
+                console.log('Share canceled or error:', err);
+            }
+        } else {
+            // Fallback: Copy to clipboard
+            navigator.clipboard.writeText(currentShareUrl).then(() => {
+                const btn = document.querySelector('.action-share-btn');
+                const originalText = btn.innerText;
+                btn.innerText = "COPIED!";
+                setTimeout(() => btn.innerText = originalText, 2000);
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+                alert('Share URL: ' + currentShareUrl);
+            });
+        }
+    }
+</script>
 
 <style>
     /* --- STORE LAYOUT --- */
@@ -75,9 +209,7 @@
         display: flex;
         flex-direction: column;
         gap: 24px;
-        /* Reduced gap between categories */
         max-width: 1400px;
-        /* Constrain max width for large screens */
         margin: 0 auto;
         width: 100%;
         padding-left: 16px;
@@ -214,15 +346,26 @@
         overflow: hidden;
     }
 
-    .card-media {
+    .product-media-wrapper {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card-media, 
+    .product-media {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
         transition: transform 0.5s ease;
     }
 
-    .google-product-card:hover .card-media {
-        transform: scale(1.08);
+    .google-product-card:hover .card-media,
+    .google-product-card:hover .product-media {
+        transform: scale(1.05);
     }
 
     .media-badge {
@@ -318,5 +461,206 @@
         opacity: 1;
         transform: translateX(0);
         color: #f97316;
+    }
+
+    /* --- SHARE BUTTON ON PRODUCT CARD --- */
+    .share-btn-overlay {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 5;
+        opacity: 0;
+        transform: translateY(-5px);
+        transition: all 0.3s ease;
+        font-size: 14px;
+        padding: 0;
+    }
+    
+    .share-btn-overlay:hover {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+    }
+
+    .google-product-card:hover .share-btn-overlay {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* --- MODAL STYLES --- */
+    .share-modal-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .share-modal-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .share-card-container {
+        position: relative;
+        width: 100%;
+        max-width: 360px;
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .close-modal-btn {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 10001;
+    }
+
+    /* --- THE "GENERATED" CARD DESIGN --- */
+    .generated-share-card {
+        background: linear-gradient(145deg, #1e2024, #121418);
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .g-card-header {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .g-biz-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+    .g-biz-logo img { width: 100%; height: 100%; object-fit: cover; }
+    .fallback-logo { color: white; font-weight: 700; font-size: 18px; }
+
+    .g-biz-info h3 { margin: 0; color: white; font-size: 16px; font-weight: 600; }
+    .g-biz-info span { color: #9ca3af; font-size: 12px; }
+
+    .g-card-image {
+        width: 100%;
+        height: 300px;
+        position: relative;
+        background: #000;
+    }
+    
+    .g-card-image img { width: 100%; height: 100%; object-fit: contain; }
+
+    .g-price-tag {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        background: var(--accent-color);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 18px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    
+    .g-card-details { padding: 20px 20px 10px 20px; }
+    #modalProdName { margin: 0; color: white; font-size: 20px; line-height: 1.3; }
+
+    .g-card-footer {
+        padding: 20px;
+        background: linear-gradient(to right, #2a2d35, #1e2024);
+        margin-top: 10px;
+    }
+
+    .app-promo-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        color: #9ca3af;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .nexus-brand { display: flex; align-items: center; gap: 6px; }
+    .nexus-brand i { color: var(--accent-color); font-size: 16px; }
+    
+    .get-app-text { display: flex; align-items: center; gap: 8px; color: white; }
+    .get-app-text i { color: #4ade80; font-size: 18px; }
+
+    .share-link-box {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 50px;
+        padding: 8px 8px 8px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .share-link-box:hover { background: rgba(255,255,255,0.05); }
+
+    .share-link-box i { color: var(--accent-color); }
+
+    .share-link-box span {
+        flex: 1;
+        color: var(--accent-color);
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .action-share-btn {
+        background: white;
+        color: black;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-weight: 800;
+        font-size: 11px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .action-share-btn:hover {
+        transform: scale(1.05);
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(50px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
     }
 </style>

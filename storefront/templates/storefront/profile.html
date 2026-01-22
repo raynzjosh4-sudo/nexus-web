@@ -11,11 +11,24 @@
     <!-- Load Global Theme & Reset -->
     {% include "storefront/theme_css.html" %}
 
+    <style>
+        :root {
+            /* Apply theme from database, fall back to defaults */
+            --bg-page: {{ theme_component.backgroundColor|default:"#121418" }};
+            --bg-card: {{ theme_component.surfaceColor|default:"#181b21" }};
+            --text-main: {{ theme_component.textColor|default:"#ffffff" }};
+            --text-sub: {{ theme_component.secondaryTextColor|default:"#9ca3af" }};
+            --accent-color: {{ theme_component.accentColor|default:"#f97316" }};
+            --secondary-color: {{ theme_component.secondaryColor|default:"#DA03D0" }};
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+    </style>
+
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        /* :root Variables are now loaded via theme_css.html */
+        /* Body and Global Styles */
 
         html,
         body,
@@ -32,36 +45,36 @@
         .profile-wrapper {
             max-width: 1280px;
             margin: 0 auto;
-            padding: 40px 24px 120px 24px;
+            padding: 60px 24px 120px 24px;
         }
 
         /* --- HERO SECTION --- */
         .premium-hero {
-            background: var(--bg-card);
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(249, 115, 22, 0.05) 100%);
             border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            padding: 48px;
+            border-radius: 24px;
+            padding: 40px;
             display: grid;
             grid-template-columns: auto 1fr auto;
             align-items: center;
-            gap: 40px;
+            gap: 32px;
             margin-bottom: 48px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
         }
 
         .premium-hero::before {
             content: "";
             position: absolute;
             top: -50%;
-            right: -20%;
-            width: 500px;
-            height: 500px;
+            right: -10%;
+            width: 400px;
+            height: 400px;
             background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
-            filter: blur(150px);
-            opacity: 0.15;
+            filter: blur(120px);
+            opacity: 0.1;
             z-index: 0;
         }
 
@@ -71,14 +84,18 @@
         }
 
         .profile-portrait {
-            width: 140px;
-            height: 140px;
-            border-radius: 40px;
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
             object-fit: cover;
-            border: 4px solid var(--bg-page);
-            box-shadow: 0 0 0 2px var(--accent-color);
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
             background: var(--bg-page);
             transition: var(--transition-smooth);
+        }
+
+        .profile-portrait:hover {
+            transform: scale(1.05);
         }
 
         .hero-info-belt {
@@ -87,66 +104,90 @@
         }
 
         .hero-info-belt h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 800;
-            margin: 0 0 8px 0;
-            letter-spacing: -1px;
-            line-height: 1;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
             color: var(--text-main);
         }
 
         .hero-info-belt p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--text-sub);
             margin: 0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .hero-actions-belt {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             z-index: 10;
         }
 
         .btn-modern {
-            padding: 12px 24px;
-            border-radius: 12px;
+            padding: 10px 20px;
+            border-radius: 10px;
             font-weight: 600;
             text-decoration: none;
-            transition: var(--transition-smooth);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            font-size: 0.9rem;
+            gap: 8px;
+            font-size: 0.85rem;
             border: 1px solid transparent;
             cursor: pointer;
+            white-space: nowrap;
         }
 
         .btn-ghost {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             border-color: var(--glass-border);
             color: var(--text-main);
         }
 
         .btn-ghost:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--accent-color);
+            color: #fff;
             transform: translateY(-2px);
         }
 
         .btn-danger-ghost {
-            background: rgba(239, 68, 68, 0.05);
-            color: #ef4444;
-            border-color: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.2);
         }
 
         .btn-danger-ghost:hover {
             background: #ef4444;
             color: #fff;
             transform: translateY(-2px);
+        }
+
+        /* Mobile hero adjustments */
+        @media (max-width: 768px) {
+            .premium-hero {
+                grid-template-columns: 1fr;
+                padding: 24px;
+                gap: 20px;
+            }
+
+            .hero-actions-belt {
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .btn-modern {
+                flex: 1;
+            }
+
+            .hero-info-belt h1 {
+                font-size: 1.5rem;
+            }
         }
 
         /* --- TABS --- */
@@ -157,9 +198,11 @@
         .tabs-header {
             display: flex;
             gap: 24px;
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 2px solid var(--glass-border);
             margin-bottom: 32px;
-            padding-bottom: 1px;
+            padding-bottom: 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .tab-btn {
@@ -167,12 +210,14 @@
             border: none;
             color: var(--text-sub);
             font-family: inherit;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            padding: 0 0 16px 0;
+            padding: 12px 0;
+            margin-bottom: -2px;
             cursor: pointer;
             position: relative;
-            transition: var(--transition-smooth);
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .tab-btn:hover {
@@ -181,24 +226,13 @@
 
         .tab-btn.active {
             color: var(--accent-color);
-        }
-
-        .tab-btn.active::after {
-            content: "";
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--accent-color);
-            border-radius: 3px 3px 0 0;
-            box-shadow: 0 -2px 10px var(--accent-color);
+            border-bottom: 3px solid var(--accent-color);
         }
 
         /* --- CONTENT SECTIONS --- */
         .tab-content {
             display: none;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.3s ease;
         }
 
         .tab-content.active {
@@ -208,13 +242,30 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(8px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        /* --- EMPTY STATE --- */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-sub);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            color: var(--text-main);
+            margin-top: 0;
         }
 
         /* --- ORDERS --- */
@@ -227,27 +278,30 @@
         .item-card {
             background: var(--bg-card);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 16px;
             padding: 20px;
-            display: flex;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
-            gap: 24px;
-            transition: var(--transition-smooth);
+            gap: 20px;
+            transition: all 0.3s ease;
         }
 
         .item-card:hover {
             border-color: var(--accent-color);
             background: rgba(255, 255, 255, 0.02);
             transform: translateX(4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         }
 
         .item-preview {
             width: 80px;
             height: 80px;
             border-radius: 12px;
-            object-fit: cover;
-            background: #23262d;
+            object-fit: contain;
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--glass-border);
+            padding: 4px;
         }
 
         .item-content {
@@ -255,21 +309,24 @@
         }
 
         .item-tag {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             color: var(--accent-color);
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             display: block;
         }
 
         .item-name {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             display: block;
             color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .item-meta {
@@ -277,12 +334,13 @@
             color: var(--text-sub);
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .status-pill {
-            padding: 4px 12px;
-            border-radius: 50px;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
@@ -305,34 +363,47 @@
         }
 
         .item-price-tag {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
             text-align: right;
-            color: var(--text-main);
+            color: var(--accent-color);
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .item-card {
+                grid-template-columns: auto 1fr;
+            }
+
+            .item-price-tag {
+                grid-column: 1 / -1;
+                text-align: left;
+            }
         }
 
         /* --- WISHLIST GRID --- */
         .wishlist-masonry {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
         }
 
         .wish-brick {
             background: var(--bg-card);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
             text-decoration: none;
             color: inherit;
-            transition: var(--transition-smooth);
-            display: block;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .wish-brick:hover {
             border-color: var(--accent-color);
             transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
         }
 
         .brick-img-wrap {
@@ -471,8 +542,6 @@
 
 <body>
 
-    {% include "storefront/partials/navbar.html" %}
-
     <div class="profile-wrapper">
 
         <!-- Premium Hero Section -->
@@ -489,7 +558,7 @@
                 {% endif %}
             </div>
             <div class="hero-actions-belt">
-                <a href="{% url 'shop_home' %}" class="btn-modern btn-ghost">
+                <a href="{% url 'shop_home' %}#view-products" class="btn-modern btn-ghost">
                     <i class="fas fa-shopping-bag"></i> Shop Now
                 </a>
                 <a href="tel:{{ business.phone_number|default:'' }}" class="btn-modern btn-ghost"

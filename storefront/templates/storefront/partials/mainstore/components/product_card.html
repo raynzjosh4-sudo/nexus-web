@@ -45,34 +45,45 @@
         height: 100%;
     }
 
-    .google-product-card:hover {
-        transform: translateY(-8px);
-        border-color: var(--accent-color);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-    }
+    /* --- FIXED MEDIA STYLES --- */
+.media-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Forces a perfect square */
+    background: var(--bg-page);
+    overflow: hidden;
+    display: flex; /* Centers the image */
+    align-items: center;
+    /* justify_content: center; */
+}
 
-    /* --- MEDIA SECTION --- */
-    .media-wrapper {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        /* Forces square layout */
-        background: var(--bg-page);
-        overflow: hidden;
-    }
+/* Update selector to include 'product-media' which is in your HTML */
+.card-media, 
+.product-media { 
+    width: 100%;
+    height: 100%;
+    
+    /* FIXES THE ZOOM ISSUE: */
+    object-fit: contain; /* Ensures full image is visible, no cropping */
+    
+    object-position: center;
+    transition: transform 0.5s ease;
+    will-change: transform;
+}
 
-    .card-media {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        /* Ensures image fills space without stretching */
-        transition: transform 0.5s ease;
-    }
+/* Ensure the wrapper inside media-wrapper also fills the space */
+.product-media-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    .google-product-card:hover .card-media {
-        transform: scale(1.08);
-        /* Subtle zoom on hover */
-    }
+.google-product-card:hover .card-media,
+.google-product-card:hover .product-media {
+    transform: scale(1.05); /* Gentle zoom effect on hover */
+}
 
     .media-badge {
         position: absolute;
@@ -113,13 +124,11 @@
         margin: 4px 0 0 0;
         font-size: 15px;
         font-weight: 600;
-        font-size: 15px;
-        font-weight: 600;
         color: var(--text-main);
         display: -webkit-box;
         -webkit-line-clamp: 2;
-        /* Limits text to 2 lines */
         -webkit-box-orient: vertical;
+        line-clamp: 2;
         overflow: hidden;
         line-height: 1.4;
     }

@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 # Use the 'a' spelling here
-ALLOWED_HOSTS = ['.nexassearch.com', 'nexus-web-f9zw.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.nexassearch.com', 'nexus-web-f9zw.onrender.com', 'localhost', '127.0.0.1', '*']
 CSRF_TRUSTED_ORIGINS = [
     'http://*.localhost:8000',
     'https://*.localhost:8000',
