@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 # Use the 'a' spelling here
-ALLOWED_HOSTS = ['.nexassearch.com', 'nexus-web-f9zw.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.nexassearch.com','api.nexassearch.com',.onrender.com', 'nexus-web-f9zw.onrender.com', 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = [
     'http://*.localhost:8000',
     'https://*.localhost:8000',
@@ -43,6 +43,7 @@ CSRF_TRUSTED_ORIGINS = [
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 INSTALLED_APPS = [
     'django.contrib.admin',
+    'corsheaders',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -52,6 +53,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Must be near top
+    'django.middleware.common.CommonMiddleware',
     'storefront.middleware.SubdomainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -82,7 +85,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://nexassearch.com",
+    "https://www.nexassearch.com",
+]
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
