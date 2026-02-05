@@ -27,31 +27,38 @@
     <meta name="twitter:image" content="{{ product.image_url }}" />
     
     <!-- Structured Data (JSON-LD) for Google Search -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": "{{ product.name }}",
-      "description": "{{ product.description|truncatewords:30|striptags }}",
-      "image": "{{ product.image_url }}",
-      "brand": {
-        "@type": "Brand",
-        "name": "{{ business.business_name }}"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "{{ product.price }}",
-        "priceCurrency": "{{ product.currency }}",
-        "availability": "https://schema.org/InStock",
-        "url": "{{ request.build_absolute_uri }}"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.5",
-        "reviewCount": "{{ product.comments|length }}"
-      }
-    }
-    </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": "{{ product.schema_name|default:product.name }}",
+            "description": "{{ product.description|truncatewords:30|striptags }}",
+            "image": "{{ product.image_url }}",
+            "sku": "{{ product.id }}",
+            "brand": {
+                "@type": "Brand",
+                "name": "{{ business.business_name }}"
+            },
+            "offers": {
+                "@type": "Offer",
+                "price": "{{ product.schema_price|default:product.price }}",
+                "priceCurrency": "{{ product.currency|default:business.currency|default:'UGX' }}",
+                "availability": "https://schema.org/{% if product.stock_status and product.stock_status == 'in_stock' %}InStock{% else %}OutOfStock{% endif %}",
+                "url": "{{ request.build_absolute_uri }}",
+                "seller": {
+                    "@type": "LocalBusiness",
+                    "name": "{{ business.business_name }}",
+                    "url": "{{ business.website_url|default:request.build_absolute_uri }}",
+                    "logo": "{{ business.logo_url|default:'' }}"
+                }
+            }{% if product.reviews_count and product.reviews_count > 0 %},
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "{{ product.reviews_avg|floatformat:1 }}",
+                "reviewCount": "{{ product.reviews_count }}"
+            }{% endif %}
+        }
+        </script>
 
     {% include "storefront/theme_css.html" %}
 

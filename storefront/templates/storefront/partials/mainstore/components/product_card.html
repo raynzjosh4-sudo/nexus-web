@@ -186,3 +186,26 @@
         color: #f97316;
     }
 </style>
+
+<!-- Compact Product JSON-LD for this card (helps discoverability) -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": {% if product.price|floatformat:0 == "0" or 'swap' in product.name|lower or 'trade' in product.name|lower %}"Swap: {{ product.name|escapejs }}"{% else %}"{{ product.name|escapejs }}"{% endif %},
+    "image": "{{ product.image_url|default:'' }}",
+    "sku": "{{ product.id }}",
+    "offers": {
+        "@type": "Offer",
+        "price": {% if product.price|default:0|floatformat:0 == "0" or 'swap' in product.name|lower or 'trade' in product.name|lower %}0{% else %}{{ product.price|default:0 }}{% endif %},
+        "priceCurrency": "{{ product.currency|default:'UGX' }}",
+        "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'product_detail' product.id %}",
+        "seller": {
+            "@type": "LocalBusiness",
+            "name": "{{ business.business_name|escapejs }}",
+            "url": "{{ business.website_url|default:request.build_absolute_uri }}",
+            "logo": "{{ business.logo_url|default:'' }}"
+        }
+    }
+}
+</script>

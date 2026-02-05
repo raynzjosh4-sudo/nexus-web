@@ -20,7 +20,11 @@ ngrok config add-authtoken ngrok config add-authtoken 37hWjbwsDEBFWkvmuJux5TOFHB
 
 
 
+The "Business" Feature (Shops & Services)
 
+Widget Name,Data Needed,Implementation Note
+Local Business Card,"@type: LocalBusiness (or Store, AutoRepair)name, image, telephone, address, geo (lat/long), priceRange","Critical: Google requires a real address. If they don't have one, use ServiceArea."
+Review Snippet,"@type: AggregateRatingratingValue, reviewCount",Only show this if they actually have reviews.
 
 
 

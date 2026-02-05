@@ -127,6 +127,15 @@ def product_detail(request, product_id):
 
     display_image = images[0].get('url') if images else (post_data.get('thumbnailUrl') or post_data.get('imageUrl'))
 
+    # Fetch reviews for this product
+    reviews_response = supabase.table('reviews').select('rating').eq('product_id', str(product_id)).execute()
+    reviews_count = 0
+    reviews_avg = 0
+    if reviews_response.data:
+        ratings = [r.get('rating', 0) for r in reviews_response.data]
+        reviews_count = len(ratings)
+        reviews_avg = sum(ratings) / len(ratings) if ratings else 0
+
     product = {
         'id': post.get('id'),
         'name': post_data.get('productName', 'Untitled'),
@@ -142,7 +151,23 @@ def product_detail(request, product_id):
         'comments': post_data.get('comments') or [],
         'author': post_data.get('author') or {},
         'timestamp': post_data.get('timestamp') or post.get('created_at'),
+        'reviews_count': reviews_count,
+        'reviews_avg': reviews_avg,
     }
+
+    # Schema helpers: detect swap mode (heuristic) and provide schema-friendly fields
+    is_swap = False
+    try:
+        if (product.get('price') == 0) or ('swap' in (product.get('name') or '').lower()) or ('trade' in (product.get('name') or '').lower()):
+            is_swap = True
+    except Exception:
+        is_swap = False
+
+    product['is_swap'] = is_swap
+    # For structured data use a clear title and price
+    product['schema_name'] = (f"Swap: {product['name']}" if is_swap else product['name'])
+    product['schema_price'] = 0 if is_swap else product.get('price', 0)
+
 
     # Fetch Related Products
     related_products = []
@@ -153,6 +178,15 @@ def product_detail(request, product_id):
         if p.get('id') == str(product_id): continue 
         p_data = p.get('data', {})
         p_cat = p_data.get('category', {}).get('name', 'General')
+        
+        # Fetch reviews for related product
+        p_reviews_response = supabase.table('reviews').select('rating').eq('product_id', str(p['id'])).execute()
+        p_reviews_count = 0
+        p_reviews_avg = 0
+        if p_reviews_response.data:
+            p_ratings = [r.get('rating', 0) for r in p_reviews_response.data]
+            p_reviews_count = len(p_ratings)
+            p_reviews_avg = sum(p_ratings) / len(p_ratings) if p_ratings else 0
         
         if p_cat == cat_name:
             img = p_data.get('thumbnailUrl') or p_data.get('imageUrl')
@@ -166,7 +200,9 @@ def product_detail(request, product_id):
                 'price': p_data.get('productPrice'),
                 'currency': p_data.get('productCurrency'),
                 'image_url': img,
-                'category': p_cat
+                'category': p_cat,
+                'reviews_count': p_reviews_count,
+                'reviews_avg': p_reviews_avg,
             })
             if len(related_products) >= 5: break
 
@@ -182,6 +218,20 @@ def product_detail(request, product_id):
         'related_products': related_products,
         'theme_component': get_theme_component(business_data),
     }
+    # Breadcrumbs for product pages: Home -> Category -> Product
+    try:
+        from urllib.parse import quote
+        cat_name = product.get('category', {}).get('name', 'Category')
+        cat_slug = quote(cat_name)
+        category_url = f"{request.scheme}://{request.get_host()}/category/{cat_slug}/"
+    except Exception:
+        category_url = request.build_absolute_uri
+
+    context['breadcrumbs'] = [
+        {'name': 'Home', 'url': f"{request.scheme}://{request.get_host()}/"},
+        {'name': product.get('category', {}).get('name', 'Category'), 'url': category_url},
+        {'name': product['name'], 'url': request.build_absolute_uri}
+    ]
     
     return render(request, 'storefront/partials/mainstore/product_detail.html', context)
 
@@ -238,6 +288,12 @@ def category_view(request, category_name):
         'category_name': category_name,
         'products': products
     }
+    # Breadcrumbs for category pages
+    from urllib.parse import quote
+    context['breadcrumbs'] = [
+        {'name': 'Home', 'url': f"{request.scheme}://{request.get_host()}/"},
+        {'name': category_name, 'url': f"{request.scheme}://{request.get_host()}/category/{quote(category_name)}/"}
+    ]
 
     return render(request, 'storefront/partials/mainstore/category_list.html', context)
 

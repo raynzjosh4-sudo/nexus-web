@@ -1,105 +1,104 @@
 <style>
-    /* --- Feature Variables --- */
     :root {
         --feature-bg: var(--nexus-card-bg, #181b21);
-        --feature-border: var(--nexus-border, rgba(255, 255, 255, 0.08));
+        --feature-border: var(--nexus-border, rgba(255,255,255,0.08));
         --nexus-accent: var(--nexus-accent, #f97316);
-        --icon-bg: rgba(255, 255, 255, 0.05);
+        --icon-bg: rgba(255,255,255,0.05);
     }
 
     .nexus-feature-section {
-        padding: 40px 0;
+        padding: 48px 20px;
         width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
     }
 
     .nexus-feature-title {
-        font-size: 1.8rem;
-        color: var(--nexus-text, white);
-        margin-bottom: 40px;
+        font-size: 1.75rem;
+        color: var(--nexus-text, #111827);
+        margin-bottom: 28px;
         text-align: center;
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Google Sans', 'Outfit', sans-serif;
+        font-weight: 700;
     }
 
-    /* --- STYLE A: ICON TOP --- */
     .feature-grid-top {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 30px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 24px;
     }
 
     .feature-card-top {
         background: var(--feature-bg);
-        border: 1px solid var(--feature-border);
-        border-radius: 20px;
-        padding: 35px 25px;
+        border-radius: 12px;
+        padding: 28px 20px;
         text-align: center;
-        transition: transform 0.3s ease, border-color 0.3s ease;
+        transition: transform 0.2s cubic-bezier(.2,.8,.2,1), box-shadow 0.2s;
         height: 100%;
         display: flex; flex-direction: column; align-items: center;
+        box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 6px 12px rgba(16,24,40,0.06);
+        border: 1px solid transparent;
     }
 
     .feature-card-top:hover {
-        transform: translateY(-5px);
-        border-color: var(--nexus-accent);
+        transform: translateY(-6px);
+        box-shadow: 0 6px 18px rgba(16,24,40,0.12);
+        border-color: rgba(0,0,0,0.04);
     }
 
     .feature-icon-circle {
-        width: 70px; height: 70px;
+        width: 64px; height: 64px;
         background: var(--icon-bg);
         color: var(--nexus-accent);
-        border-radius: 50%;
+        border-radius: 16px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 2rem; margin-bottom: 20px;
-        transition: transform 0.3s ease;
-        border: 1px solid var(--feature-border);
+        font-size: 1.5rem; margin-bottom: 18px;
+        transition: transform 0.2s ease, background 0.2s ease;
     }
 
     .feature-card-top:hover .feature-icon-circle {
-        transform: scale(1.1) rotate(5deg);
+        transform: translateY(-4px);
         background: var(--nexus-accent);
         color: white;
     }
 
-    /* --- STYLE B: ICON LEFT --- */
     .feature-grid-left {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 18px;
     }
 
     .feature-item-left {
-        display: flex; align-items: flex-start; gap: 20px;
-        padding: 25px;
-        background: rgba(255,255,255,0.02);
-        border-radius: 16px;
-        border: 1px solid transparent;
-        transition: background 0.3s;
+        display: flex; align-items: flex-start; gap: 18px;
+        padding: 18px;
+        background: transparent;
+        border-radius: 10px;
+        transition: background 0.15s, box-shadow 0.15s;
     }
 
     .feature-item-left:hover {
         background: var(--feature-bg);
-        border-color: var(--nexus-accent);
+        box-shadow: 0 6px 16px rgba(16,24,40,0.06);
     }
 
     .feature-icon-square {
-        min-width: 50px; height: 50px;
+        min-width: 54px; height: 54px;
         background: var(--icon-bg);
         color: var(--nexus-accent);
         border-radius: 12px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.5rem; margin-top: 5px;
+        font-size: 1.25rem; margin-top: 4px;
     }
 
-    /* --- Typography --- */
     .feature-name {
-        font-family: 'Outfit', sans-serif;
-        font-size: 1.25rem; font-weight: 600;
-        color: var(--nexus-text, white);
-        margin: 0 0 10px 0;
+        font-family: 'Google Sans', 'Outfit', sans-serif;
+        font-size: 1.125rem; font-weight: 600;
+        color: var(--nexus-text, #0f172a);
+        margin: 0 0 8px 0;
     }
 
     .feature-desc {
-        font-size: 0.95rem; color: #9ca3af; line-height: 1.6; margin: 0;
+        font-size: 0.95rem; color: var(--nexus-muted, #6b7280); line-height: 1.6; margin: 0;
     }
 </style>
 

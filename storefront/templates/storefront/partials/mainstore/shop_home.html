@@ -1,6 +1,25 @@
 {# Floating nav removed as it is redundant with the main navbar #}
 {% if products_by_category %}
 <div class="store-layout" style="padding-top: 40px;">
+        {# ItemList JSON-LD for each category carousel to improve rich results (App-wide widget) #}
+        {% for category_name, products in products_by_category.items %}
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "Top {{ category_name }}",
+            "itemListElement": [
+                {% for product in products %}
+                {
+                    "@type": "ListItem",
+                    "position": {{ forloop.counter }},
+                    "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'product_detail' product.id %}"
+                }{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
+        }
+        </script>
+        {% endfor %}
     {% for category_name, products in products_by_category.items %}
     <div class="store-category-section">
         <div class="store-section-header">

@@ -1,0 +1,103 @@
+{% extends 'storefront/base.html' %}
+
+{% block title %}{{ question.title }} — Community — Nexus{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ question.title }} — Community question on Nexus. Read replies and join the discussion.">
+<link rel="canonical" href="{{ request.build_absolute_uri }}" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{{ question.title }} — Nexus Community" />
+<meta property="og:description" content="{{ question.excerpt|default:question.title }}" />
+<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+{% endblock %}
+
+{% block content %}
+<main class="container">
+  <article class="community-question">
+    <header>
+      <h1>{{ question.title }}</h1>
+      <div class="meta">
+        <span class="author">Posted by <a href="{{ question.author.get_absolute_url }}">{{ question.author.get_display_name }}</a></span>
+        <span class="dot">•</span>
+        <time datetime="{{ question.created_at|date:'c' }}">{{ question.created_at|date:'F j, Y' }}</time>
+        {% if question.location %}<span class="dot">•</span><span class="location">{{ question.location }}</span>{% endif %}
+      </div>
+    </header>
+
+    <section class="question-body">
+      {{ question.body|safe }}
+    </section>
+
+    {% if question.tags.exists %}
+    <section class="question-tags">
+      {% for tag in question.tags.all %}
+        <a href="{% url 'category_view' tag.name %}" class="tag">{{ tag.name }}</a>
+      {% endfor %}
+    </section>
+    {% endif %}
+
+    <section class="answers">
+      <h2>{{ answers.count }} Replies</h2>
+
+      <ol class="answer-list">
+        {% for answer in answers %}
+        <li class="answer-item" id="answer-{{ answer.id }}">
+          <div class="answer-meta">
+            <a href="{{ answer.author.get_absolute_url }}">{{ answer.author.get_display_name }}</a>
+            <time datetime="{{ answer.created_at|date:'c' }}">{{ answer.created_at|date:'M j, Y H:i' }}</time>
+          </div>
+          <div class="answer-body">{{ answer.body|safe }}</div>
+        </li>
+        {% endfor %}
+      </ol>
+
+      {% if user.is_authenticated %}
+      <form method="post" action="{% url 'community:post_answer' question.slug %}">
+        {% csrf_token %}
+        <textarea name="body" rows="4" placeholder="Write your reply…" required></textarea>
+        <button type="submit" class="btn">Reply</button>
+      </form>
+      {% else %}
+      <p><a href="{% url 'login' %}">Sign in</a> to reply to this question.</p>
+      {% endif %}
+    </section>
+  </article>
+</main>
+
+{# JSON-LD structured data for DiscussionForumPosting #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DiscussionForumPosting",
+  "headline": "{{ question.title|escapejs }}",
+  "datePublished": "{{ question.created_at|date:'c' }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ question.author.get_display_name|escapejs }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Nexus",
+    "url": "{{ request.scheme }}://{{ request.get_host }}"
+  },
+  "articleBody": "{{ question.body|striptags|truncatechars:200|escapejs }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.build_absolute_uri }}"
+  },
+  "commentCount": {{ answers.count }},
+  "comment": [
+    {% for answer in answers %}
+    {
+      "@type": "Comment",
+      "dateCreated": "{{ answer.created_at|date:'c' }}",
+      "author": { "@type": "Person", "name": "{{ answer.author.get_display_name|escapejs }}" },
+      "text": "{{ answer.body|striptags|truncatechars:200|escapejs }}",
+      "url": "{{ request.build_absolute_uri }}#answer-{{ answer.id }}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+
+{% endblock %}

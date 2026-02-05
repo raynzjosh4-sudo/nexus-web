@@ -42,41 +42,39 @@
 
 <style>
     /* ========================================
-       🟢 GLOBAL RESET FOR FULL CONTACT
+       GOOGLE MATERIAL DESIGN - HERO
        ======================================== */
-    /* This ensures there is no gap at the very top of the page */
     html,
     body {
         margin: 0;
         padding: 0;
     }
 
-    /* ========================================
-       🟢 HERO LAYOUT - TOUCHING ALL SIDES
-       ======================================== */
     .nexus-hero {
         position: relative;
         width: 100%;
-        /* 🟢 Use 100svh to ensure it fills the visible area on mobile without gaps */
         min-height: 100vh;
         min-height: 100svh;
         display: flex;
         align-items: center;
+        justify-content: center;
         overflow: hidden;
         margin: 0;
         padding: 0;
+        background: var(--bg-page, transparent);
     }
 
     .hero-container {
         position: relative;
         width: 100%;
-        /* Standardizes the height to fill the hero's min-height */
         min-height: inherit;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 100px 24px;
+        padding: 0;
         text-align: center;
+        max-width: 1400px;
+        margin: 0 auto;
     }
 
     /* Background Media */
@@ -86,15 +84,14 @@
         z-index: 1;
         margin: 0;
         padding: 0;
+        opacity: 0.15;
     }
 
     .hero-img {
         width: 100%;
         height: 100%;
-        /* 🟢 Ensures the image covers the entire area and touches top/bottom */
         object-fit: cover;
         display: block;
-        animation: heroZoom 20s ease-out forwards;
     }
 
     .hero-overlay {
@@ -120,8 +117,8 @@
         height: 90px;
         border-radius: 50%;
         overflow: hidden;
-        border: 2px solid var(--accent-color);
-        background: var(--bg-card);
+        border: 2px solid var(--nexus-accent);
+        background: var(--nexus-card-bg);
         margin: 0 auto 24px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         opacity: 0;
@@ -139,7 +136,7 @@
         font-weight: 900;
         line-height: 1.1;
         margin-bottom: 15px;
-        color: var(--text-white) !important;
+        color: var(--nexus-text) !important;
         letter-spacing: -2px;
         opacity: 0;
         animation: heroFadeUp 0.8s ease-out 0.1s forwards;

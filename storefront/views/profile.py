@@ -141,4 +141,8 @@ def profile_view(request):
             'order_count': len(orders),
             'wish_count': len(wishes)
         }
+        , 'breadcrumbs': [
+            {'name': 'Home', 'url': f"{request.scheme}://{request.get_host()}/"},
+            {'name': 'Profile', 'url': request.build_absolute_uri}
+        ]
     })

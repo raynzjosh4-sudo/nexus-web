@@ -1,154 +1,24 @@
 <style>
-    /* --- GALLERY CONTAINER --- */
-    .nexus-gallery-section {
-        width: 100%;
-        position: relative;
-        padding: 40px 0;
-    }
+    :root { --nexus-accent: var(--nexus-accent, #f97316); }
+    .nexus-gallery-section { width:100%; position:relative; padding:40px 16px; max-width:1200px; margin:0 auto; }
+    .gallery-header { text-align:center; margin-bottom:20px; }
+    .gallery-title { color:var(--nexus-text, #0f172a); font-size:1.25rem; font-weight:700; margin:0; }
 
-    .gallery-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
+    .gallery-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:20px; }
+    .gallery-item { position:relative; border-radius:12px; overflow:hidden; cursor:pointer; background:var(--bg-card, #fff); border:1px solid rgba(15,23,42,0.04); transition: transform 0.18s ease, box-shadow 0.18s ease; }
+    .gallery-item:hover { transform: translateY(-6px); box-shadow:0 12px 36px rgba(16,24,40,0.08); }
 
-    .gallery-title {
-        color: var(--text-main);
-        font-size: clamp(1.5rem, 4vw, 2.5rem);
-        font-weight: 800;
-        margin: 0;
-        text-transform: uppercase;
-        letter-spacing: -1px;
-    }
+    .gallery-img { width:100%; height:100%; display:block; object-fit:cover; transition: transform 0.5s ease; }
+    .gallery-item:hover .gallery-img { transform: scale(1.06); }
 
-    /* --- LAYOUT 1: MASONRY (Desktop Default) --- */
-    .gallery-grid {
-        /* Pinterest-style Masonry using Columns */
-        column-count: 4;
-        column-gap: 20px;
-        width: 100%;
-    }
+    .gallery-overlay { position:absolute; inset:0; background: linear-gradient(to top, rgba(15,23,42,0.24), transparent 40%); opacity:0; transition:opacity 0.18s ease; }
+    .gallery-item:hover .gallery-overlay { opacity:1; }
 
-    .gallery-item {
-        position: relative;
-        break-inside: avoid;
-        /* Prevents split across columns */
-        margin-bottom: 20px;
-        border-radius: 16px;
-        overflow: hidden;
-        background: var(--bg-card);
-        border: 1px solid var(--glass-border);
-        cursor: pointer;
-        /* Premium Hover Transition */
-        transform: translateZ(0);
-        /* Hardware accel */
-        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
+    .gallery-filmstrip { display:flex; gap:16px; overflow-x:auto; padding:12px 4px; -webkit-overflow-scrolling:touch; }
+    .gallery-filmstrip .gallery-item { flex:0 0 300px; height:200px; }
 
-    .gallery-img {
-        width: 100%;
-        height: auto;
-        display: block;
-        transition: transform 0.6s ease;
-    }
-
-    /* Hover Effects */
-    .gallery-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        border-color: var(--nexus-accent);
-        z-index: 2;
-    }
-
-    .gallery-item:hover .gallery-img {
-        transform: scale(1.08);
-        /* Subtle Zoom */
-    }
-
-    /* Overlay on Hover */
-    .gallery-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .gallery-item:hover .gallery-overlay {
-        opacity: 1;
-    }
-
-    /* --- LAYOUT 2: FILMSTRIP (Horizontal Scroll) --- */
-    .gallery-filmstrip {
-        display: flex;
-        gap: 16px;
-        overflow-x: auto;
-        padding: 10px 4px 25px 4px;
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: thin;
-        scrollbar-color: var(--nexus-accent) transparent;
-    }
-
-    .gallery-filmstrip .gallery-item {
-        flex: 0 0 280px;
-        margin-bottom: 0;
-        aspect-ratio: 16 / 10;
-    }
-
-    /* --- RESPONSIVE BREAKPOINTS --- */
-
-    /* Tablet */
-    @media (max-width: 1024px) {
-        .gallery-grid {
-            column-count: 3;
-        }
-    }
-
-    /* Mobile (Instagram Style) */
-    @media (max-width: 768px) {
-        .nexus-gallery-section {
-            padding: 20px 0;
-        }
-
-        .gallery-grid {
-            /* Switch to CSS Grid for rigid structure on mobile */
-            column-count: auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            /* Tight gap */
-        }
-
-        .gallery-item {
-            margin-bottom: 0;
-            border-radius: 0;
-            /* Square edges for that Insta-feel */
-            border: none;
-            aspect-ratio: 1 / 1;
-            /* Force square */
-        }
-
-        .gallery-img {
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Disable complex hovers on mobile for performance */
-        .gallery-item:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        .gallery-item:active {
-            filter: brightness(0.8);
-        }
-
-        .gallery-filmstrip .gallery-item {
-            flex: 0 0 85vw;
-            /* Full width cards on mobile filmstrip */
-            border-radius: 12px;
-        }
-    }
+    @media (max-width:1024px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width:768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); gap:8px; } .gallery-filmstrip .gallery-item{ flex:0 0 85vw; } }
 </style>
 
 <div class="nexus-gallery-section">

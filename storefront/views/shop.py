@@ -8,7 +8,7 @@ from ..utils.component_renderer import render_component_list
 
 logger = logging.getLogger(__name__)
 
-def normalize_component_data(component):
+def normalize_component_data(docomponent):
     """
     Standardizes component types so they match exactly what the HTML template expects.
     """
@@ -73,14 +73,13 @@ def normalize_component_data(component):
 def shop_home(request):
     subdomain = getattr(request, 'subdomain', None)
     
-    # If no subdomain, we are on the main domain. 
-    # Let's check if we should redirect or just handle it.
-    # TEMPORARY: Just allow it for local development to avoid loops.
+    # If no subdomain, redirect to the JavaScript frontend
     if not subdomain:
-        # If you want a default landing page for the main domain, 
-        # you can render a different template here.
-        pass
-        # return render(request, 'storefront/index.html') 
+        # Redirect to the JavaScript frontend (port 5500 for local, or main domain in production)
+        if 'localhost' in request.get_host():
+            return redirect('http://localhost:5500/')
+        else:
+            return redirect('https://nexassearch.com/')
 
     supabase = get_supabase_client()
     search_query = request.GET.get('q', '').strip()
@@ -173,6 +172,16 @@ def shop_home(request):
     tabs_html = render_component_list([tab_component], render_ctx) if tab_component else ""
     components_html = render_component_list(other_components, render_ctx)
 
+    # Fetch business reviews for aggregateRating
+    reviews_response = supabase.table('reviews').select('rating').eq('product_id', business_id).execute()
+    if reviews_response.data:
+        ratings = [r.get('rating', 0) for r in reviews_response.data]
+        business_data['reviews_count'] = len(ratings)
+        business_data['reviews_avg'] = sum(ratings) / len(ratings) if ratings else 0
+    else:
+        business_data['reviews_count'] = 0
+        business_data['reviews_avg'] = 0
+
     context = {
         'business': business_data,
         'hero_component': hero_component,
@@ -185,5 +194,10 @@ def shop_home(request):
         'search_query': search_query,
         'theme_component': theme_component,
     }
+    # Breadcrumbs for structured data (Home -> Shop)
+    context['breadcrumbs'] = [
+        {'name': 'Home', 'url': f"{request.scheme}://{request.get_host}/"},
+        {'name': business_data.get('business_name', 'Store'), 'url': request.build_absolute_uri}
+    ]
     
     return render(request, 'storefront/shop_home.html', context) 

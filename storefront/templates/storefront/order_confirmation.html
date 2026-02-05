@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Order Confirmed - {{ order.readable_id|default:"Order" }} | {{ business.business_name }}</title>
+    
+    <!-- SEO Meta Tags (minimal for transactional page) -->
+    <meta name="description" content="Your order {{ order.readable_id|default:'confirmation' }} has been confirmed." />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Order Confirmed" />
+    <meta property="og:description" content="Thank you for your order." />
+    <meta property="og:site_name" content="{{ business.business_name }}" />
+    
+    <!-- JSON-LD: Order & Parcel Delivery Tracking -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Order",
+      "orderNumber": "{{ order.readable_id|default:order.id }}",
+      "orderStatus": "https://schema.org/{% if order.status == 'PENDING' %}OrderProcessing{% elif order.status == 'CONFIRMED' %}OrderConfirmed{% elif order.status == 'DELIVERED' %}OrderDelivered{% else %}OrderProblem{% endif %}",
+      "orderDate": "{{ order.created_at|date:'c' }}",
+      "priceCurrency": "{{ order.currency|default:'UGX' }}",
+      "price": "{{ order.offer_price|default:0 }}",
+      "customer": {
+        "@type": "Person",
+        "name": "{{ buyer_name|default:user.name }}"
+      },
+      "seller": {
+        "@type": "LocalBusiness",
+        "name": "{{ business.business_name }}",
+        "url": "{{ business.website_url|default:request.build_absolute_uri }}",
+        "telephone": "{{ business.business_phone_number|default:'' }}"
+      },
+      "orderedItem": {
+        "@type": "Product",
+        "name": "{{ product.name|default:'Product' }}",
+        "sku": "{{ product.id|default:'' }}",
+        "image": "{{ product.image_url|default:'' }}",
+        "price": "{{ order.offer_price|default:product.price|default:0 }}",
+        "priceCurrency": "{{ order.currency|default:product.currency|default:'UGX' }}",
+        "seller": {
+          "@type": "LocalBusiness",
+          "name": "{{ business.business_name }}"
+        }
+      },
+      {% if order.tracking_url or order.estimated_delivery_at %}
+      "hasDeliveryMethod": {
+        "@type": "ParcelDelivery",
+        "trackingNumber": "{{ order.readable_id|default:order.id }}",
+        "trackingUrl": "{{ order.tracking_url|default:'' }}",
+        "deliveryStatus": "{{ order.status|default:'Pending' }}",
+        "expectedDeliveryDate": "{{ order.estimated_delivery_at|date:'c'|default:'' }}",
+        "carrier": {
+          "@type": "Organization",
+          "name": "{{ business.business_name }} Delivery"
+        },
+        "deliveryAddress": {
+          "@type": "PostalAddress",
+          "streetAddress": "{{ buyer_address|default:'' }}",
+          "name": "{{ buyer_name|default:'' }}"
+        }
+      },
+      {% endif %}
+      "paymentMethod": {
+        "@type": "PaymentMethod",
+        "name": "{{ order.payment_method|default:'Cash on Delivery' }}"
+      }
+    }
+    </script>
+
+    {% include "storefront/theme_css.html" %}
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-page: {{ theme_component.backgroundColor|default:"#121418" }};
+            --bg-card: {{ theme_component.surfaceColor|default:"#181b21" }};
+            --text-main: {{ theme_component.textColor|default:"#ffffff" }};
+            --text-sub: {{ theme_component.secondaryTextColor|default:"#9ca3af" }};
+            --accent-color: {{ theme_component.accentColor|default:"#f97316" }};
+        }
+        
+        body {
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .order-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #22c55e;
+        }
+
+        .order-title {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .order-subtitle {
+            text-align: center;
+            color: var(--text-sub);
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        .order-details {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-sub);
+            font-size: 14px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            background: var(--accent-color);
+            color: white;
+            text-align: center;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 12px;
+        }
+
+        .cta-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="order-container">
+        <div class="success-icon">✓</div>
+        
+        <h1 class="order-title">Order Confirmed!</h1>
+        <p class="order-subtitle">Thank you for your order. We'll get back to you soon.</p>
+
+        <div class="order-details">
+            <div class="detail-row">
+                <span class="detail-label">Order Number</span>
+                <span class="detail-value">#{{ order.readable_id|default:order.id }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Order Date</span>
+                <span class="detail-value">{{ order.created_at|date:'M d, Y' }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status</span>
+                <span class="detail-value">{{ order.status|default:"Pending" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Payment Method</span>
+                <span class="detail-value">{{ order.payment_method|default:"Cash on Delivery" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Total</span>
+                <span class="detail-value">{{ order.currency|default:"UGX" }} {{ order.offer_price|floatformat:0 }}</span>
+            </div>
+        </div>
+
+        <a href="/" class="cta-button">Back to Store</a>
+    </div>
+</body>
+</html>
