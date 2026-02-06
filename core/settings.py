@@ -33,10 +33,10 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes')
 <<<<<<< HEAD
 # Allowed hosts can be set via environment variable (comma-separated). Fallback to sensible defaults.
 default_hosts = [
-    'nexussearch.com',
-    'app.nexussearch.com',
+    'nexassearch.com',
+    'app.nexassearch.com',
     '.nexassearch.com',
-    'nexus-web-f9zw.onrender.com',
+    'nexas-web-f9zw.onrender.com',
     '.onrender.com',
     '.localhost',
     'localhost',
@@ -49,12 +49,12 @@ else:
     ALLOWED_HOSTS = default_hosts
 =======
 # Use the 'a' spelling here
-ALLOWED_HOSTS = ['.nexassearch.com','api.nexassearch.com',.onrender.com', 'nexus-web-f9zw.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.nexassearch.com','api.nexassearch.com',''.onrender.com', 'nexus-web-f9zw.onrender.com', 'localhost', '127.0.0.1']
 >>>>>>> 7740f5f34546450319d46ed71a2e39b01a9e11cc
 CSRF_TRUSTED_ORIGINS = [
-    'https://nexussearch.com',
-    'https://app.nexussearch.com',
-    'https://nexus-web-f9zw.onrender.com',
+    'https://nexassearch.com',
+    'https://app.nexassearch.com',
+    'https://nexas-web-f9zw.onrender.com',
     'http://*.localhost:8000',
     'https://*.localhost:8000',
     'http://localhost:8000',
