@@ -30,7 +30,6 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'replace-me-with-secure-secret')
 # Read DEBUG from environment (default: False)
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes')
 
-<<<<<<< HEAD
 # Allowed hosts can be set via environment variable (comma-separated). Fallback to sensible defaults.
 default_hosts = [
     'nexassearch.com',
@@ -47,10 +46,9 @@ if env_hosts:
     ALLOWED_HOSTS = [h.strip() for h in env_hosts.split(',') if h.strip()]
 else:
     ALLOWED_HOSTS = default_hosts
-=======
+
 # Use the 'a' spelling here
 ALLOWED_HOSTS = ['.nexassearch.com','api.nexassearch.com',''.onrender.com', 'nexus-web-f9zw.onrender.com', 'localhost', '127.0.0.1']
->>>>>>> 7740f5f34546450319d46ed71a2e39b01a9e11cc
 CSRF_TRUSTED_ORIGINS = [
     'https://nexassearch.com',
     'https://app.nexassearch.com',
@@ -200,5 +198,3 @@ LOGGING = {
         'level': LOG_LEVEL,
     },
 }
-=======
->>>>>>> 7740f5f34546450319d46ed71a2e39b01a9e11cc
