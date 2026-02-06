@@ -306,7 +306,7 @@ def render_legacy_component(comp, c_type):
         for c in comments:
             user = html.escape(c.get('userName', 'User'))
             text = html.escape(c.get('commentText', ''))
-            avatar = c.get('userAvatarUrl') or 'https://via.placeholder.com/40/333/fff?text=U'
+            avatar = c.get('userAvatarUrl') or 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect fill=%22%23333%22 width=%2240%22 height=%2240%22/%3E%3Ctext x=%228%22 y=%2228%22 font-size=%2216%22 fill=%22%23fff%22%3EU%3C/text%3E%3C/svg%3E'
             comment_items += f'''
             <div class="comment-item">
                 <img src="{avatar}" class="comment-avatar">

@@ -8,7 +8,7 @@ from ..utils.component_renderer import render_component_list
 
 logger = logging.getLogger(__name__)
 
-def normalize_component_data(docomponent):
+def normalize_component_data(component):
     """
     Standardizes component types so they match exactly what the HTML template expects.
     """

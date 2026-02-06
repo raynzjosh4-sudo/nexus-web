@@ -125,7 +125,7 @@
 
 <header class="navbar-top">
     <div class="nav-left">
-        <img src="{{ business.logo_url|default:'https://via.placeholder.com/50' }}" class="nav-logo-img" alt="Logo">
+        <img src="{{ business.logo_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23e5e7eb%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E' }}" class="nav-logo-img" alt="Logo">
         <span class="nav-brand-text">{{ business.business_name }}</span>
     </div>
 
@@ -166,7 +166,7 @@
                 <img src="{{ user.avatar_url|default:'https://api.dicebear.com/7.x/avataaars/svg' }}"
                     class="profile-avatar" alt="Profile">
                 {% else %}
-                <img src="{{ business.logo_url|default:'https://via.placeholder.com/50' }}" class="profile-avatar"
+                <img src="{{ business.logo_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23e5e7eb%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E' }}" class="profile-avatar"
                     alt="Profile">
                 {% endif %}
                 <span class="profile-name">

@@ -28,104 +28,29 @@
             --nav-height: 65px;
         }
 
-        /* 🟢 THEME INJECTOR: This applies your JSON Green/White/Black theme */
-            {
-            % for block in components %
-        }
+        /* 🟢 THEME INJECTOR: This applies theme values from components */
+        {% for block in components %}
+            {% if block.type == 'ProfileWebsiteThemeComponent' or block.clean_type == 'websitetheme' %}
+                :root {
+                    {% if block.primaryColor %}
+                    --nexus-accent: {{ block.primaryColor }} !important;
+                    {% endif %}
 
-            {
-            % if block.type=='ProfileWebsiteThemeComponent' or block.clean_type=='websitetheme' %
-        }
+                    {% if block.backgroundColor %}
+                    --nexus-bg-dark: {{ block.backgroundColor }} !important;
+                    {% endif %}
 
-        :root {
-                {
-                % if block.primaryColor %
-            }
+                    {% if block.surfaceColor %}
+                    --nexus-card-bg: {{ block.surfaceColor }} !important;
+                    {% endif %}
 
-            --nexus-accent: {
-                    {
-                    block.primaryColor
+                    {% if block.textColor %}
+                    --nexus-text-main: {{ block.textColor }} !important;
+                    --nexus-text-muted: {{ block.textColor }} !important;
+                    {% endif %}
                 }
-            }
-
-            !important;
-
-                {
-                % endif %
-            }
-
-                {
-                % if block.backgroundColor %
-            }
-
-            --nexus-bg-dark: {
-                    {
-                    block.backgroundColor
-                }
-            }
-
-            !important;
-
-                {
-                % endif %
-            }
-
-                {
-                % if block.surfaceColor %
-            }
-
-            --nexus-card-bg: {
-                    {
-                    block.surfaceColor
-                }
-            }
-
-            !important;
-
-                {
-                % endif %
-            }
-
-                {
-                % if block.textColor %
-            }
-
-            --nexus-text-main: {
-                    {
-                    block.textColor
-                }
-            }
-
-            !important;
-
-                {
-                % endif %
-            }
-
-                {
-                % if block.textColor %
-            }
-
-            --nexus-text-muted: {
-                    {
-                    block.textColor
-                }
-            }
-
-            99 !important;
-
-                {
-                % endif %
-            }
-        }
-
-            {
-            % endif %
-        }
-
-            {
-            % endfor %
-        }
+            {% endif %}
+        {% endfor %}
 
         body {
             margin: 0;
@@ -403,7 +328,7 @@
 
     <nav class="navbar-fixed" id="main-navbar">
         <div class="nav-left">
-            <img src="{{ business.logo_url|default:'https://via.placeholder.com/50' }}" class="nav-logo-img" alt="Logo">
+            <img src="{{ business.logo_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23e5e7eb%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E' }}" class="nav-logo-img" alt="Logo">
             <span class="nav-brand-text">{{ business.business_name|default:"Nexus" }}</span>
         </div>
         <div class="nav-center">
@@ -426,7 +351,7 @@
             <div class="nexus-profile-card">
                 <div class="nexus-identity">
                     <div class="nexus-logo-frame">
-                        <img src="{{ business.logo_url|default:'https://via.placeholder.com/150' }}" alt="Logo">
+                        <img src="{{ business.logo_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22150%22 height=%22150%22/%3E%3C/svg%3E' }}" alt="Logo">
                     </div>
                     <div class="nexus-title-block">
                         <h1>{{ business.business_name|default:"Nexus Businesses" }}</h1>

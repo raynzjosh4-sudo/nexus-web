@@ -14,12 +14,21 @@
     <style>
         :root {
             /* Apply theme from database, fall back to defaults */
-            --bg-page: {{ theme_component.backgroundColor|default:"#121418" }};
-            --bg-card: {{ theme_component.surfaceColor|default:"#181b21" }};
-            --text-main: {{ theme_component.textColor|default:"#ffffff" }};
-            --text-sub: {{ theme_component.secondaryTextColor|default:"#9ca3af" }};
-            --accent-color: {{ theme_component.accentColor|default:"#f97316" }};
-            --secondary-color: {{ theme_component.secondaryColor|default:"#DA03D0" }};
+            {% if theme_component %}
+                --bg-page: {{ theme_component.backgroundColor|default:"#121418" }};
+                --bg-card: {{ theme_component.surfaceColor|default:"#181b21" }};
+                --text-main: {{ theme_component.textColor|default:"#ffffff" }};
+                --text-sub: {{ theme_component.secondaryTextColor|default:"#9ca3af" }};
+                --accent-color: {{ theme_component.accentColor|default:"#f97316" }};
+                --secondary-color: {{ theme_component.secondaryColor|default:"#DA03D0" }};
+            {% else %}
+                --bg-page: #121418;
+                --bg-card: #181b21;
+                --text-main: #ffffff;
+                --text-sub: #9ca3af;
+                --accent-color: #f97316;
+                --secondary-color: #DA03D0;
+            {% endif %}
             --glass-border: rgba(255, 255, 255, 0.08);
         }
     </style>
@@ -561,7 +570,7 @@
                 <a href="{% url 'shop_home' %}#view-products" class="btn-modern btn-ghost">
                     <i class="fas fa-shopping-bag"></i> Shop Now
                 </a>
-                <a href="tel:{{ business.phone_number|default:'' }}" class="btn-modern btn-ghost"
+                <a href="{% url 'contact' %}" class="btn-modern btn-ghost"
                     style="border-color: var(--secondary-color); color: var(--text-main);">
                     <i class="fas fa-phone-alt"></i> Contact Us
                 </a>
@@ -585,7 +594,7 @@
                 <div class="order-stream">
                     {% for o in orders %}
                     <div class="item-card">
-                        <img src="{{ o.product_image|default:'https://via.placeholder.com/100' }}" class="item-preview"
+                        <img src="{{ o.product_image|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E' }}" class="item-preview"
                             alt="Order">
                         <div class="item-content">
                             <span class="item-tag">{{ o.business_name }}</span>
@@ -622,7 +631,7 @@
                     {% for item in wishes %}
                     <a href="{% url 'product_detail' item.id %}" class="wish-brick">
                         <div class="brick-img-wrap">
-                            <img src="{{ item.image_url|default:'https://via.placeholder.com/300' }}" class="brick-img"
+                            <img src="{{ item.image_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22300%22 height=%22300%22/%3E%3C/svg%3E' }}" class="brick-img"
                                 alt="Wishlist Item">
                         </div>
                         <div class="brick-body">

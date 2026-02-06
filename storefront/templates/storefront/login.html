@@ -11,12 +11,21 @@
     <style>
         :root {
             /* Apply theme from database, fall back to defaults */
-            --bg-page: {{ business.theme_component.backgroundColor|default:"#121418" }};
-            --bg-card: {{ business.theme_component.surfaceColor|default:"#181b21" }};
-            --text-main: {{ business.theme_component.textColor|default:"#ffffff" }};
-            --text-sub: {{ business.theme_component.secondaryTextColor|default:"#9ca3af" }};
-            --accent-color: {{ business.theme_component.accentColor|default:"#f97316" }};
-            --secondary-color: {{ business.theme_component.secondaryColor|default:"#DA03D0" }};
+            {% if business.theme_component %}
+                --bg-page: {{ business.theme_component.backgroundColor|default:"#121418" }};
+                --bg-card: {{ business.theme_component.surfaceColor|default:"#181b21" }};
+                --text-main: {{ business.theme_component.textColor|default:"#ffffff" }};
+                --text-sub: {{ business.theme_component.secondaryTextColor|default:"#9ca3af" }};
+                --accent-color: {{ business.theme_component.accentColor|default:"#f97316" }};
+                --secondary-color: {{ business.theme_component.secondaryColor|default:"#DA03D0" }};
+            {% else %}
+                --bg-page: #121418;
+                --bg-card: #181b21;
+                --text-main: #ffffff;
+                --text-sub: #9ca3af;
+                --accent-color: #f97316;
+                --secondary-color: #DA03D0;
+            {% endif %}
             --glass-border: rgba(255, 255, 255, 0.08);
         }
 

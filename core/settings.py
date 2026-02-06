@@ -31,18 +31,34 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'replace-me-with-secure-secret')
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes')
 
 # Allowed hosts can be set via environment variable (comma-separated). Fallback to sensible defaults.
-default_hosts = ['.nexassearch.com', 'nexus-web-f9zw.onrender.com', 'localhost', '127.0.0.1']
+default_hosts = [
+    'nexussearch.com',
+    'app.nexussearch.com',
+    '.nexassearch.com',
+    'nexus-web-f9zw.onrender.com',
+    '.onrender.com',
+    '.localhost',
+    'localhost',
+    '127.0.0.1'
+]
 env_hosts = os.getenv('ALLOWED_HOSTS')
 if env_hosts:
     ALLOWED_HOSTS = [h.strip() for h in env_hosts.split(',') if h.strip()]
 else:
     ALLOWED_HOSTS = default_hosts
 CSRF_TRUSTED_ORIGINS = [
+    'https://nexussearch.com',
+    'https://app.nexussearch.com',
+    'https://nexus-web-f9zw.onrender.com',
     'http://*.localhost:8000',
     'https://*.localhost:8000',
     'http://localhost:8000',
     'https://*.ngrok-free.app', # For ngrok
 ]
+
+# Allow or deny treating subdomains of "localhost" as valid subdomains for local testing.
+# Set the environment variable ALLOW_LOCALHOST_SUBDOMAINS to 'False' to disable.
+ALLOW_LOCALHOST_SUBDOMAINS = os.getenv('ALLOW_LOCALHOST_SUBDOMAINS', 'True').lower() in ('1', 'true', 'yes')
 
 
 # Application definition

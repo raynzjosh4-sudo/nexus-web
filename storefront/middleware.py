@@ -18,12 +18,17 @@ class SubdomainMiddleware(MiddlewareMixin):
         # Logic to extract subdomain
         subdomain = None
 
+        from django.conf import settings
+
         if 'localhost' in host_without_port:
             # Localhost Logic (e.g. test.localhost)
-            # For localhost, anything before 'localhost' is the subdomain
-            if len(domain_parts) >= 2 and domain_parts[-1] == 'localhost':
-                subdomain = domain_parts[0]
-                logger.debug("Detected localhost subdomain: %s", subdomain)
+            # Only treat subdomains on localhost if enabled in settings
+            if getattr(settings, 'ALLOW_LOCALHOST_SUBDOMAINS', True):
+                if len(domain_parts) >= 2 and domain_parts[-1] == 'localhost':
+                    subdomain = domain_parts[0]
+                    logger.debug("Detected localhost subdomain: %s", subdomain)
+            else:
+                logger.debug("Localhost subdomain detection disabled by settings.ALLOW_LOCALHOST_SUBDOMAINS")
         else:
             # Production Logic (e.g. mikes-shoes.nexassearch.com)
             # Subdomains are anything before the main domain

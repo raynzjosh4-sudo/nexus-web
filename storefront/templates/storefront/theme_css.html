@@ -2,56 +2,22 @@
     /* --- GLOBAL THEME VARIABLES --- */
     :root {
 
-        /* Colors from ProfileWebsiteThemeComponent */
-        --bg-page: {
-                {
-                theme_component.backgroundColor|default: business.theme_component.backgroundColor|default:"#0D062C"
-            }
-        }
-
-        ;
-
-        --bg-card: {
-                {
-                theme_component.surfaceColor|default: business.theme_component.surfaceColor|default:"#181b21"
-            }
-        }
-
-        ;
-
-        --text-main: {
-                {
-                theme_component.textColor|default: business.theme_component.textColor|default:"#ffffff"
-            }
-        }
-
-        ;
-
-        /* Secondary Text */
-        --text-sub: {
-                {
-                theme_component.secondaryTextColor|default: business.theme_component.secondaryTextColor|default:theme_component.textColor|default:business.theme_component.textColor|default:"#9ca3af"
-            }
-        }
-
-        ;
-
-        /* Primary/Accent Colors */
-        --accent-color: {
-                {
-                theme_component.primaryColor|default: business.theme_component.primaryColor|default:theme_component.accentColor|default:business.theme_component.accentColor|default:"#22d5ff"
-            }
-        }
-
-        ;
-
-        --secondary-color: {
-                {
-                theme_component.secondaryColor|default: business.theme_component.secondaryColor|default:"#DA03D0"
-            }
-        }
-
-        ;
+        /* Colors from ProfileWebsiteThemeComponent - Safe fallbacks */
+        {% if theme_component %}
+            --bg-page: {{ theme_component.backgroundColor|default:"#0D062C" }};
+            --bg-card: {{ theme_component.surfaceColor|default:"#181b21" }};
+            --text-main: {{ theme_component.textColor|default:"#ffffff" }};
+            --text-sub: {{ theme_component.secondaryTextColor|default:"#9ca3af" }};
+            --accent-color: {{ theme_component.primaryColor|default:"#22d5ff" }};
+            --secondary-color: {{ theme_component.secondaryColor|default:"#DA03D0" }};
+        {% else %}
+            --bg-page: #0D062C;
+            --bg-card: #181b21;
+            --text-main: #ffffff;
+            --text-sub: #9ca3af;
+            --accent-color: #22d5ff;
+            --secondary-color: #DA03D0;
+        {% endif %}
 
         /* Derived/Static Variables */
         --glass-border: rgba(255, 255, 255, 0.08);

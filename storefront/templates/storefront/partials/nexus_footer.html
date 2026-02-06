@@ -1,3 +1,5 @@
+{% load static %}
+
 <style>
     /* Scoped styles for the footer to ensure it looks good immediately */
     .nexus-footer-wrapper {
@@ -44,10 +46,38 @@
     .nexus-sponsored-badge {
         display: inline-flex;
         align-items: center;
-        background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .store-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         color: white;
-        padding: 6px 16px;
-        border-radius: 50px;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .store-button:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .store-icon {
+        width: 20px;
+        height: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
         font-size: 0.75rem;
         font-weight: 600;
         text-transform: uppercase;
@@ -132,9 +162,21 @@
             <h3>{{ business.business_name }}</h3>
             <p>Empowering your digital journey with seamless commerce solutions.</p>
             
-            <a href="#" class="nexus-sponsored-badge">
-                Sponsored by Nexus
-            </a>
+            <div class="nexus-sponsored-badge">
+                <a href="https://play.google.com/store/apps/details?id=com.josh.raynz.nexus" 
+                   target="_blank" rel="noopener noreferrer" class="store-button">
+                    <img src="{% static 'playstore.png' %}" alt="Play Store" class="store-icon">
+                    Play Store
+                </a>
+                <a href="https://apps.apple.com/app/nexus/id" 
+                   target="_blank" rel="noopener noreferrer" class="store-button">
+                    <svg class="store-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Apple Logo -->
+                        <path d="M18.71 19.46c-.77 1.23-1.58 2.36-2.76 3.46-1.62 1.62-2.72.99-3.59.99-.99 0-1.62.77-3.39.77-1.77 0-2.99-1.33-3.71-2.77C2.46 18.53 1.31 14.95 3.29 11.36c1.19-2.06 3.26-3.21 5.46-3.21h.39c1.13 0 2.36-.38 4.07-1.27 1.35.81 3.04 1.27 4.07 1.27h.39c2.2 0 4.27 1.15 5.46 3.21-.93 1.78-1.73 3.38-2.79 4.64zm-9.49-9.62c-.56.63-.68 1.51-.59 2.43.99-.04 2.15-.6 2.81-1.39.6-.67.95-1.64.87-2.62-.95.06-2.06.66-2.69 1.58z" fill="currentColor"/>
+                    </svg>
+                    App Store
+                </a>
+            </div>
         </div>
 
         <div class="nexus-links-group">
@@ -151,8 +193,8 @@
                 <strong>Legal</strong>
                 <ul>
                     <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Use</a></li>
-                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="https://raynzjosh4-sudo.github.io/nexus-terms/" target="_blank">Terms of Use</a></li>
+                    <li><a href="https://raynzjosh4-sudo.github.io/nexus-terms/" target="_blank">Cookie Policy</a></li>
                 </ul>
             </div>
 
@@ -160,7 +202,6 @@
                 <strong>Support</strong>
                 <ul>
                     <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Contact Support</a></li>
                 </ul>
             </div>
         </div>
