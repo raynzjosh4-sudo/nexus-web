@@ -4,4 +4,4 @@ services:
     runtime: python
     plan: free
     buildCommand: "./build.sh"
-    startCommand: "core.wsgi:application" # 
+    startCommand: "gunicorn core.wsgi:application" 
