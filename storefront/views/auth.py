@@ -16,23 +16,46 @@ def login_view(request):
         supabase = get_supabase_client()
         
         try:
-            # Authenticate with Supabase
+            # Authenticate with Supabase (handle multiple response shapes)
             res = supabase.auth.sign_in_with_password({"email": email, "password": password})
-            
-            if res.user:
+
+            # Debug log the raw response for easier troubleshooting
+            logger.debug('Sign-in response: %s', getattr(res, '__dict__', res))
+
+            user = None
+            access_token = None
+
+            # Try several common response shapes
+            if hasattr(res, 'user') and res.user:
+                user = res.user
+            elif isinstance(res, dict):
+                # supabase-py may return dict with 'data' or 'user'
+                user = res.get('user') or (res.get('data') and res['data'].get('user'))
+                # Access token might be nested
+                access_token = res.get('access_token') or (res.get('data') and res['data'].get('access_token'))
+            elif getattr(res, 'data', None):
+                # Some SDKs expose a .data property
+                data = res.data
+                if isinstance(data, dict):
+                    user = data.get('user')
+                    access_token = data.get('access_token')
+
+            if user:
                 # Store session data
-                request.session['user_id'] = res.user.id
-                request.session['user_email'] = res.user.email
-                # We can store token if we want to make authenticated calls on behalf of user
-                # request.session['access_token'] = res.session.access_token
-                
+                uid = getattr(user, 'id', None) or user.get('id') if isinstance(user, dict) else None
+                uemail = getattr(user, 'email', None) or user.get('email') if isinstance(user, dict) else None
+                request.session['user_id'] = uid
+                request.session['user_email'] = uemail
+                if access_token:
+                    request.session['access_token'] = access_token
+
                 next_url = request.GET.get('next')
                 if next_url:
                     return redirect(next_url)
-                return redirect('shop_home') # Ensure this name exists in urls.py
-                
+                return redirect('shop_home')
+
         except Exception as e:
-            logger.error(f"Login failed: {e}")
+            logger.exception("Login failed")
             return render(request, 'storefront/login.html', {
                 'error': "Invalid email or password.",
                 'business': _get_business_context(request) # Helper to render base template elements
@@ -60,43 +83,54 @@ def signup_view(request):
         supabase = get_supabase_client()
         
         try:
-            # 1. Sign up with Supabase Auth
             res = supabase.auth.sign_up({
                 "email": email,
                 "password": password,
                 "options": {
                     "data": {
                         "display_name": name
-                        # We can add more metadata here
                     }
                 }
             })
-            
-            # 2. Check result
-            if res.user:
-                # If email confirmation is disabled or auto-confirmed:
-                if res.session:
-                     # Log them in immediately
-                    request.session['user_id'] = res.user.id
-                    request.session['user_email'] = res.user.email
-                    logger.info(f"Signup Success: {email}")
-                    return redirect('shop_home')
-                else:
-                    # If email confirmation is required, Supabase returns user but no session
-                    # For this use case, we might want to just tell them to check email, 
-                    # OR if the project config allows it, they are logged in.
-                    # Assuming we want auto-login, we need the session. 
-                    # If we don't get a session, we redirect to login with a message.
-                    return render(request, 'storefront/login.html', {
-                        'error': "Account created! Please check your email to confirm registration.",
-                        'business': _get_business_context(request)
-                    })
-            else:
-                 # Should theoretically throw exception if fail, but just in case
-                return render(request, 'storefront/signup.html', {
-                    'error': "Signup failed. Please try again.",
-                    'business': _get_business_context(request)
-                })
+
+            logger.debug('Signup response: %s', getattr(res, '__dict__', res))
+
+            user = None
+            access_token = None
+            session_obj = None
+
+            if hasattr(res, 'user') and res.user:
+                user = res.user
+                session_obj = getattr(res, 'session', None)
+            elif isinstance(res, dict):
+                user = res.get('user') or (res.get('data') and res['data'].get('user'))
+                session_obj = res.get('session') or (res.get('data') and res['data'].get('session'))
+                access_token = res.get('access_token') or (res.get('data') and res['data'].get('access_token'))
+            elif getattr(res, 'data', None):
+                data = res.data
+                if isinstance(data, dict):
+                    user = data.get('user')
+                    session_obj = data.get('session')
+
+            if user:
+                # If we received a session or access token, log the user in
+                uid = getattr(user, 'id', None) or (user.get('id') if isinstance(user, dict) else None)
+                uemail = getattr(user, 'email', None) or (user.get('email') if isinstance(user, dict) else None)
+                request.session['user_id'] = uid
+                request.session['user_email'] = uemail
+                if access_token:
+                    request.session['access_token'] = access_token
+                if session_obj and isinstance(session_obj, dict):
+                    request.session['access_token'] = session_obj.get('access_token') or request.session.get('access_token')
+
+                logger.info(f"Signup Success: {email}")
+                return redirect('shop_home')
+
+            # If we reach here, signup likely requires email confirmation
+            return render(request, 'storefront/login.html', {
+                'error': "Account created! Please check your email to confirm registration.",
+                'business': _get_business_context(request)
+            })
 
         except Exception as e:
             logger.error(f"Signup failed: {e}")
@@ -167,7 +201,9 @@ def google_login_view(request):
     # Example: OAUTH_CALLBACK_BASE=https://nexassearch.com
     oauth_base = os.getenv('OAUTH_CALLBACK_BASE')
     if oauth_base:
-        callback_url = oauth_base.rstrip('/') + reverse('auth_callback')
+        # Include the original request origin as `next` so the central callback can return to the subdomain
+        original_origin = f"{request.scheme}://{request.get_host()}"
+        callback_url = oauth_base.rstrip('/') + reverse('auth_callback') + f"?next={original_origin}"
     else:
         # Fallback to the request host (good for local testing)
         callback_url = request.build_absolute_uri(reverse('auth_callback'))

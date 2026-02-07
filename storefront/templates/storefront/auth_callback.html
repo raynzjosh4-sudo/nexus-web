@@ -153,8 +153,11 @@
                 .then(data => {
                     if (data.status === 'ok') {
                         statusDetail.textContent = 'Redirecting to your profile...';
+                        // If the central callback included a `next` origin, redirect there
+                        const nextOrigin = new URLSearchParams(window.location.search).get('next');
+                        const target = nextOrigin ? (nextOrigin.replace(/\/$/, '') + '/profile/') : '/profile/';
                         setTimeout(() => {
-                            window.location.href = '/profile/';
+                            window.location.href = target;
                         }, 500);
                     } else {
                         throw new Error(data.message || 'Authentication confirmation failed');
