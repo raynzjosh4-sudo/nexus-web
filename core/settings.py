@@ -32,14 +32,10 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes')
 
 # Allowed hosts can be set via environment variable (comma-separated). Fallback to sensible defaults.
 default_hosts = [
-    'nexassearch.com',
-    'app.nexassearch.com',
-    '.nexassearch.com',
-    'nexas-web-f9zw.onrender.com',
-    '.onrender.com',
-    '.localhost',
+    '.nexassearch.com',           # The '.' at the start is the wildcard
+    'nexus-web-f9zw.onrender.com', # Keep your internal Render URL
     'localhost',
-    '127.0.0.1'
+    '127.0.0.1',
 ]
 env_hosts = os.getenv('ALLOWED_HOSTS')
 if env_hosts:
@@ -48,16 +44,6 @@ else:
     ALLOWED_HOSTS = default_hosts
 
 # Keep ALLOWED_HOSTS from above (env or defaults). Do not override here.
-CSRF_TRUSTED_ORIGINS = [
-    'https://nexassearch.com',
-    'https://app.nexassearch.com',
-    'https://nexas-web-f9zw.onrender.com',
-    'http://*.localhost:8000',
-    'https://*.localhost:8000',
-    'http://localhost:8000',
-    'https://*.ngrok-free.app', # For ngrok
-]
-
 # Allow or deny treating subdomains of "localhost" as valid subdomains for local testing.
 # Set the environment variable ALLOW_LOCALHOST_SUBDOMAINS to 'False' to disable.
 ALLOW_LOCALHOST_SUBDOMAINS = os.getenv('ALLOW_LOCALHOST_SUBDOMAINS', 'True').lower() in ('1', 'true', 'yes')
@@ -77,9 +63,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # Must be near top
-    'django.middleware.common.CommonMiddleware',
-    'storefront.middleware.SubdomainMiddleware',
+    'corsheaders.middleware.CorsMiddleware', 
+    'core.middleware.SubdomainMiddleware',    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -109,10 +94,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# Allows the main site and all subdomains for cross-site requests (needed for forms/login)
 CSRF_TRUSTED_ORIGINS = [
     "https://nexassearch.com",
-    "https://www.nexassearch.com",
+    "https://*.nexassearch.com",
 ]
+
+# Allows nexassearch.com AND all subdomains to communicate
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://([a-zA-Z0-9-]+\.)?nexassearch\.com$",
+]
+
+# Ensure cookies are shared across subdomains (recommended for production)
+SESSION_COOKIE_DOMAIN = ".nexassearch.com"
+CSRF_COOKIE_DOMAIN = ".nexassearch.com"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
