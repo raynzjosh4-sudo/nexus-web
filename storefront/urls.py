@@ -9,8 +9,7 @@ from .views.auth import login_view, logout_view, google_login_view, auth_callbac
 from .views.profile import profile_view
 from .views.contact import contact
 from .views.wishlist import toggle_wishlist, check_wishlist_status
-from .views.sitemap import sitemap_products
-from .views.sitemap_index import sitemap_index
+from .views.sitemap_static import sitemap_products, sitemap_index  # PRODUCTION: Static sitemaps
 from .views.robots import robots_txt
 from .views.order import order_confirmation
 
