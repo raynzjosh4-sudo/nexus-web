@@ -5,9 +5,10 @@ Wrapper script to fix database schema and run sitemap generation
 import os
 import sys
 
-# Add to Python path
-sys.path.insert(0, '/c:/nexus websites/nexus_web')
-os.chdir('/c:/nexus websites/nexus_web')
+# Add to Python path (Windows compatible)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, script_dir)
+os.chdir(script_dir)
 
 # Set Django settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
@@ -64,7 +65,7 @@ def generate_sitemaps():
                 'lastmod': business['created_at'][:10] if business.get('created_at') else datetime.now().isoformat()[:10],
             })
         
-        xml = render_to_string('storefront/sitemaps/sitemap_index.xml', {
+        xml = render_to_string('storefront/sitemap_index.xml', {
             'sitemaps': sitemaps,
             'now': datetime.now().isoformat()[:10]
         })
@@ -134,7 +135,7 @@ def generate_sitemaps():
                     })
                 
                 # Render and save
-                xml = render_to_string('storefront/sitemaps/sitemap.xml', {'urls': urls})
+                xml = render_to_string('storefront/sitemap.xml', {'urls': urls})
                 filepath = os.path.join(output_dir, f"{domain}_sitemap.xml")
                 with open(filepath, 'w', encoding='utf-8') as f:
                     f.write(xml)

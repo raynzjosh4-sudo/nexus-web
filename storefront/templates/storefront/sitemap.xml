@@ -11,8 +11,8 @@
         {# Include product images for Google Image Search #}
         {% for image in url.images %}
         <image:image>
-            <image:loc>{{ image.loc|escapejsstring }}</image:loc>
-            <image:title>{{ image.title|escapejsstring }}</image:title>
+            <image:loc>{{ image.loc|escape }}</image:loc>
+            <image:title>{{ image.title|escape }}</image:title>
         </image:image>
         {% endfor %}
     </url>

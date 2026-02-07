@@ -43,7 +43,7 @@ User-agent: *
 Crawl-delay: 1
 
 # Static sitemap - generated daily, prevents database overload
-Sitemap: https://{subdomain}.nexassearch.com/static/sitemaps/{subdomain}_sitemap.xml
+Sitemap: https://static.nexassearch.com/static/sitemaps/{subdomain}_sitemap.xml
 """
     else:
         # Main domain (nexassearch.com) - Point to static master index
@@ -71,7 +71,7 @@ User-agent: *
 Crawl-delay: 1
 
 # Master sitemap index - lists all business sitemaps (updated daily)
-Sitemap: https://nexassearch.com/static/sitemaps/sitemap_index.xml
+Sitemap: https://static.nexassearch.com/static/sitemaps/sitemap_index.xml
 """
     
     return HttpResponse(robots_content, content_type='text/plain')

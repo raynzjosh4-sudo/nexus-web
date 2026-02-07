@@ -9,7 +9,7 @@ from .views.auth import login_view, logout_view, google_login_view, auth_callbac
 from .views.profile import profile_view
 from .views.contact import contact
 from .views.wishlist import toggle_wishlist, check_wishlist_status
-from .views.sitemap_static import sitemap_products, sitemap_index  # PRODUCTION: Static sitemaps
+from .views.sitemap_static import sitemap_products, sitemap_index, serve_sitemap_file  # PRODUCTION: Static sitemaps
 from .views.robots import robots_txt
 from .views.order import order_confirmation
 
@@ -32,4 +32,5 @@ urlpatterns = [
     path('sitemap.xml', sitemap_products, name='sitemap_products'),
     path('sitemap_index.xml', sitemap_index, name='sitemap_index'),
     path('robots.txt', robots_txt, name='robots_txt'),
+    path('static/sitemaps/<str:filename>', serve_sitemap_file, name='serve_sitemap_file'),
 ]

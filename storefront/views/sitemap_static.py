@@ -154,3 +154,43 @@ def sitemap_index(request):
     except IOError as e:
         logger.error(f'Error reading sitemap index {filepath}: {str(e)}')
         raise Http404(f"Error reading sitemap index: {str(e)}")
+
+
+def serve_sitemap_file(request, filename):
+    """
+    Serve any file from storefront/static/sitemaps/ when requested via
+    /static/sitemaps/<filename>. This allows mapping static.nexassearch.com
+    to the same Django host and serving sitemaps without touching the
+    frontend repo or external storage.
+    """
+    # Basic filename validation: only allow xml and json files, no traversal
+    if '..' in filename or '/' in filename or '\\' in filename:
+        raise Http404('Invalid filename')
+
+    allowed_ext = ('.xml', '.json')
+    if not filename.lower().endswith(allowed_ext):
+        raise Http404('Unsupported file type')
+
+    sitemaps_dir = os.path.join(settings.BASE_DIR, 'storefront', 'static', 'sitemaps')
+    filepath = os.path.join(sitemaps_dir, filename)
+
+    if not os.path.exists(filepath):
+        raise Http404('Sitemap not found')
+
+    try:
+        with open(filepath, 'rb') as f:
+            data = f.read()
+
+        content_type = 'application/xml' if filename.lower().endswith('.xml') else 'application/json'
+        return HttpResponse(
+            data,
+            content_type=content_type,
+            headers={
+                'Cache-Control': 'public, max-age=86400',
+                'X-Sitemap-Generated': 'static-file',
+            }
+        )
+
+    except IOError as e:
+        logger.error(f'Error reading sitemap file {filepath}: {str(e)}')
+        raise Http404('Error reading sitemap file')
