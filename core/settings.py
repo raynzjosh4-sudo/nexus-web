@@ -47,8 +47,7 @@ if env_hosts:
 else:
     ALLOWED_HOSTS = default_hosts
 
-# Use the 'a' spelling here
-ALLOWED_HOSTS = ['.nexassearch.com','api.nexassearch.com',''.onrender.com', 'nexus-web-f9zw.onrender.com', 'localhost', '127.0.0.1']
+# Keep ALLOWED_HOSTS from above (env or defaults). Do not override here.
 CSRF_TRUSTED_ORIGINS = [
     'https://nexassearch.com',
     'https://app.nexassearch.com',
@@ -165,7 +164,7 @@ STATICFILES_DIRS = [
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-<<<<<<< HEAD
+
 
 # Security settings applied when not in DEBUG
 if not DEBUG:
