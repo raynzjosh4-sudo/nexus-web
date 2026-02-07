@@ -32,7 +32,8 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes')
 
 # Allowed hosts can be set via environment variable (comma-separated). Fallback to sensible defaults.
 default_hosts = [
-    '.nexassearch.com',           # The '.' at the start is the wildcard
+    '.nexassearch.com',           # Production: wildcard for all subdomains
+    '.localhost',                  # Local dev: wildcard for all localhost subdomains (loom.localhost, etc.)
     'nexus-web-f9zw.onrender.com', # Keep your internal Render URL
     'localhost',
     '127.0.0.1',
