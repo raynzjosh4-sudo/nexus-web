@@ -157,21 +157,31 @@ def _get_business_context(request):
     return {}
 
 from django.urls import reverse
+import os
+
 
 def google_login_view(request):
     supabase = get_supabase_client()
-    
-    # Get the proper callback URL - must match Supabase OAuth redirect URIs
-    callback_url = request.build_absolute_uri(reverse('auth_callback'))
+
+    # Prefer an explicitly configured OAuth callback base (useful for production)
+    # Example: OAUTH_CALLBACK_BASE=https://nexassearch.com
+    oauth_base = os.getenv('OAUTH_CALLBACK_BASE')
+    if oauth_base:
+        callback_url = oauth_base.rstrip('/') + reverse('auth_callback')
+    else:
+        # Fallback to the request host (good for local testing)
+        callback_url = request.build_absolute_uri(reverse('auth_callback'))
     
     try:
         # Prepare OAuth options with proper redirect URL
+        # Note: Make sure the value of `callback_url` is registered in your
+        # Supabase project's OAuth redirect URIs (e.g. https://nexassearch.com/auth/callback)
         oauth_options = {
             "provider": "google",
             "options": {
                 "redirectTo": callback_url,
                 "skipBrowserRedirect": False,
-                "scopes": "openid email profile"  # Explicit scopes
+                "scopes": "openid email profile"
             }
         }
         
