@@ -176,6 +176,7 @@ USE_TZ = True
 
 STATICFILES_DIRS = [
     BASE_DIR / 'assets',
+    BASE_DIR / 'js',  # Add JavaScript directory for proper static file serving
 ]
 
 STATIC_URL = 'static/'

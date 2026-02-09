@@ -1,0 +1,36 @@
+/* Theme Variables - Can be overridden by ProfileWebsiteThemeComponent */
+:root {
+    /* Page Colors */
+    --bg-page: #000000;
+    --bg-card: #1a0f2e;
+    --bg-header: #0f0a1a;
+
+    /* Text Colors */
+    --text-main: #ffffff;
+    --text-sub: #d1d5db;
+    --text-secondary: #999999;
+    --text-placeholder: #666666;
+
+    /* Theme Colors - These match ProfileWebsiteThemeComponent defaults */
+    --accent-color: #a855f7;
+    /* accentColor */
+    --secondary-color: #8b5cf6;
+    /* secondaryColor */
+    --primary-color: #6200EE;
+    /* primaryColor */
+
+    /* UI Elements */
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --border-color: #2d2d2d;
+    --border-hover: #444444;
+
+    /* Skeleton Loading */
+    --skeleton-base: #2d2d2d;
+    --skeleton-highlight: #3d3d3d;
+}
+
+/* Dark theme by default */
+body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+}

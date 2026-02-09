@@ -9,157 +9,593 @@
 {% endblock %}
 
 {% block main_content %}
-<!-- Business Profile -->
-<article>
-    <!-- Business Header -->
-    <div style="display: flex; gap: 30px; margin-bottom: 40px; flex-wrap: wrap; align-items: start;">
-        {% if business.logo_url %}
-        <img src="{{ business.logo_url }}" alt="{{ business.business_name }}"
-            style="width: 150px; height: 150px; object-fit: contain; background: #1a0f2e; border-radius: 8px; padding: 10px;">
-        {% else %}
-        <div
-            style="width: 150px; height: 150px; background: #1a0f2e; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-            🏪
-        </div>
-        {% endif %}
+<style>
+    /* === PROFESSIONAL BUSINESS PROFILE === */
+    .business-profile-wrapper {
+        background: var(--bg-page, #000000);
+        min-height: 100vh;
+        color: var(--text-main, #ffffff);
+        font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
 
-        <div style="flex: 1;">
-            <h1 style="color: #a855f7; margin-bottom: 10px; font-size: 2rem;">
-                {{ business.business_name }}
-            </h1>
-            {% if business.description %}
-            <p style="color: #d1d5db; font-size: 1.05rem; margin-bottom: 20px;">
-                {{ business.description }}
-            </p>
-            {% endif %}
+    /* === HERO SECTION === */
+    .business-hero {
+        position: relative;
+        background: linear-gradient(135deg, var(--bg-card, #1a0f2e) 0%, var(--accent-color, #2d1b4e) 50%, var(--bg-card, #1a0f2e) 100%);
+        padding: 80px 20px 60px;
+        overflow: hidden;
+    }
 
-            <!-- Business Details -->
-            <div style="color: #8b5cf6; font-size: 0.95rem;">
-                {% if business.phone %}
-                <p>📞 <strong>Phone:</strong> <a href="tel:{{ business.phone }}"
-                        style="color: #a855f7; text-decoration: none;">{{ business.phone }}</a></p>
-                {% endif %}
-                {% if business.email %}
-                <p>📧 <strong>Email:</strong> <a href="mailto:{{ business.email }}"
-                        style="color: #a855f7; text-decoration: none;">{{ business.email }}</a></p>
-                {% endif %}
-                {% if business.address %}
-                <p>📍 <strong>Location:</strong> {{ business.address }}, Kampala</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+    .business-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+            radial-gradient(circle at 20% 30%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+        pointer-events: none;
+    }
 
-    <!-- Business Stats -->
-    <div style="background: #1a0f2e; padding: 30px; border-radius: 8px; margin: 30px 0;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
-            <div style="text-align: center;">
-                <div style="font-size: 2rem; color: #a855f7; font-weight: 600; margin-bottom: 5px;">
-                    {{ products|length }}
-                </div>
-                <div style="color: #8b5cf6;">Products Listed</div>
-            </div>
-            <div style="text-align: center;">
-                <div style="font-size: 2rem; color: #a855f7; font-weight: 600; margin-bottom: 5px;">
-                    ⭐
-                </div>
-                <div style="color: #8b5cf6;">Trusted Seller</div>
-            </div>
-            <div style="text-align: center;">
-                <div style="font-size: 2rem; color: #a855f7; font-weight: 600; margin-bottom: 5px;">
-                    ✓
-                </div>
-                <div style="color: #8b5cf6;">Verified</div>
-            </div>
-        </div>
-    </div>
+    .hero-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
 
-    <!-- About Business -->
-    {% if business.about %}
-    <div
-        style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #a855f7;">
-        <h3 style="color: #a855f7; margin-bottom: 15px;">About {{ business.business_name }}</h3>
-        <p style="color: #d1d5db; line-height: 1.8;">
-            {{ business.about }}
-        </p>
-    </div>
-    {% endif %}
+    .hero-content {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
 
-    <!-- Opening Hours -->
-    {% if business.opening_hours %}
-    <div style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0;">
-        <h3 style="color: #a855f7; margin-bottom: 15px;">⏰ Opening Hours</h3>
-        <div style="color: #d1d5db; display: grid; gap: 8px;">
-            {% for day, hours in business.opening_hours.items %}
-            <div style="display: flex; justify-content: space-between;">
-                <span>{{ day }}:</span>
-                <strong>{{ hours }}</strong>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
+    /* === LOGO SECTION === */
+    .business-logo-wrapper {
+        position: relative;
+    }
 
-    <!-- Featured Products -->
-    {% if products %}
-    <div style="margin-top: 40px;">
-        <h2 style="color: #a855f7; margin-bottom: 20px;">🛍️ Featured Products</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
-            {% for product in products|slice:":12" %}
-            <div
-                style="background: #1a0f2e; border: 1px solid #2d1b4e; border-radius: 8px; overflow: hidden; transition: all 0.3s;">
-                {% if product.image %}
-                <img src="{{ product.image }}" alt="{{ product.title }}"
-                    style="width: 100%; height: 150px; object-fit: cover; background: #2d1b4e;">
-                {% else %}
-                <div
-                    style="width: 100%; height: 150px; background: #2d1b4e; display: flex; align-items: center; justify-content: center; color: #8b5cf6;">
-                    📷
-                </div>
-                {% endif %}
-                <div style="padding: 15px;">
-                    <h3 style="color: #a855f7; margin-bottom: 5px; font-size: 0.95rem;">
-                        {{ product.title|truncatewords:5 }}
-                    </h3>
-                    {% if product.price %}
-                    <p style="color: #10b981; font-weight: 600; margin-bottom: 5px;">
-                        UGX {{ product.price|floatformat:0 }}
-                    </p>
+    .business-logo {
+        width: 180px;
+        height: 180px;
+        border-radius: 24px;
+        object-fit: contain;
+        background: linear-gradient(135deg, var(--bg-page, #0f0a1a), var(--bg-card, #1a0f2e));
+        padding: 20px;
+        border: 3px solid var(--accent-color, #a855f7);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3), 0 0 0 1px var(--accent-color, rgba(168, 85, 247, 0.2));
+        transition: transform 0.4s ease;
+    }
+
+    .business-logo:hover {
+        transform: scale(1.05) rotate(-2deg);
+    }
+
+    .logo-placeholder {
+        width: 180px;
+        height: 180px;
+        background: linear-gradient(135deg, var(--bg-card, #1a0f2e), var(--secondary-color, #2d1b4e));
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        border: 3px solid var(--accent-color, #a855f7);
+        box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
+    }
+
+    .verified-badge {
+        position: absolute;
+        bottom: -10px;
+        right: -10px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        border: 4px solid #000000;
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.1);
+        }
+    }
+
+    /* === BUSINESS INFO === */
+    .business-info {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .business-name {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--accent-color, #a855f7);
+        margin: 0 0 16px 0;
+        line-height: 1.2;
+    }
+
+    .business-description {
+        font-size: 1.15rem;
+        color: var(--text-sub, #d1d5db);
+        line-height: 1.8;
+        margin-bottom: 30px;
+    }
+
+    .business-details {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1rem;
+        color: #b0b0b0;
+    }
+
+    .detail-icon {
+        font-size: 20px;
+        color: var(--accent-color, #a855f7);
+        width: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .detail-link {
+        color: var(--accent-color, #a855f7);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .detail-link:hover {
+        color: var(--secondary-color, #c084fc);
+        text-decoration: underline;
+    }
+
+    /* === ACTION BUTTONS === */
+    .hero-actions {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .hero-btn {
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent-color, #a855f7), var(--secondary-color, #8b5cf6));
+        color: white;
+        box-shadow: 0 8px 24px rgba(168, 85, 247, 0.4);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(168, 85, 247, 0.6);
+    }
+
+    .btn-secondary {
+        background: rgba(168, 85, 247, 0.1);
+        color: var(--accent-color, #a855f7);
+        border: 2px solid var(--accent-color, #a855f7);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(168, 85, 247, 0.2);
+        transform: translateY(-2px);
+    }
+
+    /* === STATS SECTION === */
+    .business-stats {
+        max-width: 1200px;
+        margin: -40px auto 60px;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, var(--bg-card, #1a0f2e), var(--bg-page, #0f0a1a));
+        border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.08));
+        border-radius: 20px;
+        padding: 32px;
+        text-align: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--accent-color, #a855f7);
+        box-shadow: 0 16px 40px rgba(168, 85, 247, 0.2);
+    }
+
+    .stat-value {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--accent-color, #a855f7);
+        margin-bottom: 8px;
+    }
+
+    .stat-label {
+        color: var(--secondary-color, #8b5cf6);
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* === MAIN CONTENT === */
+    .business-main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 80px;
+    }
+
+    /* === ABOUT SECTION === */
+    .about-section {
+        background: linear-gradient(135deg, var(--bg-card, #1a0f2e), var(--bg-page, #0f0a1a));
+        border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.08));
+        border-left: 4px solid var(--accent-color, #a855f7);
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 48px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--accent-color, #a855f7);
+        margin: 0 0 20px 0;
+    }
+
+    .section-text {
+        color: var(--text-sub, #d1d5db);
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+
+    /* === PRODUCTS SECTION === */
+    .products-section {
+        margin-bottom: 48px;
+    }
+
+    .products-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 32px;
+    }
+
+    .products-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--accent-color, #a855f7);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 24px;
+    }
+
+    .product-card-mini {
+        background: var(--bg-card, #1a0f2e);
+        border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.08));
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .product-card-mini:hover {
+        transform: translateY(-6px);
+        border-color: var(--accent-color, #a855f7);
+        box-shadow: 0 12px 32px rgba(168, 85, 247, 0.2);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: #0f0a1a;
+        transition: transform 0.4s ease;
+    }
+
+    .product-card-mini:hover .product-image {
+        transform: scale(1.05);
+    }
+
+    .image-placeholder {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, #2d1b4e, #1a0f2e);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8b5cf6;
+        font-size: 3rem;
+    }
+
+    .product-info {
+        padding: 20px;
+    }
+
+    .product-name {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--text-main, #ffffff);
+        margin: 0 0 8px 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-price {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #10b981;
+        margin-bottom: 6px;
+    }
+
+    .product-category {
+        font-size: 0.9rem;
+        color: var(--secondary-color, #8b5cf6);
+        font-weight: 500;
+    }
+
+    /* === WHY CHOOSE US === */
+    .why-section {
+        background: linear-gradient(135deg, var(--secondary-color, #2d1b4e), var(--bg-card, #1a0f2e));
+        border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.1));
+        border-left: 4px solid var(--accent-color, #a855f7);
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .why-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0 0 0;
+    }
+
+    .why-list li {
+        color: var(--text-sub, #d1d5db);
+        padding: 12px 0;
+        padding-left: 40px;
+        position: relative;
+        font-size: 1.05rem;
+        line-height: 1.6;
+    }
+
+    .why-list li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #10b981;
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 968px) {
+        .business-hero {
+            padding: 60px 20px 40px;
+        }
+
+        .hero-content {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .business-name {
+            font-size: 2.2rem;
+        }
+
+        .business-details {
+            align-items: center;
+        }
+
+        .hero-actions {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .business-name {
+            font-size: 1.8rem;
+        }
+
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<div class="business-profile-wrapper">
+    <!-- Hero Section -->
+    <section class="business-hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="business-logo-wrapper">
+                    {% if business.logo_url %}
+                    <img src="{{ business.logo_url }}" alt="{{ business.business_name }}" class="business-logo">
+                    {% else %}
+                    <div class="logo-placeholder">🏪</div>
                     {% endif %}
-                    <p style="color: #8b5cf6; font-size: 0.9rem;">{{ product.category }}</p>
+                    <div class="verified-badge">✓</div>
+                </div>
+
+                <div class="business-info">
+                    <h1 class="business-name">{{ business.business_name }}</h1>
+
+                    {% if business.description %}
+                    <p class="business-description">{{ business.description }}</p>
+                    {% endif %}
+
+                    <div class="business-details">
+                        {% if business.phone %}
+                        <div class="detail-item">
+                            <span class="detail-icon">📞</span>
+                            <span><strong>Phone:</strong> <a href="tel:{{ business.phone }}" class="detail-link">{{
+                                    business.phone }}</a></span>
+                        </div>
+                        {% endif %}
+
+                        {% if business.email %}
+                        <div class="detail-item">
+                            <span class="detail-icon">📧</span>
+                            <span><strong>Email:</strong> <a href="mailto:{{ business.email }}" class="detail-link">{{
+                                    business.email }}</a></span>
+                        </div>
+                        {% endif %}
+
+                        {% if business.address %}
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <span><strong>Location:</strong> {{ business.address }}, Kampala</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="hero-actions">
+                        {% if business.phone %}
+                        <a href="tel:{{ business.phone }}" class="hero-btn btn-primary">
+                            📞 Call Now
+                        </a>
+                        {% endif %}
+                        <a href="https://play.google.com/store/apps/details?id=com.nexus.marketplace"
+                            class="hero-btn btn-secondary">
+                            🔗 Open Nexus App
+                        </a>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    </div>
-    {% endif %}
+    </section>
 
-    <!-- Action Buttons -->
-    <div class="action-buttons" style="margin-top: 40px;">
-        {% if business.phone %}
-        <a href="tel:{{ business.phone }}" class="btn btn-primary">
-            📞 Call Now
-        </a>
+    <!-- Stats Section -->
+    <section class="business-stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ products|length }}</div>
+                <div class="stat-label">Products Listed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">⭐</div>
+                <div class="stat-label">Trusted Seller</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">✓</div>
+                <div class="stat-label">Verified Business</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">🚚</div>
+                <div class="stat-label">Fast Delivery</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="business-main">
+        <!-- About Business -->
+        {% if business.about %}
+        <section class="about-section">
+            <h3 class="section-title">About {{ business.business_name }}</h3>
+            <p class="section-text">{{ business.about }}</p>
+        </section>
         {% endif %}
-        <a href="https://play.google.com/store/apps/details?id=com.nexus.marketplace" class="btn btn-primary">
-            🔗 Open Nexus App
-        </a>
-        <a href="/" class="btn btn-secondary">
-            Back to Marketplace
-        </a>
-    </div>
 
-    <!-- Why Choose Us -->
-    <div
-        style="background: #2d1b4e; padding: 20px; border-radius: 8px; margin-top: 40px; border-left: 4px solid #a855f7;">
-        <h3 style="color: #a855f7; margin-bottom: 15px;">✓ Why Choose {{ business.business_name }}</h3>
-        <ul style="color: #d1d5db; padding-left: 20px;">
-            <li>Wide selection of products</li>
-            <li>Competitive prices</li>
-            <li>Verified seller badge</li>
-            <li>Fast delivery available</li>
-            <li>Secure transactions on Nexus</li>
-        </ul>
+        <!-- Featured Products -->
+        {% if products %}
+        <section class="products-section">
+            <div class="products-header">
+                <h2 class="products-title">🛍️ Featured Products</h2>
+            </div>
+            <div class="products-grid">
+                {% for product in products|slice:":12" %}
+                <div class="product-card-mini" onclick="window.location.href='/product/{{ product.id }}/'">
+                    {% if product.image %}
+                    <img src="{{ product.image }}" alt="{{ product.title }}" class="product-image">
+                    {% else %}
+                    <div class="image-placeholder">📷</div>
+                    {% endif %}
+                    <div class="product-info">
+                        <h3 class="product-name">{{ product.title }}</h3>
+                        {% if product.price %}
+                        <p class="product-price">UGX {{ product.price|floatformat:0 }}</p>
+                        {% endif %}
+                        <p class="product-category">{{ product.category }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Why Choose Us -->
+        <section class="why-section">
+            <h3 class="section-title">✓ Why Choose {{ business.business_name }}</h3>
+            <ul class="why-list">
+                <li>Wide selection of quality products</li>
+                <li>Competitive prices and great deals</li>
+                <li>Verified seller with trusted reputation</li>
+                <li>Fast and reliable delivery service</li>
+                <li>Secure transactions on Nexus platform</li>
+                <li>Excellent customer support</li>
+            </ul>
+        </section>
     </div>
-</article>
+</div>
 {% endblock %}

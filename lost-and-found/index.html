@@ -5,17 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lost & Found Search - Nexus</title>
-    <link rel="icon" type="image/png" href="../assets/icon.png">
-    <link rel="stylesheet" href="../assets/css/google-dark.css">
+    <link rel="icon" type="image/png" href="/assets/icon.png">
+    <link rel="stylesheet" href="/assets/css/theme-variables.css">
+    <link rel="stylesheet" href="/assets/css/google-dark.css">
     <style>
-        /* Theme Color Overrides Only */
-        body {
-            background-color: #000000 !important;
-            color: #ffffff !important;
-        }
-
+        /* Page-specific overrides if needed */
         .google-header {
-            background: #1a0f2e !important;
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-header)) !important;
         }
 
         .search-bar-container {
@@ -162,8 +158,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../js/lost-data.js" onerror="alert('Error: Could not find js/lost-data.js')"></script>
-    <script src="../js/lost-widgets.js" onerror="alert('Error: Could not find js/lost-widgets.js')"></script>
+    <script src="/js/lost-data.js" onerror="alert('Error: Could not find js/lost-data.js')"></script>
+    <script src="/js/lost-widgets.js" onerror="alert('Error: Could not find js/lost-widgets.js')"></script>
 
     <script>
         let allItems = [];
