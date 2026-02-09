@@ -59,9 +59,11 @@ def generate_sitemaps():
         # Generate master index
         print("📋 Generating master sitemap index...")
         sitemaps = []
+        # Use the static CDN host for sitemap files so search engines can fetch them
+        static_host = os.getenv('STATIC_SITEMAP_HOST', 'https://static.nexassearch.com')
         for business in businesses:
             sitemaps.append({
-                'loc': f"https://{business['domain']}.nexassearch.com/sitemap.xml",
+                'loc': f"{static_host}/static/sitemaps/{business['domain']}_sitemap.xml",
                 'lastmod': business['created_at'][:10] if business.get('created_at') else datetime.now().isoformat()[:10],
             })
         

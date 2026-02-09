@@ -106,9 +106,9 @@ def sitemap_products(request, subdomain=None):
             
             return HttpResponse(
                 content,
-                content_type='application/xml',
+                content_type='application/xml; charset=utf-8',
                 headers={
-                    'Cache-Control': 'public, max-age=86400',  # 24 hours for static
+                    'Cache-Control': 'public, max-age=86400, must-revalidate',  # 24 hours for static
                     'X-Sitemap-Generated': 'static',
                 }
             )
@@ -200,9 +200,9 @@ def generate_dynamic_sitemap(request, subdomain):
         
         return HttpResponse(
             sitemap_xml,
-            content_type='application/xml',
+            content_type='application/xml; charset=utf-8',
             headers={
-                'Cache-Control': 'public, max-age=3600',  # 1 hour for dynamic fallback
+                'Cache-Control': 'public, max-age=3600, must-revalidate',  # 1 hour for dynamic fallback
                 'X-Sitemap-Generated': 'dynamic-fallback',
             }
         )
@@ -245,9 +245,9 @@ def sitemap_index(request):
             
             return HttpResponse(
                 content,
-                content_type='application/xml',
+                content_type='application/xml; charset=utf-8',
                 headers={
-                    'Cache-Control': 'public, max-age=86400',  # 24 hours for static
+                    'Cache-Control': 'public, max-age=86400, must-revalidate',  # 24 hours for static
                     'X-Sitemap-Generated': 'static',
                 }
             )
@@ -292,9 +292,9 @@ def generate_dynamic_sitemap_index(request):
         
         return HttpResponse(
             sitemap_index_xml,
-            content_type='application/xml',
+            content_type='application/xml; charset=utf-8',
             headers={
-                'Cache-Control': 'public, max-age=3600',  # 1 hour for dynamic fallback
+                'Cache-Control': 'public, max-age=3600, must-revalidate',  # 1 hour for dynamic fallback
                 'X-Sitemap-Generated': 'dynamic-fallback',
             }
         )
@@ -332,9 +332,9 @@ def serve_sitemap_file(request, filename):
         content_type = 'application/xml' if filename.lower().endswith('.xml') else 'application/json'
         return HttpResponse(
             data,
-            content_type=content_type,
+            content_type=content_type + '; charset=utf-8' if 'xml' in content_type else content_type,
             headers={
-                'Cache-Control': 'public, max-age=86400',
+                'Cache-Control': 'public, max-age=86400, must-revalidate',
                 'X-Sitemap-Generated': 'static-file',
             }
         )

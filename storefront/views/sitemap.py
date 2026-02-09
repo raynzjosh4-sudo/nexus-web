@@ -93,7 +93,11 @@ def sitemap_products(request):
             })
         
         sitemap_xml = render_to_string('storefront/sitemap.xml', {'urls': urls})
-        return HttpResponse(sitemap_xml, content_type='application/xml')
+        return HttpResponse(
+            sitemap_xml,
+            content_type='application/xml; charset=utf-8',
+            headers={'Cache-Control': 'public, max-age=3600, must-revalidate'}
+        )
         
     except Exception as e:
         import logging
@@ -121,4 +125,8 @@ def sitemap_businesses(request):
             })
     
     sitemap_xml = render_to_string('storefront/sitemap.xml', {'urls': urls})
-    return HttpResponse(sitemap_xml, content_type='application/xml')
+    return HttpResponse(
+        sitemap_xml,
+        content_type='application/xml; charset=utf-8',
+        headers={'Cache-Control': 'public, max-age=3600, must-revalidate'}
+    )
