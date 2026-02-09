@@ -1,6 +1,6 @@
 import json
 import logging
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.template.loader import render_to_string
 from django.urls import reverse
 from ..client import get_supabase_client
@@ -28,8 +28,11 @@ def sitemap_products(request):
     """Generate sitemap for products with image references."""
     subdomain = getattr(request, 'subdomain', None)
     
+    # If request is to the main domain (no subdomain), serve the master sitemap index
+    # Google prefers a sitemap at the site root. Redirect permanently to the
+    # sitemap index which lists all business sitemaps to avoid SEO errors.
     if not subdomain:
-        return HttpResponse("Sitemap not available", status=404)
+        return HttpResponsePermanentRedirect('/sitemap_index.xml')
 
     try:
         supabase = get_supabase_client()

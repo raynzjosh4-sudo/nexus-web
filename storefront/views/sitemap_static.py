@@ -74,7 +74,6 @@ def sitemap_last_modified(request, subdomain=None):
         return None
 
 
-@condition(last_modified_func=lambda r, s: sitemap_last_modified(r, s))
 @cache_page(60 * 60)  # Cache for 1 hour (shorter for dynamic fallback)
 def sitemap_products(request, subdomain=None):
     """
@@ -215,7 +214,6 @@ def generate_dynamic_sitemap(request, subdomain):
         raise Http404(f"Error generating sitemap for {subdomain}: {str(e)}")
 
 
-@condition(last_modified_func=sitemap_last_modified)
 @cache_page(60 * 60)  # Cache for 1 hour (shorter for fallback)
 def sitemap_index(request):
     """

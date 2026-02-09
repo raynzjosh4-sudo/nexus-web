@@ -73,13 +73,10 @@ def normalize_component_data(component):
 def shop_home(request):
     subdomain = getattr(request, 'subdomain', None)
     
-    # If no subdomain, redirect to the JavaScript frontend
+    # If no subdomain, render a simple main landing page so the site root works
+    # This avoids redirect loops when Django is serving the main domain.
     if not subdomain:
-        # Redirect to the JavaScript frontend (port 5500 for local, or main domain in production)
-        if 'localhost' in request.get_host():
-            return redirect('http://localhost:5500/')
-        else:
-            return redirect('https://nexassearch.com/')
+        return render(request, 'storefront/main_landing.html', {})
 
     supabase = get_supabase_client()
     search_query = request.GET.get('q', '').strip()
