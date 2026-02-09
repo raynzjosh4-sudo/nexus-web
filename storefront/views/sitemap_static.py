@@ -121,6 +121,7 @@ def sitemap_index(request):
     Generation:
     - Updated daily via cron: python manage.py generate_static_sitemaps
     """
+    # Safely get subdomain attribute, defaults to None if middleware not present
     subdomain = getattr(request, 'subdomain', None)
     
     if subdomain:
