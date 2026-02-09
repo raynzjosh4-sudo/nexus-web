@@ -10,6 +10,20 @@ from urllib.parse import urljoin
 logger = logging.getLogger(__name__)
 
 
+def format_date(date_str):
+    """Format date to YYYY-MM-DD (Google sitemap standard)."""
+    if not date_str:
+        return datetime.now().strftime('%Y-%m-%d')
+    try:
+        # Handle ISO 8601 timestamps with timezone
+        if isinstance(date_str, str):
+            # Extract date portion (YYYY-MM-DD)
+            return date_str[:10]
+        return date_str.strftime('%Y-%m-%d')
+    except:
+        return datetime.now().strftime('%Y-%m-%d')
+
+
 def sitemap_products(request):
     """Generate sitemap for products with image references."""
     subdomain = getattr(request, 'subdomain', None)
@@ -40,7 +54,7 @@ def sitemap_products(request):
         # Add shop homepage first (highest priority)
         urls.append({
             'loc': request.build_absolute_uri('/'),
-            'lastmod': datetime.now().isoformat(),
+            'lastmod': format_date(None),
             'changefreq': 'weekly',
             'priority': '1.0',
             'images': [],
@@ -63,8 +77,9 @@ def sitemap_products(request):
                             'title': f"{post_data.get('productName', 'Product')} - Image {idx+1}",
                         })
             
-            # Determine last modified date
-            lastmod = post.get('updated_at') or post.get('created_at') or datetime.now().isoformat()
+            # Determine last modified date - properly formatted
+            raw_date = post.get('updated_at') or post.get('created_at')
+            lastmod = format_date(raw_date)
             
             urls.append({
                 'loc': product_url,
@@ -96,9 +111,10 @@ def sitemap_businesses(request):
         if biz.get('domain'):
             urls.append({
                 'loc': f"https://{biz['domain']}.nexassearch.com/",
-                'lastmod': biz.get('updated_at', datetime.now().isoformat()),
+                'lastmod': format_date(biz.get('updated_at')),
                 'changefreq': 'weekly',
                 'priority': '0.9',
+            
             })
     
     sitemap_xml = render_to_string('storefront/sitemap.xml', {'urls': urls})

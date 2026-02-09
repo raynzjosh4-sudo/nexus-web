@@ -8,6 +8,20 @@ from datetime import datetime
 logger = logging.getLogger(__name__)
 
 
+def format_date(date_str):
+    """Format date to YYYY-MM-DD (Google sitemap standard)."""
+    if not date_str:
+        return datetime.now().strftime('%Y-%m-%d')
+    try:
+        # Handle ISO 8601 timestamps with timezone
+        if isinstance(date_str, str):
+            # Extract date portion (YYYY-MM-DD)
+            return date_str[:10]
+        return date_str.strftime('%Y-%m-%d')
+    except:
+        return datetime.now().strftime('%Y-%m-%d')
+
+
 def sitemap_index(request):
     """Generate sitemap index for all published business sitemaps."""
     try:
@@ -25,7 +39,7 @@ def sitemap_index(request):
             if biz.get('domain'):
                 sitemaps.append({
                     'loc': f"https://{biz['domain']}.nexassearch.com/sitemap.xml",
-                    'lastmod': biz.get('updated_at', datetime.now().isoformat()),
+                    'lastmod': format_date(biz.get('updated_at')),
                 })
         
         logger.info(f"Sitemap index includes {len(sitemaps)} business sitemaps")
