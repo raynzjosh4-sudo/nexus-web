@@ -118,7 +118,8 @@ class Command(BaseCommand):
             sitemaps = []
             for business in businesses:
                 sitemaps.append({
-                    'loc': f"https://{business['domain']}.nexassearch.com/sitemap.xml",
+                    # Use central static URL to avoid subdomain SSL/DNS issues during crawl
+                    'loc': f"https://nexassearch.com/static/sitemaps/{business['domain']}_sitemap.xml",
                     'lastmod': business['created_at'][:10] if business.get('created_at') else datetime.now().isoformat()[:10],
                 })
             
