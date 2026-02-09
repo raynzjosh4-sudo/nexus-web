@@ -116,11 +116,12 @@ class Command(BaseCommand):
         """Generate master sitemap_index.xml listing all businesses."""
         try:
             sitemaps = []
-            # Allow customizing the static host via env var; default to static.nexassearch.com
-            static_host = os.getenv('STATIC_SITEMAP_HOST', 'https://static.nexassearch.com')
+            # Use the origin per-subdomain sitemap URL (dynamic endpoint) as the primary
+            # reference so newly-created businesses are discoverable immediately.
             for business in businesses:
+                domain = business.get('domain')
                 sitemaps.append({
-                    'loc': f"{static_host}/static/sitemaps/{business['domain']}_sitemap.xml",
+                    'loc': f"https://{domain}.nexassearch.com/sitemap.xml",
                     'lastmod': business['created_at'][:10] if business.get('created_at') else datetime.now().isoformat()[:10],
                 })
             

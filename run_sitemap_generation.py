@@ -59,11 +59,14 @@ def generate_sitemaps():
         # Generate master index
         print("📋 Generating master sitemap index...")
         sitemaps = []
-        # Use the static CDN host for sitemap files so search engines can fetch them
-        static_host = os.getenv('STATIC_SITEMAP_HOST', 'https://static.nexassearch.com')
+        # Use the origin per-subdomain sitemap URL (dynamic endpoint) as the primary
+        # reference so a newly-created business is immediately discoverable.
+        # Static CDN copies may still be generated and served for performance,
+        # but listing the origin URL avoids a missing-file race.
         for business in businesses:
+            domain = business.get('domain')
             sitemaps.append({
-                'loc': f"{static_host}/static/sitemaps/{business['domain']}_sitemap.xml",
+                'loc': f"https://{domain}.nexassearch.com/sitemap.xml",
                 'lastmod': business['created_at'][:10] if business.get('created_at') else datetime.now().isoformat()[:10],
             })
         
