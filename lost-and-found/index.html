@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found Search - Nexus</title>
+    <link rel="icon" type="image/png" href="../assets/icon.png">
+    <link rel="stylesheet" href="../assets/css/google-dark.css">
+    <style>
+        /* Theme Color Overrides Only */
+        body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        .google-header {
+            background: #1a0f2e !important;
+        }
+
+        .search-bar-container {
+            background: #2d1b4e !important;
+            height: 50px !important;
+            padding: 10px 16px !important;
+            border-radius: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+        }
+
+        .search-bar-container input {
+            background: #2d1b4e !important;
+            color: #ffffff !important;
+            font-size: 15px !important;
+            height: 30px !important;
+            flex: 1 !important;
+            border: 1px solid #4a3a6e !important;
+            padding: 6px 12px !important;
+            border-radius: 6px !important;
+        }
+
+        .search-bar-container input::placeholder {
+            color: #8b5cf6 !important;
+        }
+
+        .search-bar-container svg {
+            color: #a855f7 !important;
+            width: 18px !important;
+            height: 18px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .tab-item {
+            color: #b0b0b0 !important;
+        }
+
+        .tab-item.active {
+            color: #a855f7 !important;
+            border-bottom-color: #a855f7 !important;
+        }
+
+        .tab-item:hover {
+            color: #ffffff !important;
+        }
+
+        .result-card {
+            background: #0f0a1a !important;
+        }
+
+        .result-card:hover {
+            background: #1a0f2e !important;
+        }
+
+        .result-title {
+            color: #a855f7 !important;
+        }
+
+        .result-title:hover {
+            color: #c084fc !important;
+        }
+
+        .result-description {
+            color: #b0b0b0 !important;
+        }
+
+        .result-meta {
+            color: #8b5cf6 !important;
+        }
+
+        .site-url {
+            color: #a855f7 !important;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .shimmer {
+            background-color: #2d1b4e;
+            background-image: linear-gradient(90deg, #2d1b4e 0%, #4a3a6e 20%, #2d1b4e 40%, #2d1b4e 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        .skeleton-card {
+            background: #0f0a1a !important;
+            padding: 16px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            display: flex;
+            gap: 16px;
+        }
+
+        .skeleton-title {
+            height: 24px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .skeleton-text {
+            height: 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .skeleton-text:last-child {
+            width: 60%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="google-header">
+        <div class="search-bar-container">
+            <svg class="search-icon" viewBox="0 0 24 24">
+                <path
+                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                </path>
+            </svg>
+
+            <input type="text" class="search-input" id="search-input" placeholder="Search lost items..."
+                style="outline: none; cursor: text;">
+        </div>
+
+        <div class="search-tabs">
+            <div class="tab-item active" data-filter="all">All Items</div>
+            <div class="tab-item" data-filter="documents">Documents</div>
+            <div class="tab-item" data-filter="devices">Devices</div>
+            <div class="tab-item" data-filter="accessories">Accessories</div>
+            <div class="tab-item" data-filter="pet">Pets</div>
+        </div>
+    </div>
+
+    <div id="lost-result-target" style="padding-top: 10px; padding-bottom: 40px;">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/lost-data.js" onerror="alert('Error: Could not find js/lost-data.js')"></script>
+    <script src="../js/lost-widgets.js" onerror="alert('Error: Could not find js/lost-widgets.js')"></script>
+
+    <script>
+        let allItems = [];
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        // Categorize items by type
+        const categoryGroups = {
+            documents: ['nationalID', 'passport', 'drivingPermit', 'votersCard', 'workID', 'schoolID', 'academicTranscript', 'landTitle', 'vehicleLogbook', 'bankCard', 'chequeBook', 'medicalCard', 'insurancePolicy'],
+            devices: ['smartphone', 'laptop', 'tablet', 'smartWatch', 'earbuds', 'headphones', 'camera', 'cameraLens', 'drone', 'powerBank', 'hardDrive', 'flashDisk', 'charger', 'speaker', 'electronics'],
+            accessories: ['wallet', 'purse', 'backpack', 'handbag', 'suitcase', 'briefcase', 'gymBag', 'bag', 'carKeys', 'houseKeys', 'officeKeys', 'accessBadge', 'glasses', 'sunglasses', 'watch', 'jewelry', 'shoes', 'jacket', 'hat', 'helmet', 'umbrella', 'numberPlate', 'carPart', 'notebook'],
+            pet: ['pet', 'livestock']
+        };
+
+        function getCategoryGroup(category) {
+            if (!category) return 'other';
+            for (const [group, categories] of Object.entries(categoryGroups)) {
+                if (categories.includes(category)) {
+                    return group;
+                }
+            }
+            return 'other';
+        }
+
+        function renderItems() {
+            const container = document.getElementById('lost-result-target');
+
+            // Filter items based on search and category
+            let filtered = allItems.filter(item => {
+                const matchSearch = currentSearch === '' ||
+                    item.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                    (item.snippet && item.snippet.toLowerCase().includes(currentSearch.toLowerCase())) ||
+                    (item.location && item.location.toLowerCase().includes(currentSearch.toLowerCase()));
+
+                const itemGroup = getCategoryGroup(item.category);
+                const matchFilter = currentFilter === 'all' || itemGroup === currentFilter;
+
+                return matchSearch && matchFilter;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = "<h3 style='color:#a855f7; padding:20px; text-align:center;'>No items found</h3>";
+                return;
+            }
+
+            const allHtml = filtered.map(item => renderLostItem(item)).join("");
+            container.innerHTML = allHtml;
+        }
+
+        async function initializeAndLoad() {
+            const container = document.getElementById('lost-result-target');
+            console.log('=== LOST & FOUND PAGE INITIALIZATION ===');
+            console.log('renderLostItem available?', typeof renderLostItem);
+            console.log('fetchLostItemsFromDB available?', typeof fetchLostItemsFromDB);
+
+            if (typeof renderLostItem === 'undefined') {
+                console.error('renderLostItem not defined');
+                container.innerHTML = "<h3 style='color:red; padding:20px'>Error loading widgets. Check files.</h3>";
+                return;
+            }
+
+            try {
+                // Wait for Supabase to load
+                let attempts = 0;
+                while (!window.supabase && attempts < 50) {
+                    console.log('Waiting for Supabase... attempt', attempts);
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    attempts++;
+                }
+
+                console.log('Supabase loaded:', !!window.supabase);
+
+                // Show shimmer loaders
+                container.innerHTML = `
+                <div class="skeleton-card">
+                    <div style="flex: 1;">
+                        <div class="skeleton-title shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                </div>
+                <div class="skeleton-card">
+                    <div style="flex: 1;">
+                        <div class="skeleton-title shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                </div>
+                <div class="skeleton-card">
+                    <div style="flex: 1;">
+                        <div class="skeleton-title shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                        <div class="skeleton-text shimmer"></div>
+                    </div>
+                </div>
+            `;
+
+                // Try to fetch from database first
+                if (typeof fetchLostItemsFromDB === 'function') {
+                    console.log('Calling fetchLostItemsFromDB...');
+                    await fetchLostItemsFromDB();
+                    console.log('Fetch completed. window.MOCK_LOST_ITEMS length:', window.MOCK_LOST_ITEMS.length);
+                }
+
+                if (!window.MOCK_LOST_ITEMS || window.MOCK_LOST_ITEMS.length === 0) {
+                    console.log('No items found');
+                    container.innerHTML = "<h3 style='color:#a855f7; padding:20px'>No lost items found in database</h3>";
+                    return;
+                }
+
+                allItems = window.MOCK_LOST_ITEMS;
+                renderItems();
+
+                // Setup search functionality
+                const searchInput = document.getElementById('search-input');
+                searchInput.addEventListener('input', (e) => {
+                    currentSearch = e.target.value;
+                    renderItems();
+                });
+
+                // Setup filter tabs
+                const tabs = document.querySelectorAll('.tab-item');
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        currentFilter = tab.getAttribute('data-filter');
+                        renderItems();
+                    });
+                });
+
+            } catch (error) {
+                console.error('Fatal error:', error);
+                container.innerHTML = "<h3 style='color:red; padding:20px'>Error loading items: " + error.message + "</h3>";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", initializeAndLoad);
+    </script>
+
+</body>
+
+</html>

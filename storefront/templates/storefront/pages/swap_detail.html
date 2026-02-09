@@ -1,0 +1,111 @@
+{% extends "storefront/pages/base_seo.html" %}
+
+{% block header_meta %}
+<div class="meta">
+    <span>🔄 SWAP OFFER</span>
+    <span>📅 Posted {{ swap.created_at|date:"j F Y" }}</span>
+    <span>💰 FREE (Trade)</span>
+</div>
+{% endblock %}
+
+{% block main_content %}
+<!-- Swap Item Detail -->
+<article>
+    <!-- Featured Image -->
+    {% if swap.image %}
+    <div class="image-container">
+        <img src="{{ swap.image }}" alt="{{ swap.title }}" loading="lazy" style="max-height: 500px;">
+    </div>
+    {% else %}
+    <div class="image-container" style="background: #2d1b4e; padding: 60px; border-radius: 8px; color: #8b5cf6;">
+        📷 No image provided
+    </div>
+    {% endif %}
+
+    <!-- Item Offering -->
+    <div
+        style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #c084fc;">
+        <h2 style="color: #c084fc; margin-bottom: 10px;">📦 I'm Offering</h2>
+        <p style="font-size: 1.3rem; color: #a855f7; font-weight: 600; margin-bottom: 10px;">
+            {{ swap.title }}
+        </p>
+        <p style="color: #d1d5db;">
+            {{ swap.description }}
+        </p>
+        {% if swap.condition %}
+        <p style="color: #8b5cf6; margin-top: 10px;">
+            <strong>Condition:</strong> {{ swap.condition }}
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- Item Wanted -->
+    {% if swap.wanted_item %}
+    <div
+        style="background: #0f0f1a; padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #10b981;">
+        <h2 style="color: #10b981; margin-bottom: 10px;">🎯 I Want</h2>
+        <p style="font-size: 1.3rem; color: #10b981; font-weight: 600;">
+            {{ swap.wanted_item }}
+        </p>
+        {% if swap.wanted_details %}
+        <p style="color: #d1d5db; margin-top: 10px;">
+            {{ swap.wanted_details }}
+        </p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Additional Details -->
+    <div style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0;">
+        {% if swap.location %}
+        <div style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 15px;">
+            <strong>📍 Location:</strong> {{ swap.location }}
+        </div>
+        {% endif %}
+        <div style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 15px;">
+            <strong>📅 Posted:</strong> {{ swap.created_at|date:"F j, Y" }}
+        </div>
+        {% if swap.views %}
+        <div style="color: #8b5cf6; font-size: 0.9rem;">
+            <strong>👁️ Views:</strong> {{ swap.views }}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <a href="https://play.google.com/store/apps/details?id=com.nexus.marketplace" class="btn btn-primary">
+            🔗 Message on Nexus App
+        </a>
+        <a href="/swap/" class="btn btn-secondary">
+            Browse More Swaps
+        </a>
+    </div>
+
+    <!-- How Swaps Work -->
+    <div
+        style="background: #2d1b4e; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #a855f7;">
+        <h3 style="color: #a855f7; margin-bottom: 10px;">🔄 How Swapping Works</h3>
+        <ol style="color: #d1d5db; padding-left: 20px;">
+            <li>Find an item you want to swap</li>
+            <li>Message the seller on the Nexus app</li>
+            <li>Agree on the trade details</li>
+            <li>Meet in a safe, public place</li>
+            <li>Exchange items - No money needed!</li>
+        </ol>
+    </div>
+
+    <!-- Safety Tips -->
+    <div
+        style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f59e0b;">
+        <h3 style="color: #f59e0b; margin-bottom: 10px;">🛡️ Swap Safety Tips</h3>
+        <ul style="color: #d1d5db; padding-left: 20px;">
+            <li>Always meet in public places</li>
+            <li>Inspect the item carefully before swapping</li>
+            <li>Bring someone with you for safety</li>
+            <li>Be honest about your item's condition</li>
+            <li>Take photos before and after the swap</li>
+        </ul>
+    </div>
+</article>
+{% endblock %}

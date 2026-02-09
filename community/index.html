@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Community</title>
+    <link rel="icon" type="image/png" href="../assets/icon.png">
+    <link rel="stylesheet" href="../assets/css/google-dark.css">
+    <style>
+        /* Main Theme Colors */
+        body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        .google-header {
+            background: #1a0f2e !important;
+            border-bottom: 1px solid #2d1b4e !important;
+        }
+
+        .search-bar-container {
+            background: #2d1b4e !important;
+            border: 1px solid #4a3a6e !important;
+            height: 50px !important;
+            padding: 10px 16px !important;
+            border-radius: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+        }
+
+        .search-bar-container input {
+            background: #2d1b4e !important;
+            color: #ffffff !important;
+            border: 1px solid #4a3a6e !important;
+            font-size: 15px !important;
+            height: 30px !important;
+            flex: 1 !important;
+            padding: 6px 12px !important;
+            border-radius: 6px !important;
+        }
+
+        .search-bar-container input::placeholder {
+            color: #8b5cf6 !important;
+        }
+
+        .search-bar-container svg {
+            color: #a855f7 !important;
+            width: 18px !important;
+            height: 18px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .search-tabs {
+            padding: 0 12px;
+        }
+
+        .tab-item {
+            color: #b0b0b0 !important;
+            border-bottom: 2px solid transparent !important;
+            padding: 10px 8px !important;
+            font-size: 13px !important;
+        }
+
+        .tab-item.active {
+            color: #a855f7 !important;
+            border-bottom-color: #a855f7 !important;
+        }
+
+        .tab-item:hover {
+            color: #ffffff !important;
+        }
+
+        /* Search Result Cards - style similarly to Lost & Found */
+        .google-result {
+            background: #0f0a1a !important;
+            border: 1px solid #2d1b4e !important;
+            border-radius: 12px !important;
+            margin-bottom: 16px !important;
+            padding: 16px !important;
+            display: block !important;
+            width: 100% !important;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        .google-result:hover {
+            transform: translateY(-4px);
+            transition: transform 0.18s ease;
+            border-color: #a855f7 !important;
+        }
+
+        /* Inner layout adjustments */
+        .google-result>div[style*="display: flex"] {
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .google-result img {
+            border-radius: 8px;
+            width: 160px;
+            height: 120px;
+            object-fit: cover;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .result-url {
+            color: #a855f7 !important;
+        }
+
+        .result-title {
+            color: #a855f7 !important;
+            font-size: 1.1rem !important;
+            font-weight: 600 !important;
+            margin: 6px 0 !important;
+        }
+
+        .result-description {
+            color: #b0b0b0 !important;
+        }
+
+        .result-meta {
+            color: #8b5cf6 !important;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f0a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2d1b4e;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a3a6e;
+        }
+
+        /* Search Functionality */
+        .search-input {
+            cursor: text !important;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .google-header {
+                padding: 12px 8px 0 !important;
+            }
+
+            .search-bar-container {
+                padding: 8px 10px !important;
+                border-radius: 12px;
+            }
+
+            .search-input {
+                font-size: 15px !important;
+            }
+
+            .search-tabs {
+                gap: 8px;
+            }
+
+            .site-info {
+                gap: 8px;
+            }
+
+            .site-icon-circle {
+                width: 36px;
+                height: 36px;
+            }
+
+            .google-result img {
+                width: 110px;
+                height: 86px;
+            }
+
+            .result-title {
+                font-size: 1rem !important;
+            }
+        }
+
+        /* Scroll Hide Header */
+        .google-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .google-header.hide {
+            transform: translateY(-100%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="google-header">
+        <div class="search-bar-container">
+            <svg class="search-icon" viewBox="0 0 24 24">
+                <path
+                    d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                </path>
+            </svg>
+
+            <input type="text" class="search-input" id="search-input" placeholder="Search community...">
+        </div>
+
+        <div class="search-tabs">
+            <div class="tab-item active" data-category="all">All</div>
+            <div class="tab-item" data-category="request">Requests</div>
+            <div class="tab-item" data-category="discussion">Discussions</div>
+            <div class="tab-item" data-category="event">Events</div>
+            <div class="tab-item" data-category="question">Questions</div>
+            <div class="tab-item" data-category="recommendation">Recommendations</div>
+            <div class="tab-item" data-category="announcement">Announcements</div>
+        </div>
+    </div>
+
+    <div id="search-result-target" style="padding-top: 10px; padding-bottom: 40px;">
+    </div>
+
+    <script src="../js/community-data.js" onerror="alert('Error: Could not find js/community-data.js')"></script>
+    <script src="../js/community-widgets.js" onerror="alert('Error: Could not find js/community-widgets.js')"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        let currentCategory = 'all';
+        let currentSearchQuery = '';
+        let allPosts = [];
+        let supabaseClient = null;
+
+        // Wait for Supabase to load, then initialize
+        function initSupabase() {
+            if (window.supabase && window.supabase.createClient) {
+                supabaseClient = window.supabase.createClient(
+                    'https://tdyebwcyamsqnnivynuk.supabase.co',
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkeWVid2N5YW1zcW5uaXZ5bnVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5ODY3NzQsImV4cCI6MjA4MzM0Njc3NH0.m_3QY9xMqohJRFalwf9PFRMDDHy-_d3gLTBC_U9tcYQ'
+                );
+                console.log('Supabase initialized:', supabaseClient ? 'success' : 'failed');
+            } else {
+                setTimeout(initSupabase, 100);
+            }
+        }
+
+        initSupabase();
+
+        // Fetch posts from Supabase
+        async function fetchPosts() {
+            try {
+                console.log('Fetching posts...');
+
+                // First try to use data from community-data.js
+                if (window.COMMUNITY_POSTS && window.COMMUNITY_POSTS.length > 0) {
+                    console.log('Using COMMUNITY_POSTS from community-data.js');
+                    allPosts = window.COMMUNITY_POSTS;
+                    renderPosts();
+                    return;
+                }
+
+                if (!supabaseClient) {
+                    console.error('Supabase client not initialized');
+                    document.getElementById('search-result-target').innerHTML = '<p style="color: red; padding: 20px;">Supabase not initialized</p>';
+                    return;
+                }
+
+                console.log('Fetching posts from Supabase...');
+                const { data, error } = await supabaseClient
+                    .from('community_posts')
+                    .select('id, title, body, category, image_url, created_at, author_id, view_count, reply_count')
+                    .order('created_at', { ascending: false });
+
+                console.log('Supabase response - Data:', data);
+                console.log('Supabase response - Error:', error);
+
+                if (error) {
+                    console.error('Error fetching posts:', error);
+                    document.getElementById('search-result-target').innerHTML = `<p style="color: red; padding: 20px;">Error: ${error.message}</p>`;
+                    return;
+                }
+
+                if (!data || data.length === 0) {
+                    console.warn('No data returned from Supabase');
+                    // Use mock data as fallback
+                    if (window.COMMUNITY_POSTS) {
+                        allPosts = window.COMMUNITY_POSTS;
+                    } else {
+                        document.getElementById('search-result-target').innerHTML = '<p style="color: #a855f7; padding: 20px;">No posts found in database</p>';
+                    }
+                    return;
+                }
+
+                // Format posts for display
+                allPosts = data.map(post => ({
+                    id: post.id,
+                    title: post.title,
+                    body: post.body,
+                    category: post.category,
+                    author: `User ${post.author_id?.substring(0, 8)}` || 'Anonymous',
+                    image: post.image_url,
+                    createdAt: new Date(post.created_at).toLocaleDateString(),
+                    views: post.view_count || 0,
+                    replies: post.reply_count || 0
+                }));
+
+                console.log('Processed posts:', allPosts);
+                console.log('Total posts:', allPosts.length);
+                renderPosts();
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('search-result-target').innerHTML = `<p style="color: red; padding: 20px;">Error: ${error.message}</p>`;
+            }
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('search-result-target');
+
+            try {
+                // Debug: Log available categories
+                const availableCategories = [...new Set(allPosts.map(p => p.category))];
+                console.log('Available categories in data:', availableCategories);
+                console.log('Filtering by category:', currentCategory);
+
+                // Filter posts based on category and search query
+                let filteredPosts = allPosts.filter(post => {
+                    const matchCategory = currentCategory === 'all' ||
+                        (post.category && post.category.toLowerCase() === currentCategory.toLowerCase());
+                    const matchSearch = currentSearchQuery === '' ||
+                        post.title.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                        post.body.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                        post.author.toLowerCase().includes(currentSearchQuery.toLowerCase());
+
+                    return matchCategory && matchSearch;
+                });
+
+                console.log('Filtered posts count:', filteredPosts.length);
+
+                if (filteredPosts.length === 0) {
+                    container.innerHTML = `<h3 style='color:#a855f7; padding:20px; text-align:center;'>No results found for "${currentSearchQuery || 'this category'}"</h3>`;
+                    return;
+                }
+
+                // Create HTML for each post with Google search result style
+                const allHtml = filteredPosts.map(post => `
+                <div class="google-result">
+                    <div style="display: flex; gap: 16px; align-items: flex-start;">
+                        <div style="flex: 1;">
+                            <div style="font-size: 0.85rem; color: #8b5cf6; margin-bottom: 4px; line-height: 1.2;">
+                                Nexus Community · ${post.createdAt}
+                            </div>
+                            <h3 class="result-title" style="margin: 4px 0; font-size: 1.25rem; font-weight: 500; color: #a855f7; cursor: pointer; line-height: 1.3;" onmouseover="this.style.color='#c084fc'" onmouseout="this.style.color='#a855f7'" onclick="window.location.href='/community/detail.html?id=${post.id}&category=${post.category}'; return false;">
+                                ${post.title}
+                            </h3>
+                            <p class="result-description" style="margin: 12px 0; font-size: 0.9rem; line-height: 1.6; color: #b0b0b0;">
+                                ${post.body.substring(0, 200)}${post.body.length > 200 ? '...' : ''}
+                            </p>
+                            <div style="display: flex; gap: 24px; font-size: 0.85rem; color: #8b5cf6; padding-top: 8px;">
+                                <span>👁️ ${post.views} views</span>
+                                <span>💬 ${post.replies} replies</span>
+                                <span>${post.author}</span>
+                            </div>
+                        </div>
+                        ${post.image ? `
+                            <div style="flex-shrink: 0;">
+                                <img src="${post.image}" alt="${post.title}" style="width: 160px; height: 120px; object-fit: cover; border-radius: 8px; cursor: pointer;" onclick="window.location.href='/community/detail.html?id=${post.id}&category=${post.category}'; return false;">
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join("");
+
+                container.innerHTML = allHtml;
+
+            } catch (error) {
+                console.error(error);
+                alert("Error rendering feed: " + error.message);
+            }
+        }
+
+        // Scroll detection for hide/show header
+        let lastScrollTop = 0;
+        const header = document.querySelector('.google-header');
+
+        window.addEventListener('scroll', () => {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScroll > lastScrollTop) {
+                // Scrolling DOWN
+                header.classList.add('hide');
+            } else {
+                // Scrolling UP
+                header.classList.remove('hide');
+            }
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', (e) => {
+                currentSearchQuery = e.target.value;
+                renderPosts();
+            });
+
+            // Tab filtering
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentCategory = tab.getAttribute('data-category');
+                    renderPosts();
+                });
+            });
+
+            // Setup scroll detection for header
+            const header = document.querySelector('.google-header');
+            let lastScrollTop = 0;
+
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+                if (scrollTop > lastScrollTop && scrollTop > 100) {
+                    // Scrolling down
+                    header.style.transform = 'translateY(-100%)';
+                    header.style.transition = 'transform 0.3s ease-out';
+                } else {
+                    // Scrolling up
+                    header.style.transform = 'translateY(0)';
+                    header.style.transition = 'transform 0.3s ease-in';
+                }
+
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            });
+
+            // Fetch posts from Supabase
+            fetchPosts();
+        });
+    </script>
+
+</body>
+
+</html>

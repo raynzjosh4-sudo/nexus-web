@@ -1,0 +1,165 @@
+{% extends "storefront/pages/base_seo.html" %}
+
+{% block header_meta %}
+<div class="meta">
+    <span>🏪 Business Profile</span>
+    <span>📦 {{ products|length }} Products</span>
+    <span>📍 Kampala, Uganda</span>
+</div>
+{% endblock %}
+
+{% block main_content %}
+<!-- Business Profile -->
+<article>
+    <!-- Business Header -->
+    <div style="display: flex; gap: 30px; margin-bottom: 40px; flex-wrap: wrap; align-items: start;">
+        {% if business.logo_url %}
+        <img src="{{ business.logo_url }}" alt="{{ business.business_name }}"
+            style="width: 150px; height: 150px; object-fit: contain; background: #1a0f2e; border-radius: 8px; padding: 10px;">
+        {% else %}
+        <div
+            style="width: 150px; height: 150px; background: #1a0f2e; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+            🏪
+        </div>
+        {% endif %}
+
+        <div style="flex: 1;">
+            <h1 style="color: #a855f7; margin-bottom: 10px; font-size: 2rem;">
+                {{ business.business_name }}
+            </h1>
+            {% if business.description %}
+            <p style="color: #d1d5db; font-size: 1.05rem; margin-bottom: 20px;">
+                {{ business.description }}
+            </p>
+            {% endif %}
+
+            <!-- Business Details -->
+            <div style="color: #8b5cf6; font-size: 0.95rem;">
+                {% if business.phone %}
+                <p>📞 <strong>Phone:</strong> <a href="tel:{{ business.phone }}"
+                        style="color: #a855f7; text-decoration: none;">{{ business.phone }}</a></p>
+                {% endif %}
+                {% if business.email %}
+                <p>📧 <strong>Email:</strong> <a href="mailto:{{ business.email }}"
+                        style="color: #a855f7; text-decoration: none;">{{ business.email }}</a></p>
+                {% endif %}
+                {% if business.address %}
+                <p>📍 <strong>Location:</strong> {{ business.address }}, Kampala</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Business Stats -->
+    <div style="background: #1a0f2e; padding: 30px; border-radius: 8px; margin: 30px 0;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+            <div style="text-align: center;">
+                <div style="font-size: 2rem; color: #a855f7; font-weight: 600; margin-bottom: 5px;">
+                    {{ products|length }}
+                </div>
+                <div style="color: #8b5cf6;">Products Listed</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2rem; color: #a855f7; font-weight: 600; margin-bottom: 5px;">
+                    ⭐
+                </div>
+                <div style="color: #8b5cf6;">Trusted Seller</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2rem; color: #a855f7; font-weight: 600; margin-bottom: 5px;">
+                    ✓
+                </div>
+                <div style="color: #8b5cf6;">Verified</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Business -->
+    {% if business.about %}
+    <div
+        style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #a855f7;">
+        <h3 style="color: #a855f7; margin-bottom: 15px;">About {{ business.business_name }}</h3>
+        <p style="color: #d1d5db; line-height: 1.8;">
+            {{ business.about }}
+        </p>
+    </div>
+    {% endif %}
+
+    <!-- Opening Hours -->
+    {% if business.opening_hours %}
+    <div style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0;">
+        <h3 style="color: #a855f7; margin-bottom: 15px;">⏰ Opening Hours</h3>
+        <div style="color: #d1d5db; display: grid; gap: 8px;">
+            {% for day, hours in business.opening_hours.items %}
+            <div style="display: flex; justify-content: space-between;">
+                <span>{{ day }}:</span>
+                <strong>{{ hours }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Featured Products -->
+    {% if products %}
+    <div style="margin-top: 40px;">
+        <h2 style="color: #a855f7; margin-bottom: 20px;">🛍️ Featured Products</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px;">
+            {% for product in products|slice:":12" %}
+            <div
+                style="background: #1a0f2e; border: 1px solid #2d1b4e; border-radius: 8px; overflow: hidden; transition: all 0.3s;">
+                {% if product.image %}
+                <img src="{{ product.image }}" alt="{{ product.title }}"
+                    style="width: 100%; height: 150px; object-fit: cover; background: #2d1b4e;">
+                {% else %}
+                <div
+                    style="width: 100%; height: 150px; background: #2d1b4e; display: flex; align-items: center; justify-content: center; color: #8b5cf6;">
+                    📷
+                </div>
+                {% endif %}
+                <div style="padding: 15px;">
+                    <h3 style="color: #a855f7; margin-bottom: 5px; font-size: 0.95rem;">
+                        {{ product.title|truncatewords:5 }}
+                    </h3>
+                    {% if product.price %}
+                    <p style="color: #10b981; font-weight: 600; margin-bottom: 5px;">
+                        UGX {{ product.price|floatformat:0 }}
+                    </p>
+                    {% endif %}
+                    <p style="color: #8b5cf6; font-size: 0.9rem;">{{ product.category }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="action-buttons" style="margin-top: 40px;">
+        {% if business.phone %}
+        <a href="tel:{{ business.phone }}" class="btn btn-primary">
+            📞 Call Now
+        </a>
+        {% endif %}
+        <a href="https://play.google.com/store/apps/details?id=com.nexus.marketplace" class="btn btn-primary">
+            🔗 Open Nexus App
+        </a>
+        <a href="/" class="btn btn-secondary">
+            Back to Marketplace
+        </a>
+    </div>
+
+    <!-- Why Choose Us -->
+    <div
+        style="background: #2d1b4e; padding: 20px; border-radius: 8px; margin-top: 40px; border-left: 4px solid #a855f7;">
+        <h3 style="color: #a855f7; margin-bottom: 15px;">✓ Why Choose {{ business.business_name }}</h3>
+        <ul style="color: #d1d5db; padding-left: 20px;">
+            <li>Wide selection of products</li>
+            <li>Competitive prices</li>
+            <li>Verified seller badge</li>
+            <li>Fast delivery available</li>
+            <li>Secure transactions on Nexus</li>
+        </ul>
+    </div>
+</article>
+{% endblock %}

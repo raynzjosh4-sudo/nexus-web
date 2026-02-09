@@ -83,6 +83,29 @@
             {% endfor %}
         </div>
     </div>
+
+    {# --- 3. SECTION NAVIGATION --- #}
+    <div class="sections-navigation">
+        <h3 class="sections-title">Explore Our Sections</h3>
+        <div class="sections-grid">
+            <a href="/swap/" class="section-btn section-btn-swap">
+                <span class="btn-icon">🔄</span>
+                <span class="btn-text">Swap</span>
+            </a>
+            <a href="/community/" class="section-btn section-btn-community">
+                <span class="btn-icon">👥</span>
+                <span class="btn-text">Community</span>
+            </a>
+            <a href="/lost-and-found/" class="section-btn section-btn-lost">
+                <span class="btn-icon">🔍</span>
+                <span class="btn-text">Lost & Found</span>
+            </a>
+            <a href="/help/" class="section-btn section-btn-help">
+                <span class="btn-icon">❓</span>
+                <span class="btn-text">Help</span>
+            </a>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -171,6 +194,114 @@
         to {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+
+    /* --- SECTIONS NAVIGATION STYLING --- */
+    .sections-navigation {
+        max-width: 800px;
+        margin: 60px auto 40px;
+        padding: 0 16px;
+    }
+
+    .sections-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--nexus-text, #ffffff);
+        margin-bottom: 24px;
+        text-align: center;
+        letter-spacing: -0.5px;
+    }
+
+    .sections-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 16px;
+    }
+
+    .section-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 24px 16px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+        border: 1px solid var(--nexus-border, rgba(255, 255, 255, 0.08));
+        border-radius: 12px;
+        text-decoration: none;
+        color: var(--nexus-text, #ffffff);
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .section-btn:hover {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+        border-color: var(--nexus-accent, rgba(255, 255, 255, 0.15));
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-btn:active {
+        transform: translateY(-2px);
+    }
+
+    .btn-icon {
+        font-size: 2rem;
+        display: block;
+    }
+
+    .btn-text {
+        display: block;
+        font-size: 0.9rem;
+        color: var(--nexus-text-muted, #9ca3af);
+        transition: color 0.3s ease;
+    }
+
+    .section-btn:hover .btn-text {
+        color: var(--nexus-text, #ffffff);
+    }
+
+    /* Individual button color accents */
+    .section-btn-swap:hover {
+        border-color: #06b6d4;
+    }
+
+    .section-btn-community:hover {
+        border-color: #8b5cf6;
+    }
+
+    .section-btn-lost:hover {
+        border-color: #f97316;
+    }
+
+    .section-btn-help:hover {
+        border-color: #10b981;
+    }
+
+    @media (max-width: 480px) {
+        .sections-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .sections-title {
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+        }
+
+        .section-btn {
+            padding: 18px 12px;
+            gap: 6px;
+        }
+
+        .btn-icon {
+            font-size: 1.5rem;
+        }
+
+        .btn-text {
+            font-size: 0.85rem;
         }
     }
 </style>

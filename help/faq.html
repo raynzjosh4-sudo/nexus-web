@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Nexus FAQ and Help Center. Learn about safe swapping, security tips, how to use Nexus, and get answers to common questions.">
+    <meta name="keywords" content="FAQ, help, support, how to swap, safety tips, Nexus help center">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nexus">
+    <title>Help & FAQ - Nexus</title>
+    <link rel="icon" type="image/png" href="../assets/icon.png">
+    <link rel="stylesheet" href="../assets/css/google-dark.css">
+    <style>
+        body {
+            background: #000000;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #a855f7;
+            margin-bottom: 12px;
+        }
+        .page-subtitle {
+            color: #8b5cf6;
+            font-size: 1.1rem;
+        }
+        .search-bar {
+            background: #1a0f2e;
+            border: 1px solid #2d1b4e;
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .search-bar input::placeholder {
+            color: #666;
+        }
+        .search-bar input:focus {
+            outline: none;
+        }
+        .faq-section {
+            margin-bottom: 48px;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #a855f7;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #2d1b4e;
+        }
+        .faq-item {
+            background: #1a0f2e;
+            border: 1px solid #2d1b4e;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #a855f7;
+        }
+        .faq-question:hover {
+            background: #2d1b4e;
+        }
+        .faq-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            transition: max-height 0.3s ease-in;
+        }
+        .faq-answer-content {
+            padding: 0 20px 20px;
+            color: #b0b0b0;
+            line-height: 1.7;
+        }
+        .answer-list {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        .answer-list li {
+            margin-bottom: 8px;
+        }
+        .tip-box {
+            background: rgba(168, 85, 247, 0.1);
+            border-left: 3px solid #a855f7;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+            color: #b0b0b0;
+        }
+        .tip-box strong {
+            color: #a855f7;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        .shimmer {
+            background-color: #2d1b4e;
+            background-image: linear-gradient(90deg, #2d1b4e 0%, #4a3a6e 20%, #2d1b4e 40%, #2d1b4e 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        .skeleton-section {
+            margin-bottom: 48px;
+        }
+        
+        .skeleton-section-title {
+            height: 32px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            width: 30%;
+        }
+        
+        .skeleton-item {
+            background: #1a0f2e;
+            border: 1px solid #2d1b4e;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            padding: 20px;
+            height: 60px;
+        }
+    </style>
+    <!-- JSON-LD FAQ Schema for SEO -->
+    <script type="application/ld+json" id="faq-schema">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": []
+    }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-title">Help & Support</h1>
+        <p class="page-subtitle">Find answers to common questions and learn how to use Nexus safely</p>
+    </div>
+
+    <div class="search-bar">
+        <span>🔍</span>
+        <input type="text" id="search-input" placeholder="Search help articles...">
+    </div>
+
+    <div id="faq-container">
+        <div class="skeleton-section">
+            <div class="skeleton-section-title shimmer"></div>
+            <div class="skeleton-item shimmer"></div>
+            <div class="skeleton-item shimmer"></div>
+            <div class="skeleton-item shimmer"></div>
+        </div>
+        <div class="skeleton-section">
+            <div class="skeleton-section-title shimmer"></div>
+            <div class="skeleton-item shimmer"></div>
+            <div class="skeleton-item shimmer"></div>
+            <div class="skeleton-item shimmer"></div>
+        </div>
+        <div class="skeleton-section">
+            <div class="skeleton-section-title shimmer"></div>
+            <div class="skeleton-item shimmer"></div>
+            <div class="skeleton-item shimmer"></div>
+            <div class="skeleton-item shimmer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const faqData = [
+        {
+            category: "Getting Started",
+            items: [
+                {
+                    question: "What is Nexus?",
+                    answer: "Nexus is a community marketplace platform that connects people to swap items, find lost belongings, ask for recommendations, and discover local businesses. It's safe, secure, and easy to use."
+                },
+                {
+                    question: "How do I create an account?",
+                    answer: "Download the Nexus app from Google Play or the App Store, or visit our website. Click 'Sign Up' and enter your email, and create a password. Verify your email and you're ready to go!"
+                },
+                {
+                    question: "Is Nexus available in my location?",
+                    answer: "Currently, Nexus is available in Kampala, Uganda. We are expanding to other cities soon. Check our website or app for updates on availability in your area."
+                }
+            ]
+        },
+        {
+            category: "Swapping Items",
+            items: [
+                {
+                    question: "How do I list an item for swap?",
+                    answer: "Open Nexus, go to 'Swap' section, click 'Create New Swap', add photos, title, description of what you have, and what you're looking for. Then publish it!"
+                },
+                {
+                    question: "How do I make a swap offer?",
+                    answer: "Find an item you're interested in, click 'Make Offer', select your item from your collection, add a message, and submit. The other user will receive your offer and can accept or decline."
+                },
+                {
+                    question: "Is swapping safe?",
+                    answer: "Yes! Follow these safety tips:<ul class='answer-list'><li>Meet in public places during daytime</li><li>Verify the other user's profile and ratings</li><li>Inspect items before swapping</li><li>Let a friend know where you're going</li><li>Trust your instincts</li></ul>"
+                },
+                {
+                    question: "Can I cancel a swap?",
+                    answer: "If the swap hasn't been completed, you can cancel by going to the transaction details and clicking 'Cancel'. Once items are exchanged, it's final."
+                }
+            ]
+        },
+        {
+            category: "Lost & Found",
+            items: [
+                {
+                    question: "How do I report a lost item?",
+                    answer: "Go to 'Lost & Found', click 'Report Lost Item', provide details like when/where you lost it, add a photo if possible, and describe distinguishing features. This helps people recognize and return your item."
+                },
+                {
+                    question: "How do I report a found item?",
+                    answer: "Go to 'Lost & Found', click 'Report Found Item', describe what you found, where you found it, and upload clear photos. Include any identifying information."
+                },
+                {
+                    question: "How can I claim a found item?",
+                    answer: "If you see your lost item listed, click the 'Claim This Item' button. You may need to verify ownership by describing specific details about the item."
+                },
+                {
+                    question: "Is there a reward for returning lost items?",
+                    answer: "Some users offer rewards for lost items. Rewards are arranged directly between the finder and the owner. Nexus facilitates the connection but doesn't handle reward transactions."
+                }
+            ]
+        },
+        {
+            category: "Safety & Security",
+            items: [
+                {
+                    question: "How do I protect my account?",
+                    answer: "Use a strong password, enable two-factor authentication if available, don't share your login details, and always log out on shared devices. Monitor your account activity regularly."
+                },
+                {
+                    question: "Is my personal information safe?",
+                    answer: "Yes. We use industry-standard encryption to protect your data. We never share your personal information with third parties without your consent. Read our privacy policy for more details."
+                },
+                {
+                    question: "What should I do if I encounter suspicious activity?",
+                    answer: "If you notice suspicious behavior, report the user immediately by going to their profile and selecting 'Report User'. Include details of the suspicious activity. Our team will investigate."
+                },
+                {
+                    question: "How do ratings and reviews work?",
+                    answer: "After each transaction, both parties can rate each other from 1-5 stars and leave a comment. Ratings help build trust in the community and are visible on user profiles."
+                }
+            ]
+        },
+        {
+            category: "Community & Discussions",
+            items: [
+                {
+                    question: "What can I post in the community section?",
+                    answer: "Post questions, ask for recommendations, share information, seek advice on where to find things, discuss local events, or start discussions about topics relevant to the community."
+                },
+                {
+                    question: "Can I edit or delete my posts?",
+                    answer: "Yes. You can edit or delete any post you've created by going to the post and selecting 'Edit' or 'Delete'. Deleted posts cannot be recovered."
+                },
+                {
+                    question: "How are recommendations added to community posts?",
+                    answer: "Any Nexus user can add a recommendation by clicking 'Add Recommendation' on a community post. You can suggest businesses, services, or items that answer the user's question."
+                }
+            ]
+        },
+        {
+            category: "Businesses",
+            items: [
+                {
+                    question: "How do I find businesses on Nexus?",
+                    answer: "Use the search bar or browse by category. You can see business profiles with contact info, location, operating hours, and products/services they offer."
+                },
+                {
+                    question: "Can I create a business profile?",
+                    answer: "Yes. If you're a business owner, go to Settings > Business Profile and fill in your details. Your profile will help customers discover and connect with you."
+                },
+                {
+                    question: "How do I contact a business?",
+                    answer: "Visit the business profile and use the provided contact methods - call, send a message via in-app chat, or visit their location. Some businesses may offer special features like online booking."
+                }
+            ]
+        }
+    ];
+
+    function generateFAQSchema() {
+        const mainEntity = [];
+        faqData.forEach(section => {
+            section.items.forEach(item => {
+                mainEntity.push({
+                    "@type": "Question",
+                    "name": item.question,
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": item.answer.replace(/<[^>]*>/g, '') // Strip HTML for schema
+                    }
+                });
+            });
+        });
+        
+        const schema = {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": mainEntity
+        };
+        
+        const schemaElement = document.getElementById('faq-schema');
+        if (schemaElement) {
+            schemaElement.textContent = JSON.stringify(schema);
+        }
+    }
+
+
+    function renderFAQ() {
+        const container = document.getElementById('faq-container');
+        
+        container.innerHTML = faqData.map(section => `
+            <div class="faq-section">
+                <h2 class="section-title">${section.category}</h2>
+                ${section.items.map(item => `
+                    <div class="faq-item" data-question="${item.question.toLowerCase()}">
+                        <div class="faq-question">
+                            <span>${item.question}</span>
+                            <span class="faq-icon">⌄</span>
+                        </div>
+                        <div class="faq-answer">
+                            <div class="faq-answer-content">${item.answer}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `).join('');
+        
+        // Add click handlers
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', function() {
+                item.classList.toggle('active');
+            });
+        });
+    }
+
+    function setupSearch() {
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.faq-item');
+            
+            items.forEach(item => {
+                if (query === '' || item.dataset.question.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        renderFAQ();
+        setupSearch();
+        generateFAQSchema();
+        
+        document.title = "Help & FAQ - Nexus";
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) {
+            metaDesc = document.createElement('meta');
+            metaDesc.setAttribute('name', 'description');
+            document.head.appendChild(metaDesc);
+        }
+        metaDesc.setAttribute('content', 'Get help with Nexus - FAQs, safety tips, how to swap, and support');
+    });
+</script>
+
+</body>
+</html>

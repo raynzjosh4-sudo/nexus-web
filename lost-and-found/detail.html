@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" id="meta-description" content="Find lost and found items on Nexus. Report or claim lost belongings including documents, devices, accessories and pets.">
+    <meta name="keywords" content="lost items, found items, lost and found, lost ID, lost phone, Kampala Uganda">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Nexus">
+    <meta property="og:title" id="og-title" content="Lost Item Details - Nexus">
+    <meta property="og:description" id="og-description" content="Find lost and found items on Nexus">
+    <meta property="og:image" id="og-image" content="">
+    <meta property="og:url" id="og-url" content="">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twitter-title" content="Lost Item Details - Nexus">
+    <meta name="twitter:description" id="twitter-description" content="Find lost and found items on Nexus">
+    <meta name="twitter:image" id="twitter-image" content="">
+    <title id="page-title">Lost Item Details - Nexus</title>
+    <link rel="icon" type="image/png" href="../assets/icon.png">
+    <link rel="stylesheet" href="../assets/css/google-dark.css">
+    <style>
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        .shimmer {
+            background-color: #2d1b4e;
+            background-image: linear-gradient(90deg, #2d1b4e 0%, #4a3a6e 20%, #2d1b4e 40%, #2d1b4e 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        .skeleton-title {
+            height: 32px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .skeleton-text {
+            height: 16px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .skeleton-badge {
+            height: 36px;
+            width: 120px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-right: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .skeleton-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+        
+        body {
+            background: #000000;
+            color: #ffffff;
+        }
+        .detail-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .detail-header {
+            background: #1a0f2e;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid #2d1b4e;
+            margin-bottom: 24px;
+        }
+        .detail-image {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background: #2d1b4e;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            object-fit: cover;
+            display: block;
+        }
+        .detail-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #a855f7;
+        }
+        .detail-meta {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .meta-badge {
+            background: #2d1b4e;
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid #4a3a6e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section {
+            background: #0f0a1a;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #2d1b4e;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #a855f7;
+            margin-bottom: 16px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #2d1b4e;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            color: #8b5cf6;
+            font-weight: 500;
+        }
+        .info-value {
+            color: #b0b0b0;
+            word-break: break-word;
+            text-align: right;
+            max-width: 50%;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .status-lost {
+            background: rgba(217, 48, 37, 0.2);
+            color: #f28482;
+            border: 1px solid #d93025;
+        }
+        .status-found {
+            background: rgba(30, 142, 62, 0.2);
+            color: #81c995;
+            border: 1px solid #1e8e3e;
+        }
+        .status-recovered {
+            background: rgba(168, 85, 247, 0.2);
+            color: #d8b4fe;
+            border: 1px solid #a855f7;
+        }
+        .contact-section {
+            background: #2d1b4e;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #4a3a6e;
+            margin-bottom: 20px;
+        }
+        .contact-button {
+            display: inline-block;
+            background: #a855f7;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 12px;
+            border: none;
+            cursor: pointer;
+        }
+        .contact-button:hover {
+            background: #c084fc;
+            transform: translateY(-2px);
+        }
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #a855f7;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .back-button:hover {
+            color: #c084fc;
+        }
+        .attributes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .attribute-item {
+            background: #2d1b4e;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #4a3a6e;
+        }
+        .attribute-key {
+            color: #8b5cf6;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .attribute-value {
+            color: #b0b0b0;
+            margin-top: 4px;
+            word-break: break-word;
+        }
+    </style>
+    <!-- JSON-LD Schema for SEO -->
+    <script type="application/ld+json" id="schema-placeholder">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "mainEntity": {
+            "@type": "Report",
+            "name": "",
+            "description": "",
+            "image": "",
+            "datePublished": "",
+            "dateModified": "",
+            "author": {
+                "@type": "Person",
+                "name": ""
+            },
+            "keywords": "lost and found, item report, Kampala"
+        }
+    }
+    </script>
+</head>
+<body>
+
+<a href="index.html" class="back-button">← Back to Lost Items</a>
+
+<div class="detail-container">
+    <div id="detail-content">
+        <!-- Shimmer Skeleton Loader -->
+        <div class="detail-header">
+            <div class="skeleton-title shimmer"></div>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <div class="skeleton-badge shimmer"></div>
+                <div class="skeleton-badge shimmer"></div>
+                <div class="skeleton-badge shimmer"></div>
+            </div>
+        </div>
+        
+        <div class="skeleton-image shimmer"></div>
+        
+        <div class="section">
+            <div class="skeleton-text shimmer" style="width: 40%; margin-bottom: 16px;"></div>
+            <div class="skeleton-text shimmer"></div>
+            <div class="skeleton-text shimmer"></div>
+            <div class="skeleton-text shimmer" style="width: 60%;"></div>
+        </div>
+        
+        <div class="section">
+            <div class="skeleton-text shimmer" style="width: 30%; margin-bottom: 16px;"></div>
+            <div class="skeleton-text shimmer"></div>
+            <div class="skeleton-text shimmer"></div>
+            <div class="skeleton-text shimmer"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/lost-data.js"></script>
+
+<script>
+    const CLOUDINARY_CLOUD_NAME = 'df8w2fain';
+    
+    // SEO Helper Functions
+    function updateOGTags(data) {
+        // Update by ID for better targeting
+        const idMap = {
+            'og:title': 'og-title',
+            'og:description': 'og-description',
+            'og:image': 'og-image',
+            'og:url': 'og-url',
+            'twitter:title': 'twitter-title',
+            'twitter:description': 'twitter-description',
+            'twitter:image': 'twitter-image'
+        };
+        
+        const tags = [
+            { property: 'og:title', content: data.title },
+            { property: 'og:description', content: data.description },
+            { property: 'og:image', content: data.image },
+            { property: 'og:url', content: data.url },
+            { property: 'twitter:card', content: 'summary_large_image' },
+            { property: 'twitter:title', content: data.title },
+            { property: 'twitter:description', content: data.description },
+            { property: 'twitter:image', content: data.image }
+        ];
+        
+        tags.forEach(tag => {
+            // Try to find by ID first
+            let element = idMap[tag.property] ? document.getElementById(idMap[tag.property]) : null;
+            
+            // Fall back to property search if not found by ID
+            if (!element) {
+                element = document.querySelector(`meta[property="${tag.property}"]`);
+            }
+            
+            // Create if still not found
+            if (!element) {
+                element = document.createElement('meta');
+                element.setAttribute('property', tag.property);
+                element.setAttribute('id', idMap[tag.property] || '');
+                document.head.appendChild(element);
+            }
+            
+            element.setAttribute('content', tag.content);
+        });
+    }
+    
+    function updateJSONLDSchema(data) {
+        const schema = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": data.title,
+            "description": data.description,
+            "image": data.image,
+            "datePublished": data.datePublished,
+            "dateModified": data.dateModified,
+            "author": {
+                "@type": "Organization",
+                "name": data.author
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Nexus",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://nexus.ug/logo.png"
+                }
+            },
+            "keywords": `lost and found, ${data.category}, ${data.location}, ${data.status}`,
+            "mainEntity": {
+                "@type": "Report",
+                "name": data.title,
+                "status": data.status,
+                "location": {
+                    "@type": "Place",
+                    "name": data.location
+                }
+            }
+        };
+        
+        const schemaElement = document.getElementById('schema-placeholder');
+        if (schemaElement) {
+            schemaElement.textContent = JSON.stringify(schema);
+        }
+    }
+
+    async function loadItemDetail() {
+        const container = document.getElementById('detail-content');
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemId = urlParams.get('id');
+
+        console.log('Loading item:', itemId);
+
+        if (!itemId) {
+            container.innerHTML = "<h3 style='color:red; padding:20px'>No item ID provided</h3>";
+            return;
+        }
+
+        try {
+            // Wait for Supabase to load
+            let attempts = 0;
+            while (!window.supabase && attempts < 50) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+
+            const { createClient } = window.supabase;
+            const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            // Fetch the specific item
+            const { data, error } = await supabase
+                .from('lost_found_items')
+                .select('*')
+                .eq('id', itemId)
+                .single();
+
+            console.log('Fetch response - Data:', data);
+            console.log('Fetch response - Error:', error);
+
+            if (error || !data) {
+                container.innerHTML = "<h3 style='color:red; padding:20px'>Item not found</h3>";
+                return;
+            }
+
+            renderDetail(data);
+        } catch (error) {
+            console.error('Error:', error);
+            container.innerHTML = "<h3 style='color:red; padding:20px'>Error loading item: " + error.message + "</h3>";
+        }
+    }
+
+    function renderDetail(item) {
+        const container = document.getElementById('detail-content');
+        
+        // Update page title and meta tags for SEO
+        const pageTitle = `${item.title} - Lost & Found | Nexus`;
+        document.title = pageTitle;
+        const pageTitleElement = document.getElementById('page-title');
+        if (pageTitleElement) {
+            pageTitleElement.textContent = pageTitle;
+        }
+        
+        // Update meta description
+        const description = (item.description || item.title).substring(0, 155);
+        let metaDescription = document.getElementById('meta-description');
+        if (!metaDescription) {
+            metaDescription = document.createElement('meta');
+            metaDescription.setAttribute('name', 'description');
+            metaDescription.setAttribute('id', 'meta-description');
+            document.head.appendChild(metaDescription);
+        }
+        metaDescription.setAttribute('content', `${item.title} - ${description}`);
+        
+        // Update OG tags for social sharing
+        const imageUrl = item.image_url && !item.image_url.startsWith('http') 
+            ? `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${item.image_url}`
+            : item.image_url || '';
+        
+        updateOGTags({
+            title: `${item.title} - Lost & Found`,
+            description: `${item.status === 'lost' ? 'Lost' : 'Found'}: ${item.title} in ${item.location_name || 'Kampala'}`,
+            image: imageUrl,
+            url: window.location.href
+        });
+        
+        // Update JSON-LD schema
+        updateJSONLDSchema({
+            title: item.title,
+            description: item.description || item.title,
+            image: imageUrl,
+            datePublished: item.created_at,
+            dateModified: item.updated_at || item.created_at,
+            author: 'Nexus Community',
+            status: item.status,
+            location: item.location_name || 'Kampala, Uganda',
+            category: item.category,
+            slug: item.slug
+        });
+        
+        // Format image URL if exists
+        let imageHtml = '';
+        if (item.image_url) {
+            let imageUrl = item.image_url;
+            if (!item.image_url.startsWith('http')) {
+                imageUrl = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${item.image_url}`;
+            }
+            imageHtml = `<img src="${imageUrl}" alt="${item.title}" class="detail-image" onerror="this.style.display='none';" />`;
+        }
+
+        // Format status badge
+        const statusClass = `status-${item.status}`;
+        const statusText = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+
+        // Format contact method display
+        const contactMethodMap = {
+            'inAppChat': 'In-App Chat',
+            'phoneNumber': 'Phone',
+            'stationDropoff': 'Station Dropoff'
+        };
+        const contactMethod = contactMethodMap[item.contact_method] || item.contact_method;
+
+        // Format custody type
+        const custodyTypeMap = {
+            'withFinder': 'With Finder',
+            'policeStation': 'Police Station',
+            'lc1Office': 'LC1 Office',
+            'other': 'Other'
+        };
+        const custodyType = custodyTypeMap[item.custody_type] || item.custody_type;
+
+        // Format date
+        const date = new Date(item.created_at).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Format key attributes
+        let attributesHtml = '';
+        if (item.key_attributes && Object.keys(item.key_attributes).length > 0) {
+            attributesHtml = `
+                <div class="section">
+                    <div class="section-title">Key Attributes</div>
+                    <div class="attributes-grid">
+                        ${Object.entries(item.key_attributes).map(([key, value]) => `
+                            <div class="attribute-item">
+                                <div class="attribute-key">${key.charAt(0).toUpperCase() + key.slice(1)}</div>
+                                <div class="attribute-value">${value}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Format contact button
+        let contactHtml = '';
+        if (item.contact_method === 'phoneNumber' && item.contact_value) {
+            contactHtml = `<a href="tel:${item.contact_value}" class="contact-button">📱 Call ${item.contact_value}</a>`;
+        } else if (item.contact_method === 'inAppChat') {
+            contactHtml = `<button class="contact-button" onclick="alert('In-app chat would open here')">💬 Send Message</button>`;
+        }
+
+        container.innerHTML = `
+            <div class="detail-header">
+                <div class="detail-title">${item.title}</div>
+                <div class="detail-meta">
+                    <span class="meta-badge">
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </span>
+                    <span class="meta-badge">📍 ${item.location_name || 'Kampala'}</span>
+                    <span class="meta-badge">📅 ${date}</span>
+                    <span class="meta-badge">👁️ ${item.view_count} views</span>
+                </div>
+            </div>
+
+            ${imageHtml}
+
+            <div class="section">
+                <div class="section-title">Description</div>
+                <p style="color: #b0b0b0; line-height: 1.6;">${item.description || 'No description provided'}</p>
+            </div>
+
+            ${attributesHtml}
+
+            <div class="section">
+                <div class="section-title">Item Details</div>
+                <div class="info-row">
+                    <span class="info-label">Category</span>
+                    <span class="info-value">${item.category ? item.category.charAt(0).toUpperCase() + item.category.slice(1) : 'N/A'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Reward Amount</span>
+                    <span class="info-value">${item.reward_amount ? 'UGX ' + item.reward_amount.toLocaleString() : 'No reward'}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Posted By</span>
+                    <span class="info-value">${item.is_anonymous ? 'Anonymous' : 'Known Poster'}</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Custody Information</div>
+                <div class="info-row">
+                    <span class="info-label">Custody Type</span>
+                    <span class="info-value">${custodyType}</span>
+                </div>
+                ${item.custody_location_name ? `
+                    <div class="info-row">
+                        <span class="info-label">Custody Location</span>
+                        <span class="info-value">${item.custody_location_name}</span>
+                    </div>
+                ` : ''}
+            </div>
+
+            <div class="contact-section">
+                <div class="section-title">Get in Touch</div>
+                <p style="color: #b0b0b0; margin-bottom: 12px;">Contact Method: <strong>${contactMethod}</strong></p>
+                ${item.contact_value ? `<p style="color: #b0b0b0;">Contact: <strong>${item.contact_value}</strong></p>` : ''}
+                ${contactHtml}
+            </div>
+        `;
+
+        // Update view count
+        updateViewCount(item.id);
+    }
+
+    async function updateViewCount(itemId) {
+        try {
+            const { createClient } = window.supabase;
+            const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            const { data, error } = await supabase
+                .from('lost_found_items')
+                .select('view_count')
+                .eq('id', itemId)
+                .single();
+
+            if (!error && data) {
+                const newCount = (data.view_count || 0) + 1;
+                await supabase
+                    .from('lost_found_items')
+                    .update({ view_count: newCount })
+                    .eq('id', itemId);
+            }
+        } catch (error) {
+            console.log('Could not update view count:', error);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadItemDetail);
+</script>
+
+</body>
+</html>

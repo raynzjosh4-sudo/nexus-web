@@ -16,8 +16,44 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.static import serve
+from django.urls import re_path
+import os
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('storefront.urls')),
 ]
+
+# Serve static files during development
+if settings.DEBUG:
+    # Serve /assets/ files
+    urlpatterns += [
+        re_path(r'^assets/(?P<path>.*)$', serve, {
+            'document_root': os.path.join(settings.BASE_DIR, 'assets'),
+        }),
+        # Serve /js/ files
+        re_path(r'^js/(?P<path>.*)$', serve, {
+            'document_root': os.path.join(settings.BASE_DIR, 'js'),
+        }),
+        # Serve /community/detail.html
+        re_path(r'^community/detail\.html$', serve, {
+            'document_root': os.path.join(settings.BASE_DIR, 'community'),
+            'path': 'detail.html',
+        }),
+        # Serve /lost-and-found/detail.html
+        re_path(r'^lost-and-found/detail\.html$', serve, {
+            'document_root': os.path.join(settings.BASE_DIR, 'lost-and-found'),
+            'path': 'detail.html',
+        }),
+        # Serve /swap/detail.html
+        re_path(r'^swap/detail\.html$', serve, {
+            'document_root': os.path.join(settings.BASE_DIR, 'swap'),
+            'path': 'detail.html',
+        }),
+    ]
+    # Add default static file serving
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

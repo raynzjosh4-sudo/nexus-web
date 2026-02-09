@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse items by category on Nexus. Find electronics, documents, accessories, pets and more.">
+    <meta name="keywords" content="category search, items, products, swap, Kampala Uganda">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Nexus">
+    <title>Category - Nexus</title>
+    <link rel="icon" type="image/png" href="../assets/icon.png">
+    <link rel="stylesheet" href="../assets/css/google-dark.css">
+    <style>
+        body {
+            background: #000000;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .breadcrumb {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+        .breadcrumb a {
+            color: #a855f7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .breadcrumb a:hover {
+            color: #c084fc;
+        }
+        .breadcrumb span {
+            color: #666;
+        }
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #a855f7;
+            margin-bottom: 24px;
+        }
+        .filter-bar {
+            background: #1a0f2e;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #2d1b4e;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-button {
+            background: #2d1b4e;
+            color: #a855f7;
+            border: 1px solid #4a3a6e;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .filter-button:hover,
+        .filter-button.active {
+            background: #a855f7;
+            color: #ffffff;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .item-card {
+            background: #1a0f2e;
+            border-radius: 12px;
+            border: 1px solid #2d1b4e;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+        .item-card:hover {
+            border-color: #a855f7;
+            transform: translateY(-4px);
+        }
+        .item-image {
+            width: 100%;
+            height: 200px;
+            background: #2d1b4e;
+            object-fit: cover;
+        }
+        .item-content {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .item-title {
+            font-weight: 600;
+            color: #a855f7;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        .item-category {
+            font-size: 0.8rem;
+            color: #8b5cf6;
+            margin-bottom: 8px;
+        }
+        .item-price {
+            font-size: 1.1rem;
+            color: #a855f7;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .item-location {
+            font-size: 0.85rem;
+            color: #8b5cf6;
+            margin-top: auto;
+        }
+        .no-results {
+            text-align: center;
+            color: #8b5cf6;
+            padding: 40px 20px;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        .shimmer {
+            background-color: #2d1b4e;
+            background-image: linear-gradient(90deg, #2d1b4e 0%, #4a3a6e 20%, #2d1b4e 40%, #2d1b4e 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+        
+        .skeleton-card {
+            background: #1a0f2e;
+            border-radius: 12px;
+            border: 1px solid #2d1b4e;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .skeleton-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 0;
+        }
+        
+        .skeleton-content {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .skeleton-title {
+            height: 24px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .skeleton-text {
+            height: 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .skeleton-text:last-child {
+            width: 60%;
+        }
+        
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+    <!-- JSON-LD Schema for SEO -->
+    <script type="application/ld+json" id="breadcrumb-schema">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://nexus.ug"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Categories",
+                "item": "https://nexus.ug/categories"
+            }
+        ]
+    }
+    </script>
+    <script type="application/ld+json" id="itemlist-schema">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": []
+    }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <!-- Breadcrumb Navigation -->
+    <div class="breadcrumb">
+        <a href="../index.html">Nexus</a>
+        <span>/</span>
+        <span id="breadcrumb-category">Category</span>
+    </div>
+
+    <h1 class="page-title" id="page-title">Loading...</h1>
+
+    <div class="filter-bar">
+        <span style="color: #8b5cf6; font-size: 0.9rem;">Filter:</span>
+        <button class="filter-button active" data-filter="all">All Items</button>
+        <button class="filter-button" data-filter="latest">Latest</button>
+        <button class="filter-button" data-filter="popular">Most Popular</button>
+        <button class="filter-button" data-filter="trending">Trending</button>
+    </div>
+
+    <div id="results-container" class="results-grid">
+        <div class="skeleton-card">
+            <div class="skeleton-image shimmer"></div>
+            <div class="skeleton-content">
+                <div class="skeleton-title shimmer"></div>
+                <div class="skeleton-text shimmer"></div>
+                <div class="skeleton-text shimmer"></div>
+            </div>
+        </div>
+        <div class="skeleton-card">
+            <div class="skeleton-image shimmer"></div>
+            <div class="skeleton-content">
+                <div class="skeleton-title shimmer"></div>
+                <div class="skeleton-text shimmer"></div>
+                <div class="skeleton-text shimmer"></div>
+            </div>
+        </div>
+        <div class="skeleton-card">
+            <div class="skeleton-image shimmer"></div>
+            <div class="skeleton-content">
+                <div class="skeleton-title shimmer"></div>
+                <div class="skeleton-text shimmer"></div>
+                <div class="skeleton-text shimmer"></div>
+            </div>
+        </div>
+        <div class="skeleton-card">
+            <div class="skeleton-image shimmer"></div>
+            <div class="skeleton-content">
+                <div class="skeleton-title shimmer"></div>
+                <div class="skeleton-text shimmer"></div>
+                <div class="skeleton-text shimmer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+    const SUPABASE_URL = 'https://tdyebwcyamsqnnivynuk.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkeWVid2N5YW1zcW5uaXZ5bnVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc5ODY3NzQsImV4cCI6MjA4MzM0Njc3NH0.m_3QY9xMqohJRFalwf9PFRMDDHy-_d3gLTBC_U9tcYQ';
+    const CLOUDINARY_CLOUD_NAME = 'df8w2fain';
+
+    function updateCategoryOGTags(categoryName, itemCount) {
+        const tags = [
+            { property: 'og:title', content: `${categoryName} - Nexus` },
+            { property: 'og:description', content: `Browse ${itemCount} items in ${categoryName} category on Nexus` },
+            { property: 'og:url', content: window.location.href },
+            { property: 'twitter:title', content: `${categoryName} - Nexus` },
+            { property: 'twitter:description', content: `Browse items in ${categoryName}` }
+        ];
+        
+        tags.forEach(tag => {
+            let element = document.querySelector(`meta[property="${tag.property}"]`);
+            if (!element) {
+                element = document.createElement('meta');
+                element.setAttribute('property', tag.property);
+                document.head.appendChild(element);
+            }
+            element.setAttribute('content', tag.content);
+        });
+    }
+
+    function updateBreadcrumbSchema(categoryName) {
+        const schema = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Nexus",
+                    "item": window.location.origin
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Categories",
+                    "item": window.location.origin + "/categories"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": categoryName,
+                    "item": window.location.href
+                }
+            ]
+        };
+        
+        const element = document.getElementById('breadcrumb-schema');
+        if (element) {
+            element.textContent = JSON.stringify(schema);
+        }
+    }
+
+    function updateItemListSchema(items) {
+        const schema = {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": items.slice(0, 10).map((item, idx) => ({
+                "@type": "ListItem",
+                "position": idx + 1,
+                "url": `${window.location.origin}/item/${item.slug || item.id}`,
+                "name": item.title,
+                "image": item.image_url || '',
+                "description": item.description || '',
+                "priceCurrency": item.currency || "USD",
+                "price": item.price || "0"
+            }))
+        };
+        
+        const element = document.getElementById('itemlist-schema');
+        if (element) {
+            element.textContent = JSON.stringify(schema);
+        }
+    }
+
+    async function loadCategoryItems() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category') || 'all';
+        const source = urlParams.get('source') || 'products'; // products, swap, lost-found
+        
+        const pageTitle = document.getElementById('page-title');
+        const breadcrumb = document.getElementById('breadcrumb-category');
+        const resultsContainer = document.getElementById('results-container');
+        
+        pageTitle.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        breadcrumb.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        
+        document.title = `${category.charAt(0).toUpperCase() + category.slice(1)} - Nexus`;
+        
+        try {
+            let attempts = 0;
+            while (!window.supabase && attempts < 50) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+
+            const { createClient } = window.supabase;
+            const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            let query = null;
+            let data = [];
+            let error = null;
+
+            // Fetch based on source
+            if (source === 'lost-found') {
+                const response = await supabase
+                    .from('lost_found_items')
+                    .select('*')
+                    .eq('status', 'active');
+                data = response.data || [];
+                error = response.error;
+                
+                if (category !== 'all') {
+                    data = data.filter(item => item.category === category);
+                }
+            } else if (source === 'swap') {
+                const response = await supabase
+                    .from('swap_items')
+                    .select('*')
+                    .eq('is_active', true);
+                data = response.data || [];
+                error = response.error;
+                
+                if (category !== 'all') {
+                    data = data.filter(item => item.category === category);
+                }
+            }
+
+            if (error) throw error;
+
+            // Update SEO
+            updateCategoryOGTags(
+                category.charAt(0).toUpperCase() + category.slice(1),
+                data.length
+            );
+            updateBreadcrumbSchema(category.charAt(0).toUpperCase() + category.slice(1));
+            updateItemListSchema(data);
+
+            if (data.length === 0) {
+                resultsContainer.innerHTML = '<div class="no-results">No items found in this category</div>';
+                return;
+            }
+
+            // Render items
+            resultsContainer.innerHTML = data.map(item => {
+                const imageUrl = item.image_url && !item.image_url.startsWith('http')
+                    ? `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${item.image_url}`
+                    : (item.image_urls && item.image_urls[0]) || '';
+                
+                const title = item.title || 'Untitled';
+                const detailPage = source === 'lost-found' ? '../lost-and-found/detail.html' : '../swap/detail.html';
+                
+                return `
+                    <a href="${detailPage}?id=${item.id}" class="item-card">
+                        ${imageUrl ? `<img src="${imageUrl}" alt="${title}" class="item-image" onerror="this.style.display='none';">` : ''}
+                        <div class="item-content">
+                            <div class="item-category">${item.category || 'Item'}</div>
+                            <div class="item-title">${title}</div>
+                            <div class="item-location">📍 ${item.location_name || item.location || 'Kampala'}</div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+
+        } catch (error) {
+            console.error('Error:', error);
+            resultsContainer.innerHTML = `<div class="no-results">Error loading items: ${error.message}</div>`;
+        }
+    }
+
+    // Filter buttons
+    document.querySelectorAll('.filter-button').forEach(button => {
+        button.addEventListener('click', function() {
+            document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            // Could implement sorting here
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', loadCategoryItems);
+</script>
+
+</body>
+</html>
