@@ -90,10 +90,12 @@ def sitemap_products(request, subdomain=None):
     - Fallback: Database query only for new businesses, 1-hour cache
     - Both: CDN-friendly with proper cache headers
     """
+    from django.http import HttpResponsePermanentRedirect
     subdomain = getattr(request, 'subdomain', None)
     
     if not subdomain:
-        raise Http404("Sitemap not found. Use /static/sitemaps/sitemap_index.xml")
+        # Main domain /sitemap.xml redirects to /sitemap_index.xml (SEO-friendly)
+        return HttpResponsePermanentRedirect('/sitemap_index.xml')
     
     # Try static first (production sitemap)
     filepath = get_sitemap_file(subdomain)
