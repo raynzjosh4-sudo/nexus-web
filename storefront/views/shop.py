@@ -193,7 +193,20 @@ def shop_home(request):
         'products_by_category': products_by_category,
         'search_query': search_query,
         'theme_component': theme_component,
+        'user': {},  # Initialize empty user dict (will be populated if user is logged in)
     }
+    
+    # If user is logged in, fetch their session data
+    user_id = request.session.get('user_id')
+    if user_id:
+        try:
+            user_res = supabase.table('nexususers').select('*').eq('id', user_id).execute()
+            if user_res.data:
+                context['user'] = user_res.data[0]
+        except Exception as e:
+            logger.warning(f"Could not fetch user data: {e}")
+            context['user'] = {'name': request.session.get('user_email', 'User')}
+
     # Breadcrumbs for structured data (Home -> Shop)
     context['breadcrumbs'] = [
         {'name': 'Home', 'url': f"{request.scheme}://{request.get_host}/"},

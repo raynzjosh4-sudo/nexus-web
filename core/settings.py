@@ -32,7 +32,8 @@ DEBUG = os.getenv('DEBUG', 'False').lower() in ('1', 'true', 'yes')
 
 # Allowed hosts can be set via environment variable (comma-separated). Fallback to sensible defaults.
 default_hosts = [
-    '.nexassearch.com',           # Production: wildcard for all subdomains
+    '.nexassearch.com',  
+    'nexassearch.com',          # Production: wildcard for all subdomains
     '.localhost',                  # Local dev: wildcard for all localhost subdomains (loom.localhost, etc.)
     'nexus-web-f9zw.onrender.com', # Keep your internal Render URL
     'localhost',
@@ -95,20 +96,39 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# 🔐 CSRF & CORS Configuration
 # Allows the main site and all subdomains for cross-site requests (needed for forms/login)
 CSRF_TRUSTED_ORIGINS = [
     "https://nexassearch.com",
     "https://*.nexassearch.com",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://*.localhost",
+    "http://localhost",
 ]
 
 # Allows nexassearch.com AND all subdomains to communicate
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://([a-zA-Z0-9-]+\.)?nexassearch\.com$",
+    r"^http://.*\.localhost(:\d+)?$",  # Allow localhost subdomains
 ]
 
-# Ensure cookies are shared across subdomains (recommended for production)
-SESSION_COOKIE_DOMAIN = ".nexassearch.com"
-CSRF_COOKIE_DOMAIN = ".nexassearch.com"
+# 🍪 Cookie Configuration
+# For production: use .nexassearch.com | For dev: use None (default, same-domain only)
+if DEBUG:
+    # Development mode: cookies only for same domain (localhost won't share across subdomains)
+    SESSION_COOKIE_DOMAIN = None
+    CSRF_COOKIE_DOMAIN = None
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    CSRF_COOKIE_HTTPONLY = False  # Allow JS access during dev
+else:
+    # Production mode: share cookies across all subdomains
+    SESSION_COOKIE_DOMAIN = ".nexassearch.com"
+    CSRF_COOKIE_DOMAIN = ".nexassearch.com"
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = True
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 

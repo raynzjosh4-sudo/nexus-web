@@ -17,10 +17,12 @@ def login_view(request):
         
         try:
             # Authenticate with Supabase (handle multiple response shapes)
+            logger.info(f"🔐 Login attempt for: {email}")
             res = supabase.auth.sign_in_with_password({"email": email, "password": password})
 
             # Debug log the raw response for easier troubleshooting
-            logger.debug('Sign-in response: %s', getattr(res, '__dict__', res))
+            logger.info(f'📝 Sign-in response type: {type(res)}')
+            logger.info(f'📝 Sign-in response: {getattr(res, "__dict__", res)}')
 
             user = None
             access_token = None
@@ -28,37 +30,61 @@ def login_view(request):
             # Try several common response shapes
             if hasattr(res, 'user') and res.user:
                 user = res.user
+                logger.info(f"✓ User found in res.user: {user}")
             elif isinstance(res, dict):
                 # supabase-py may return dict with 'data' or 'user'
                 user = res.get('user') or (res.get('data') and res['data'].get('user'))
                 # Access token might be nested
                 access_token = res.get('access_token') or (res.get('data') and res['data'].get('access_token'))
+                logger.info(f"✓ User from dict: {user}")
             elif getattr(res, 'data', None):
                 # Some SDKs expose a .data property
                 data = res.data
                 if isinstance(data, dict):
                     user = data.get('user')
                     access_token = data.get('access_token')
+                logger.info(f"✓ User from res.data: {user}")
+            else:
+                logger.warning(f"⚠️ Could not extract user from response")
 
             if user:
                 # Store session data
-                uid = getattr(user, 'id', None) or user.get('id') if isinstance(user, dict) else None
-                uemail = getattr(user, 'email', None) or user.get('email') if isinstance(user, dict) else None
+                # Handle both dict and User object responses from Supabase
+                if isinstance(user, dict):
+                    uid = user.get('id')
+                    uemail = user.get('email')
+                else:
+                    # User object from supabase-py SDK
+                    uid = getattr(user, 'id', None)
+                    uemail = getattr(user, 'email', None)
+                
+                logger.info(f"📧 Extracted: uid={uid}, uemail={uemail}")
+                
                 request.session['user_id'] = uid
                 request.session['user_email'] = uemail
                 if access_token:
                     request.session['access_token'] = access_token
+                
+                logger.info(f"✅ Login successful for {uemail}, session saved, redirecting to shop_home")
 
                 next_url = request.GET.get('next')
                 if next_url:
                     return redirect(next_url)
                 return redirect('shop_home')
+            else:
+                logger.error(f"❌ Login failed: No user in response")
+                return render(request, 'storefront/login.html', {
+                    'error': "Invalid email or password.",
+                    'business': _get_business_context(request)
+                })
 
         except Exception as e:
-            logger.exception("Login failed")
+            logger.exception(f"❌ Login exception: {str(e)}")
+            logger.error(f"Exception type: {type(e).__name__}")
+            logger.error(f"Exception message: {str(e)}")
             return render(request, 'storefront/login.html', {
-                'error': "Invalid email or password.",
-                'business': _get_business_context(request) # Helper to render base template elements
+                'error': f"Login error: {str(e)[:100]}",
+                'business': _get_business_context(request)
             })
             
     return render(request, 'storefront/login.html', {
