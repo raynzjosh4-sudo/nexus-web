@@ -1,0 +1,36 @@
+name: Generate Sitemap
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install django
+
+      - name: Generate Sitemap
+        run: |
+          python manage.py generatesitemap
+
+      - name: Upload Sitemap
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const fs = require('fs');
+            const content = fs.readFileSync('path/to/sitemap.xml', 'utf8');
+            // Upload the content as needed
