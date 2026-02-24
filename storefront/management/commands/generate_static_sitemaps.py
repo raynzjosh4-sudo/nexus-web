@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Generate static XML sitemap files for all published businesses (production-grade)'
+    help = 'Generate static XML sitemap files for all  businesses (production-grade)'
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -43,7 +43,7 @@ class Command(BaseCommand):
             self.stdout.write('📦 Fetching published businesses...')
             biz_response = supabase.table('business_profiles')\
                 .select('id,domain,business_name,created_at,logo_url')\
-                .eq('status', 'published')\
+                .eq('status', 'active')\
                 .order('created_at', desc=True)\
                 .limit(50000)\
                 .execute()
