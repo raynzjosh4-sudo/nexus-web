@@ -60,4 +60,6 @@ websockets==15.0.1
 whitenoise==6.11.0
 yarl==1.22.0
 django-cors-headers
-
+Django==6.0
+python-dotenv
+supabase>=2.0.0
