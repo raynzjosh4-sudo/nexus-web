@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <url>
+    <loc>https://sharrifstores.nexassearch.com/</loc>
+    <lastmod>2026-02-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    
+  </url>
+  
+  <url>
+    <loc>https://sharrifstores.nexassearch.com/product/b6a97060-9149-48f6-98cb-b102f953b80d/</loc>
+    <lastmod>2026-02-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    
+  </url>
+  
+  <url>
+    <loc>https://sharrifstores.nexassearch.com/product/515441b7-255b-4df7-80cc-521e5c24c320/</loc>
+    <lastmod>2026-02-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    
+      
+      <image:image>
+        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/142fe20d-c5bc-4343-bf4f-935152a8ff34/feed/1771840911309_compressed.jpg</image:loc>
+        <image:title>Product Image</image:title>
+      </image:image>
+      
+      <image:image>
+        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/142fe20d-c5bc-4343-bf4f-935152a8ff34/feed/1771840914608_compressed.jpg</image:loc>
+        <image:title>Product Image</image:title>
+      </image:image>
+      
+    
+  </url>
+  
+  <url>
+    <loc>https://sharrifstores.nexassearch.com/product/80c8a109-a11b-4e9d-8bd6-585124700d6a/</loc>
+    <lastmod>2026-02-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    
+      
+      <image:image>
+        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/142fe20d-c5bc-4343-bf4f-935152a8ff34/feed/1771840662631_compressed.jpg</image:loc>
+        <image:title>Product Image</image:title>
+      </image:image>
+      
+      <image:image>
+        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/142fe20d-c5bc-4343-bf4f-935152a8ff34/feed/1771840664608_compressed.jpg</image:loc>
+        <image:title>Product Image</image:title>
+      </image:image>
+      
+      <image:image>
+        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/142fe20d-c5bc-4343-bf4f-935152a8ff34/feed/1771840666567_compressed.jpg</image:loc>
+        <image:title>Product Image</image:title>
+      </image:image>
+      
+    
+  </url>
+  
+</urlset>

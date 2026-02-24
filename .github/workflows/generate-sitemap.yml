@@ -1,36 +1,66 @@
-name: Generate Sitemap
+name: Generate & Update Sitemap
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths:
+      - 'storefront/management/commands/generate_static_sitemaps.py'
+      - 'storefront/templates/storefront/sitemaps/'
+      - '.github/workflows/generate-sitemap.yml'
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
 
 jobs:
-  build:
+  generate-sitemap:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.9"
-
-      - name: Install Dependencies
+          python-version: '3.11'
+      
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install django
-
-      - name: Generate Sitemap
+          pip install -r requirements.txt
+      
+      - name: Generate sitemaps via Django
+        env:
+          DJANGO_SETTINGS_MODULE: core.settings
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: 'False'
+          ALLOWED_HOSTS: nexassearch.com
+        run: python manage.py generate_static_sitemaps --output-dir storefront/static/sitemaps --verbose
+      
+      - name: Check if sitemaps changed
+        id: sitemap-check
         run: |
-          python manage.py generatesitemap
-
-      - name: Upload Sitemap
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const fs = require('fs');
-            const content = fs.readFileSync('path/to/sitemap.xml', 'utf8');
-            // Upload the content as needed
+          if git diff --quiet storefront/static/sitemaps/; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit updated sitemaps
+        if: steps.sitemap-check.outputs.changed == 'true'
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "no-reply@github.com"
+          git add storefront/static/sitemaps/
+          git commit -m "chore: regenerate sitemaps [skip ci]"
+          git push
+      
+      - name: Notify on success
+        if: success()
+        run: echo "✅ Sitemaps generated and committed successfully"
+      
+      - name: Notify if no changes
+        if: steps.sitemap-check.outputs.changed == 'false'
+        run: echo "ℹ️ Sitemaps already up-to-date, no changes to commit"
