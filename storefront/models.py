@@ -20,3 +20,37 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+
+class ContactSubmission(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Contact from {self.name} <{self.email}>"
+
+
+class SupportTicket(models.Model):
+    user_id = models.UUIDField(null=True, blank=True)
+    subject = models.CharField(max_length=255, default='App Support')
+    description = models.TextField(blank=True)
+    status = models.CharField(max_length=20, default='open')
+    priority = models.CharField(max_length=20, default='medium')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Ticket {self.id} - {self.subject}"
+
+
+class SupportMessage(models.Model):
+    ticket = models.ForeignKey(SupportTicket, on_delete=models.CASCADE, related_name='messages')
+    sender_id = models.UUIDField(null=True, blank=True)
+    message = models.TextField()
+    is_from_admin = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Message on {self.ticket_id} by {self.sender_id or 'anon'}"
+

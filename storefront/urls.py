@@ -8,11 +8,21 @@ from .views.product import product_detail, category_view, create_order
 from .views.auth import login_view, logout_view, google_login_view, auth_callback_view, confirm_auth_view
 from .views.profile import profile_view
 from .views.contact import contact
+from .views.pages import contact_view as standalone_contact_view
 from .views.wishlist import toggle_wishlist, check_wishlist_status
 from .views.sitemap_static import sitemap_products, sitemap_index, serve_sitemap_file  # PRODUCTION: Static sitemaps
 from .views.robots import robots_txt
 from .views.order import order_confirmation
 from .views.sections import lost_and_found_view, community_view, swap_view, help_view
+from .views.news import news_list, news_detail
+from .views.pages import (
+    newsletter_view,
+    blog_view,
+    about_view,
+    cookie_policy_view,
+    support_view,
+    join_business_view,
+)
 from .views.seo_views import (
     community_detail_view,
     lost_found_detail_view,
@@ -25,7 +35,7 @@ from .views.seo_views import (
 
 urlpatterns = [
     path('', shop_home, name='shop_home'),
-    path('contact/', contact, name='contact'),
+    path('contact/', standalone_contact_view, name='contact'),
     path('product/<uuid:product_id>/', product_detail, name='product_detail'),
     path('product/<uuid:product_id>/order/', create_order, name='create_order'),
     path('order/<uuid:order_id>/confirmation/', order_confirmation, name='order_confirmation'),
@@ -50,6 +60,14 @@ urlpatterns = [
     path('business/<str:business_slug>/', business_profile_view, name='business_profile'),
     path('faq/', faq_view, name='faq'),
     path('category/<str:category_name>/', category_list_view, name='category_list_seo'),
+    path('news/', news_list, name='news_list'),
+    path('news/<uuid:article_id>/', news_detail, name='news_detail'),
+    path('newsletter/', newsletter_view, name='newsletter'),
+    path('blog/', blog_view, name='blog'),
+    path('about/', about_view, name='about'),
+    path('cookies/', cookie_policy_view, name='cookie_policy'),
+    path('support/', support_view, name='support'),
+    path('join-business/', join_business_view, name='join_business'),
     path('sitemap.xml', sitemap_products, name='sitemap_products'),
     path('sitemap_index.xml', sitemap_index, name='sitemap_index'),
     path('robots.txt', robots_txt, name='robots_txt'),

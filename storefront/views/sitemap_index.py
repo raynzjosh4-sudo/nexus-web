@@ -30,7 +30,7 @@ def sitemap_index(request):
         # Fetch all published businesses with domains
         biz_response = supabase.table('business_profiles')\
             .select('domain,updated_at')\
-            .eq('status', 'published')\
+            .eq('status', 'active')\
             .limit(50000)\
             .execute()
         

@@ -1,0 +1,15 @@
+{% extends 'storefront/base.html' %}
+{% block content %}
+<section class="section" style="text-align:center;max-width:500px;margin:3rem auto;">
+    <h1 class="section-title">Subscribe to Our Newsletter</h1>
+    <p class="section-description">Stay updated with the latest news, offers, and community stories from Nexus
+        Marketplace.</p>
+    <form method="post" action="/newsletter/subscribe/"
+        style="margin:2rem 0;display:flex;gap:0.5rem;justify-content:center;">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Enter your email address" required
+            style="padding:0.75rem 1rem;border-radius:8px;border:1px solid #ccc;min-width:220px;">
+        <button type="submit" class="cta-button"><i class="fas fa-envelope"></i> Subscribe</button>
+    </form>
+</section>
+{% endblock %}

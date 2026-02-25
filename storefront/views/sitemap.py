@@ -111,7 +111,7 @@ def sitemap_businesses(request):
     supabase = get_supabase_client()
     
     # Fetch all published businesses
-    biz_response = supabase.table('business_profiles').select('id,domain,updated_at').eq('status', 'published').limit(50000).execute()
+    biz_response = supabase.table('business_profiles').select('id,domain,updated_at').eq('status', 'active').limit(50000).execute()
     
     urls = []
     for biz in biz_response.data:

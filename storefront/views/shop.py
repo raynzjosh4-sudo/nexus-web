@@ -73,10 +73,52 @@ def normalize_component_data(component):
 def shop_home(request):
     subdomain = getattr(request, 'subdomain', None)
     
-    # If no subdomain, render a simple main landing page so the site root works
-    # This avoids redirect loops when Django is serving the main domain.
+    # If no subdomain, render the main landing page with all businesses
     if not subdomain:
-        return render(request, 'storefront/main_landing.html', {})
+        supabase = get_supabase_client()
+        
+        # Fetch all businesses (both verified and unverified)
+        businesses_response = supabase.table('business_profiles').select('*').order('created_at', desc=True).execute()
+        businesses = businesses_response.data or []
+        
+        # Separate verified and unverified
+        verified_businesses = [b for b in businesses if b.get('is_verified', False)]
+        unverified_businesses = [b for b in businesses if not b.get('is_verified', False)]
+        
+        # Fetch trending news (latest 4 articles)
+        try:
+            news_response = supabase.table('news_articles').select('*, news_authors(name, avatar_url, is_verified)').order('published_at', desc=True).limit(4).execute()
+            trending_news = news_response.data or []
+        except Exception as e:
+            logger.warning(f"Could not fetch trending news: {e}")
+            trending_news = []
+        
+        # Fetch lost items (latest 4)
+        try:
+            lost_items_response = supabase.table('lost_found_items').select('*').order('created_at', desc=True).limit(4).execute()
+            lost_items = lost_items_response.data or []
+        except Exception as e:
+            logger.warning(f"Could not fetch lost items: {e}")
+            lost_items = []
+        
+        # Fetch community posts (latest 4)
+        try:
+            community_response = supabase.table('community_posts').select('*, nexususers!community_posts_nexususers_fkey(name, avatar_url)').order('created_at', desc=True).limit(4).execute()
+            community_posts = community_response.data or []
+        except Exception as e:
+            logger.warning(f"Could not fetch community posts: {e}")
+            community_posts = []
+        
+        context = {
+            'verified_businesses': verified_businesses,
+            'unverified_businesses': unverified_businesses,
+            'total_businesses': len(businesses),
+            'trending_news': trending_news,
+            'lost_items': lost_items,
+            'community_posts': community_posts,
+        }
+        
+        return render(request, 'storefront/main_landing.html', context)
 
     supabase = get_supabase_client()
     search_query = request.GET.get('q', '').strip()

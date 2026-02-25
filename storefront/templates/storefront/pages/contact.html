@@ -1,0 +1,64 @@
+{% extends 'storefront/base.html' %}
+{% block content %}
+<section class="page-hero" style="padding:3.5rem 0;background:var(--bg-card);color:var(--text-main);">
+    <div class="container" style="max-width:900px;margin:0 auto;padding:0 20px;">
+        <h1 style="font-size:2.5rem;margin:0 0 0.75rem;">Contact Us</h1>
+        <p style="color:var(--text-sub);margin:0 0 1.25rem;">Have a question, suggestion, or need help? Reach out to our
+            team below.</p>
+
+        <div class="contact-card"
+            style="background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:1.5rem; border-radius:12px; margin-top:1rem;">
+            <form method="post" action="/contact/" class="contact-form"
+                style="display:flex;flex-direction:column;gap:1rem;">
+                {% csrf_token %}
+                {% if success %}
+                <div class="notice success"
+                    style="padding:1rem;border-radius:8px;background:#e6ffed;border:1px solid #b7f5c7;color:#064c22;">
+                    Thanks — your message has been received. We'll reply to you at the email provided.</div>
+                {% endif %}
+
+                {{ form.non_field_errors }}
+
+                <label style="display:block;font-weight:600;color:var(--text-main);">Name</label>
+                {{ form.name }}
+
+                <label style="display:block;font-weight:600;color:var(--text-main);">Email</label>
+                {{ form.email }}
+
+                <label style="display:block;font-weight:600;color:var(--text-main);">Message</label>
+                {{ form.message }}
+
+                <button type="submit" class="btn-primary"
+                    style="padding:0.9rem 1rem;border-radius:8px;border:none;background:var(--accent-color);color:white;font-weight:700;margin-top:0.5rem;">Send
+                    Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Local styles so the page uses the site's theme tokens */
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form textarea {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--text-main);
+        box-sizing: border-box;
+        font-size: 1rem;
+    }
+
+    .contact-form textarea {
+        min-height: 160px;
+        resize: vertical;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+        color: rgba(255, 255, 255, 0.55);
+    }
+</style>
+{% endblock %}

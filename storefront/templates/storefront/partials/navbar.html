@@ -144,6 +144,7 @@
 </header> -->
 
 {% load static %}
+{% if request.subdomain %}
 <header class="navbar-top">
     <div class="nav-left">
         <img src="{% if business.logo_url %}{{ business.logo_url }}{% else %}{% static 'icon.png' %}{% endif %}"
@@ -166,8 +167,8 @@
                 <img src="{{ user.avatar_url|default:'https://api.dicebear.com/7.x/avataaars/svg' }}"
                     class="profile-avatar" alt="Profile">
                 {% else %}
-                <img src="{{ business.logo_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23e5e7eb%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E' }}" class="profile-avatar"
-                    alt="Profile">
+                <img src="{{ business.logo_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23e5e7eb%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E' }}"
+                    class="profile-avatar" alt="Profile">
                 {% endif %}
                 <span class="profile-name">
                     {% if request.session.user_id %}
@@ -204,6 +205,30 @@
         </div>
     </div>
 </header>
+{% else %}
+<!-- Global Nexus navbar for non-business pages -->
+<header class="navbar-top">
+    <div class="nav-left">
+        <img src="{% static 'icon.png' %}" class="nav-logo-img">
+        <span class="nav-brand-text">Nexus</span>
+    </div>
+
+    <div class="nav-center">
+        <nav class="nav-switcher">
+            <a class="switch-btn" href="{% url 'shop_home' %}">Home</a>
+            <a class="switch-btn" href="{% url 'about' %}">About</a>
+            <a class="switch-btn" href="{% url 'blog' %}">Blog</a>
+            <a class="switch-btn" href="{% url 'newsletter' %}">Newsletter</a>
+            <a class="switch-btn" href="{% url 'contact' %}">Contact</a>
+        </nav>
+    </div>
+
+    <div class="nav-right">
+        <a href="{% url 'login' %}" class="btn-login">Sign in</a>
+        <a href="{% url 'join_business' %}" class="btn-signup">Join as Business</a>
+    </div>
+</header>
+{% endif %}
 <style>
     .navbar-top {
         position: sticky;

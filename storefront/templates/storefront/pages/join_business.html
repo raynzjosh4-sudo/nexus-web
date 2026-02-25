@@ -1,0 +1,228 @@
+{% extends 'storefront/base.html' %}
+{% block content %}
+<section class="join-business">
+    <div class="jb-container">
+        <div class="jb-grid">
+
+            <aside class="jb-left">
+                <h1 class="jb-title">Join as a Business</h1>
+                <p class="jb-sub">Grow your business on Nexus Marketplace. Download the Nexus Seller app to create and
+                    manage
+                    your shop on mobile, or use the web form to get started.</p>
+
+                <div class="jb-badges">
+                    <a href="#" class="badge-link"><img src="/static/img/app-store-badge.png" alt="App Store" /></a>
+                    <a href="#" class="badge-link"><img src="/static/img/google-play-badge.png" alt="Google Play" /></a>
+                </div>
+
+                <div class="jb-qr-steps">
+                    <div class="jb-qr">
+                        <img src="/static/img/qr-placeholder.png" alt="QR: Nexus Seller" />
+                        <div class="qr-caption">Scan to install</div>
+                    </div>
+
+                    <div class="jb-steps">
+                        <h3>Quick steps</h3>
+                        <ol>
+                            <li>Download the Nexus Seller app (iOS or Android).</li>
+                            <li>Create a Seller account inside the app.</li>
+                            <li>Add products and complete your shop details.</li>
+                            <li>Verify email and publish — your shop appears at your subdomain.</li>
+                        </ol>
+                        <p class="small">Prefer to sign up on web? Use the form to the right or <a
+                                href="#signup-form">click here</a>.</p>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="jb-right">
+                <div class="jb-card">
+                    <h2>Create your business account</h2>
+                    <p class="small">Fill this quick form and we’ll reserve your preferred shop subdomain — you can
+                        finish
+                        setup in the app.</p>
+
+                    <form id="signup-form" method="post" action="/business/signup/" class="jb-form">
+                        {% csrf_token %}
+                        <input class="jb-input" type="text" name="business_name" placeholder="Business Name" required>
+                        <input class="jb-input" type="email" name="email" placeholder="Business Email" required>
+                        <input class="jb-input" type="text" name="domain"
+                            placeholder="Preferred shop subdomain (e.g. yourshop)" required>
+                        <textarea class="jb-input jb-textarea" name="description" rows="3"
+                            placeholder="Short description"></textarea>
+                        <button type="submit" class="jb-submit">Create My Shop</button>
+                    </form>
+
+                    <div class="small" style="margin-top:0.6rem;">Already have an account? <a href="/login/">Sign in</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+    :root {
+        --jb-bg: var(--bg-card, rgba(255, 255, 255, 0.02));
+        --jb-panel: rgba(0, 0, 0, 0.18);
+        --jb-radius: 12px;
+    }
+
+    .jb-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 48px 20px;
+    }
+
+    .jb-grid {
+        display: flex;
+        gap: 32px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .jb-left {
+        flex: 1 1 520px;
+        min-width: 280px;
+        color: var(--text-main);
+    }
+
+    .jb-right {
+        flex: 0 0 420px;
+        min-width: 300px;
+    }
+
+    .jb-title {
+        font-size: 32px;
+        margin: 0 0 6px;
+        font-weight: 800
+    }
+
+    .jb-sub {
+        margin: 0 0 18px;
+        color: var(--text-sub);
+        max-width: 680px
+    }
+
+    .jb-badges {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 18px
+    }
+
+    .jb-badges img {
+        height: 44px;
+        display: block
+    }
+
+    .jb-qr-steps {
+        display: flex;
+        gap: 18px;
+        align-items: flex-start
+    }
+
+    .jb-qr {
+        width: 120px;
+        text-align: center
+    }
+
+    .jb-qr img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        background: #fff;
+        padding: 8px;
+        object-fit: contain
+    }
+
+    .qr-caption {
+        font-size: 13px;
+        color: var(--text-sub);
+        margin-top: 8px
+    }
+
+    .jb-steps h3 {
+        margin: 0 0 8px;
+        font-size: 20px
+    }
+
+    .jb-steps ol {
+        margin: 0 0 8px 18px;
+        color: var(--text-main)
+    }
+
+    .jb-steps .small {
+        color: var(--text-sub);
+        margin-top: 6px
+    }
+
+    .jb-card {
+        background: var(--jb-bg);
+        padding: 20px;
+        border-radius: var(--jb-radius);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35)
+    }
+
+    .jb-card h2 {
+        margin: 0 0 8px
+    }
+
+    .small {
+        color: var(--text-sub);
+        font-size: 0.95rem
+    }
+
+    .jb-form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 8px
+    }
+
+    .jb-input {
+        padding: 14px 16px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: transparent;
+        color: var(--text-main);
+        font-size: 15px
+    }
+
+    .jb-textarea {
+        min-height: 110px;
+        resize: vertical
+    }
+
+    .jb-submit {
+        background: var(--accent-color);
+        color: #fff;
+        padding: 14px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 800;
+        font-size: 15px;
+        cursor: pointer
+    }
+
+    .jb-submit:hover {
+        opacity: 0.95
+    }
+
+    @media (max-width:880px) {
+        .jb-grid {
+            flex-direction: column
+        }
+
+        .jb-right {
+            order: 2
+        }
+
+        .jb-left {
+            order: 1
+        }
+    }
+</style>
+
+{% endblock %}

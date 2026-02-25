@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.title }} - Nexus News</title>
+    <meta name="description" content="{{ article.description }}">
+    <meta name="keywords" content="news, {{ article.category }}, {{ article.title }}">
+
+    <!-- SEO Meta Tags -->
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{ article.title }}" />
+    <meta property="og:description" content="{{ article.description }}" />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    {% if article.image_url %}
+    <meta property="og:image" content="{{ article.image_url }}" />
+    {% endif %}
+
+    <!-- Article Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "headline": "{{ article.title }}",
+        "description": "{{ article.description }}",
+        "image": "{{ article.image_url }}",
+        "datePublished": "{{ article.published_at }}",
+        "dateModified": "{{ article.updated_at|default:article.published_at }}",
+        "author": {
+            "@type": "Person",
+            "name": "{{ article.news_authors.name }}",
+            "image": "{{ article.news_authors.avatar_url }}"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Nexus Marketplace",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "/static/images/nexus-logo.png"
+            }
+        }
+    }
+    </script>
+
+    <!-- Professional Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #7c3aed;
+            --secondary-color: #2d2d30;
+            --accent-color: #f97316;
+            --success-color: #56d364;
+            --warning-color: #d29922;
+            --danger-color: #f85149;
+            --text-primary: #cccccc;
+            --text-secondary: #8b949e;
+            --text-light: #6e7681;
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #252526;
+            --bg-tertiary: #2d2d30;
+            --border-color: #30363d;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Article Header */
+        .article-header {
+            background: var(--bg-secondary);
+            padding: 3rem 0 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .article-category {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .article-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .author-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Article Content */
+        .article-content {
+            padding: 3rem 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .article-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+        }
+
+        .article-body {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .article-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-body h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 2rem 0 1rem;
+        }
+
+        .article-body h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 1.5rem 0 1rem;
+        }
+
+        /* Related Articles */
+        .related-section {
+            background: var(--bg-secondary);
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .related-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .related-card {
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .related-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .related-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .related-content {
+            padding: 1.5rem;
+        }
+
+        .related-category {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .related-article-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .related-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Comments Section */
+        .comments-section {
+            padding: 3rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .comments-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .comment {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .comment-meta {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .comment-content {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .article-content {
+                padding: 2rem 0;
+            }
+
+            .article-image {
+                height: 250px;
+            }
+
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .header .container {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo">Nexus</a>
+            <nav class="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/news/" class="nav-link">News</a>
+                <a href="/community/" class="nav-link">Community</a>
+                <a href="/lost-and-found/" class="nav-link">Lost & Found</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Article Header -->
+    <section class="article-header">
+        <div class="container">
+            <span class="article-category">{{ article.category|title }}</span>
+            <h1 class="article-title">{{ article.title }}</h1>
+            <div class="article-meta">
+                {% if article.news_authors %}
+                <div class="article-author">
+                    {% if article.news_authors.avatar_url %}
+                    <img src="{{ article.news_authors.avatar_url }}" alt="{{ article.news_authors.name }}"
+                        class="author-avatar">
+                    {% endif %}
+                    <div class="author-info">
+                        <span class="author-name">{{ article.news_authors.name }}</span>
+                        {% if article.news_authors.title %}
+                        <span class="author-title">{{ article.news_authors.title }}{% if
+                            article.news_authors.organization %} at {{ article.news_authors.organization }}{% endif
+                            %}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="article-date">
+                    <i class="far fa-calendar"></i> {{ article.published_at|date:"F j, Y" }}
+                    {% if article.read_time_minutes %}
+                    <span class="read-time">• {{ article.read_time_minutes }} min read</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Content -->
+    <article class="article-content container">
+        {% if article.image_url %}
+        <img src="{{ article.image_url }}" alt="{{ article.title }}" class="article-image">
+        {% endif %}
+
+        <div class="article-body">
+            {{ article.content|safe }}
+        </div>
+    </article>
+
+    <!-- Related Articles -->
+    {% if related_articles %}
+    <section class="related-section">
+        <div class="container">
+            <h2 class="related-title">Related Articles</h2>
+            <div class="related-grid">
+                {% for related in related_articles %}
+                <a href="/news/{{ related.id }}/" class="related-card fade-in-up">
+                    {% if related.image_url %}
+                    <img src="{{ related.image_url }}" alt="{{ related.title }}" class="related-image">
+                    {% endif %}
+                    <div class="related-content">
+                        <span class="related-category">{{ related.category|title }}</span>
+                        <h3 class="related-article-title">{{ related.title }}</h3>
+                        <div class="related-meta">
+                            <span>{{ related.published_at|date:"M j, Y" }}</span>
+                            {% if related.read_time_minutes %}
+                            <span>{{ related.read_time_minutes }} min</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Comments Section -->
+    {% if comments %}
+    <section class="comments-section container">
+        <h2 class="comments-title">Comments ({{ comment_count }})</h2>
+        {% for comment in comments %}
+        <div class="comment fade-in-up">
+            <div class="comment-author">
+                {% if comment.news_authors and comment.news_authors.avatar_url %}
+                <img src="{{ comment.news_authors.avatar_url }}" alt="{{ comment.news_authors.name }}"
+                    class="comment-avatar">
+                {% endif %}
+                <div class="comment-meta">
+                    <strong>
+                        {% if comment.news_authors %}
+                        {{ comment.news_authors.name }}
+                        {% else %}
+                        Anonymous
+                        {% endif %}
+                    </strong>
+                    <span>{{ comment.created_at|date:"M j, Y \a\t g:i A" }}</span>
+                </div>
+            </div>
+            <div class="comment-content">
+                {{ comment.content }}
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-section">
+                <h3>Platform</h3>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/news/">News</a></li>
+                    <li><a href="/community/">Community</a></li>
+                    <li><a href="/lost-and-found/">Lost & Found</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="/help/">Help Center</a></li>
+                    <li><a href="/faq/">FAQ</a></li>
+                    <li><a href="/contact/">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="https://raynzjosh4-sudo.github.io/nexus-terms/legal.html">Terms of Service</a></li>
+                    <li><a href="https://raynzjosh4-sudo.github.io/nexus-swap-terms/">Swap Terms</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

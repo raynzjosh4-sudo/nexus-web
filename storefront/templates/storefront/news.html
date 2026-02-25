@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News - Nexus Marketplace</title>
+    <meta name="description"
+        content="Stay updated with the latest news, insights, and stories from the Nexus Marketplace community.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords"
+        content="news, marketplace updates, business insights, community stories, Nexus Marketplace" />
+    <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="News - Nexus Marketplace" />
+    <meta property="og:description"
+        content="Stay updated with the latest news and insights from the Nexus Marketplace community." />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+
+    <!-- Professional Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #7c3aed;
+            --secondary-color: #2d2d30;
+            --accent-color: #f97316;
+            --success-color: #56d364;
+            --warning-color: #d29922;
+            --danger-color: #f85149;
+            --text-primary: #cccccc;
+            --text-secondary: #8b949e;
+            --text-light: #6e7681;
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #252526;
+            --bg-tertiary: #2d2d30;
+            --border-color: #30363d;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+        }
+
+        .nav-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Filters */
+        .filters {
+            background: var(--bg-primary);
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-select,
+        .filter-checkbox {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            background: var(--bg-primary);
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+
+        .news-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .news-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .news-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .news-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .news-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .author-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Featured Section */
+        .featured-section {
+            background: var(--bg-secondary);
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .featured-main {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .featured-main-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .featured-main-content {
+            padding: 2rem;
+        }
+
+        .featured-main-category {
+            background: var(--success-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .featured-main-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .featured-main-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-sidebar .news-card {
+            margin-bottom: 1.5rem;
+        }
+
+        .featured-sidebar .news-image {
+            height: 150px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo">Nexus</a>
+            <nav class="nav-menu">
+                <a href="#featured" class="nav-link">Featured</a>
+                <a href="#all-news" class="nav-link">All News</a>
+                <a href="/community/" class="nav-link">Community</a>
+                <a href="/help/" class="nav-link">Help</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Latest News & Insights</h1>
+            <p class="hero-subtitle">
+                Stay informed with the latest updates, business insights, and community stories from the Nexus
+                Marketplace ecosystem.
+            </p>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters">
+        <div class="container">
+            <form method="get" class="filter-controls">
+                <select name="category" class="filter-select">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                    <option value="{{ category }}" {% if category==selected_category %}selected{% endif %}>{{
+                        category|title }}</option>
+                    {% endfor %}
+                </select>
+                <label class="filter-checkbox">
+                    <input type="checkbox" name="featured" value="true" {% if featured_only %}checked{% endif %}>
+                    Featured Only
+                </label>
+                <button type="submit" class="filter-select"
+                    style="background: var(--accent-color); color: white; border: none; cursor: pointer;">
+                    <i class="fas fa-filter"></i> Apply Filters
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Featured Articles -->
+    {% if main_featured %}
+    <section class="featured-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-star" style="color: var(--warning-color); margin-right: 0.5rem;"></i>
+                    Featured Stories
+                </h2>
+                <p class="section-description">
+                    Handpicked articles highlighting the most important news and insights
+                </p>
+            </div>
+
+            <div class="featured-grid">
+                <!-- Main Featured Article -->
+                <div class="featured-main fade-in-up">
+                    {% if main_featured.image_url %}
+                    <img src="{{ main_featured.image_url }}" alt="{{ main_featured.title }}"
+                        class="featured-main-image">
+                    {% endif %}
+                    <div class="featured-main-content">
+                        <span class="featured-main-category">{{ main_featured.category|title }}</span>
+                        <h3 class="featured-main-title">
+                            <a href="/news/{{ main_featured.id }}/" style="color: inherit; text-decoration: none;">{{
+                                main_featured.title }}</a>
+                        </h3>
+                        <p class="featured-main-description">{{ main_featured.description }}</p>
+                        <div class="news-meta">
+                            {% if main_featured.news_authors %}
+                            <div class="news-author">
+                                {% if main_featured.news_authors.avatar_url %}
+                                <img src="{{ main_featured.news_authors.avatar_url }}"
+                                    alt="{{ main_featured.news_authors.name }}" class="author-avatar">
+                                {% endif %}
+                                <span>{{ main_featured.news_authors.name }}</span>
+                                {% if main_featured.news_authors.is_verified %}
+                                <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            <span><i class="far fa-calendar"></i> {{ main_featured.published_at|date:"M j, Y" }}</span>
+                            <span><i class="far fa-clock"></i> {{ main_featured.read_time_minutes }} min read</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Featured Articles -->
+                <div class="featured-sidebar">
+                    {% for article in sidebar_featured %}
+                    <a href="/news/{{ article.id }}/" class="news-card fade-in-up">
+                        {% if article.image_url %}
+                        <img src="{{ article.image_url }}" alt="{{ article.title }}" class="news-image">
+                        {% endif %}
+                        <div class="news-content">
+                            <span class="news-category">{{ article.category|title }}</span>
+                            <h4 class="news-title">{{ article.title }}</h4>
+                            <div class="news-meta">
+                                {% if article.news_authors %}
+                                <div class="news-author">
+                                    {% if article.news_authors.avatar_url %}
+                                    <img src="{{ article.news_authors.avatar_url }}"
+                                        alt="{{ article.news_authors.name }}" class="author-avatar">
+                                    {% endif %}
+                                    <span>{{ article.news_authors.name }}</span>
+                                </div>
+                                {% endif %}
+                                <span>{{ article.published_at|date:"M j" }}</span>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- All News Section -->
+    <section class="container" id="all-news">
+        {% if regular_articles %}
+        <div class="news-grid">
+            {% for article in regular_articles %}
+            <a href="/news/{{ article.id }}/" class="news-card fade-in-up">
+                {% if article.image_url %}
+                <img src="{{ article.image_url }}" alt="{{ article.title }}" class="news-image">
+                {% endif %}
+                <div class="news-content">
+                    <span class="news-category">{{ article.category|title }}</span>
+                    <h3 class="news-title">{{ article.title }}</h3>
+                    <p class="news-description">{{ article.description }}</p>
+                    <div class="news-meta">
+                        {% if article.news_authors %}
+                        <div class="news-author">
+                            {% if article.news_authors.avatar_url %}
+                            <img src="{{ article.news_authors.avatar_url }}" alt="{{ article.news_authors.name }}"
+                                class="author-avatar">
+                            {% endif %}
+                            <span>{{ article.news_authors.name }}</span>
+                            {% if article.news_authors.is_verified %}
+                            <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        <span><i class="far fa-calendar"></i> {{ article.published_at|date:"M j, Y" }}</span>
+                        <span><i class="far fa-eye"></i> {{ article.view_count }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-newspaper"></i>
+            <h3>No articles found</h3>
+            <p>Check back later for the latest news and updates.</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Nexus Marketplace</h3>
+                    <p>Connecting businesses and customers through a trusted marketplace platform.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="/">Home</a></p>
+                    <p><a href="/news/">News</a></p>
+                    <p><a href="/community/">Community</a></p>
+                    <p><a href="/help/">Help</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <p><a href="/contact/">Contact Us</a></p>
+                    <p><a href="/help/faq/">FAQ</a></p>
+                    <p><a href="/help/">Help Center</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Nexus Marketplace. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

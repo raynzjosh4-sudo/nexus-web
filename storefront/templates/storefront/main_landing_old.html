@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Marketplace - Discover Local Businesses</title>
+    <meta name="description"
+        content="Find and shop from verified local businesses on Nexus Marketplace. Browse products, services, and connect with your community.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nexus Marketplace - Discover Local Businesses" />
+    <meta property="og:description" content="Find and shop from verified local businesses on Nexus Market." />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Business Sections */
+        .section {
+            background: white;
+            margin: 40px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .section-header h2 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .businesses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .business-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .business-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .business-logo {
+            width: 100%;
+            height: 150px;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #6c757d;
+            overflow: hidden;
+        }
+
+        .business-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .business-info {
+            padding: 20px;
+        }
+
+        .business-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .business-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .business-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .verified-badge {
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .business-category {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .businesses-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo">Nexus</a>
+            <nav class="nav-links">
+                <a href="/community/">Community</a>
+                <a href="/swap/">Swap</a>
+                <a href="/lost-and-found/">Lost & Found</a>
+                <a href="/help/">Help</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Discover Local Businesses</h1>
+            <p>Connect with verified businesses and explore products in your community</p>
+
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">{{ verified_businesses|length }}</span>
+                    <span class="stat-label">Verified Businesses</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">{{ total_businesses }}</span>
+                    <span class="stat-label">Total Businesses</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">{{ unverified_businesses|length }}</span>
+                    <span class="stat-label">Growing Businesses</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verified Businesses Section -->
+    {% if verified_businesses %}
+    <section class="section">
+        <div class="section-header">
+            <h2><i class="fas fa-check-circle"></i> Verified Businesses</h2>
+            <p>Trusted businesses with verified credentials</p>
+        </div>
+        <div class="businesses-grid">
+            {% for business in verified_businesses %}
+            <a href="https://{{ business.domain }}.nexassearch.com/" class="business-card">
+                <div class="business-logo">
+                    {% if business.logo_url %}
+                    <img src="{{ business.logo_url }}" alt="{{ business.business_name }} logo">
+                    {% else %}
+                    <i class="fas fa-store"></i>
+                    {% endif %}
+                </div>
+                <div class="business-info">
+                    <div class="business-name">{{ business.business_name }}</div>
+                    <div class="business-description">{{ business.business_description|truncatewords:15|default:"Quality
+                        products and services" }}</div>
+                    <div class="business-meta">
+                        <span class="verified-badge">Verified</span>
+                        <span class="business-category">{{ business.category|default:"Business" }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- All Businesses Section -->
+    {% if unverified_businesses %}
+    <section class="section">
+        <div class="section-header">
+            <h2><i class="fas fa-rocket"></i> Growing Businesses</h2>
+            <p>Exciting new businesses joining our community</p>
+        </div>
+        <div class="businesses-grid">
+            {% for business in unverified_businesses %}
+            <a href="https://{{ business.domain }}.nexassearch.com/" class="business-card">
+                <div class="business-logo">
+                    {% if business.logo_url %}
+                    <img src="{{ business.logo_url }}" alt="{{ business.business_name }} logo">
+                    {% else %}
+                    <i class="fas fa-store"></i>
+                    {% endif %}
+                </div>
+                <div class="business-info">
+                    <div class="business-name">{{ business.business_name }}</div>
+                    <div class="business-description">{{ business.business_description|truncatewords:15|default:"Quality
+                        products and services" }}</div>
+                    <div class="business-meta">
+                        <span class="business-category">{{ business.category|default:"Business" }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="/community/">Community</a>
+                <a href="/swap/">Swap</a>
+                <a href="/lost-and-found/">Lost & Found</a>
+                <a href="/help/">Help</a>
+                <a href="/sitemap_index.xml">Sitemap</a>
+                <a href="/robots.txt">Robots.txt</a>
+            </div>
+            <p>&copy; 2026 Nexus Marketplace. Connecting communities through local commerce.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple scroll animation
+        document.addEventListener('DOMContentLoaded', function () {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.business-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s, transform 0.6s';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,35 +1,1536 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Nexassearch — Marketplace</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Business Market</title>
+    <meta name="description"
+        content="Discover verified local businesses and premium products on Nexus Marketplace. Connect with trusted merchants and explore quality services in your community.">
+
+    <!-- SEO Meta Tags -->
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords"
+        content="local businesses, marketplace, verified merchants, premium products, business directory" />
+    <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nexus Marketplace - Professional Business Directory" />
+    <meta property="og:description"
+        content="Discover verified local businesses and premium products on Nexus Marketplace." />
+    <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+    <meta property="og:image" content="/static/images/nexus-og.jpg" />
+
+    <!-- Professional Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        body {
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-            margin: 40px;
-            color: #222
+        :root {
+            --primary-color: #7c3aed;
+            --secondary-color: #2d2d30;
+            --accent-color: #f97316;
+            --success-color: #56d364;
+            --warning-color: #d29922;
+            --danger-color: #f85149;
+            --text-primary: #cccccc;
+            --text-secondary: #8b949e;
+            --text-light: #6e7681;
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #252526;
+            --bg-tertiary: #2d2d30;
+            --border-color: #30363d;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
         }
 
-        a {
-            color: #0074d9
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            letter-spacing: -0.025em;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -0.25rem;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 0 6rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="1000" height="1000" fill="url(%23grain)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -0.025em;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.9;
+        }
+
+        /* Sections */
+        .section {
+            padding: 6rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--success-color));
+            border-radius: 2px;
+        }
+
+        .section-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Business Grid */
+        .businesses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .business-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .business-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-color);
+        }
+
+        .business-logo-container {
+            height: 180px;
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .business-logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .business-card:hover .business-logo-container img {
+            transform: scale(1.05);
+        }
+
+        .business-logo-placeholder {
+            font-size: 3rem;
+            color: var(--text-light);
+        }
+
+        .business-verified-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--success-color);
+            color: white;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            box-shadow: var(--shadow-md);
+        }
+
+        .business-content {
+            padding: 1.5rem;
+        }
+
+        .business-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .business-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .business-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .business-category {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .business-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .rating-stars {
+            color: var(--warning-color);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--accent-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+            background: #2c5282;
+        }
+
+        /* Hero Features */
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-item i {
+            color: var(--accent-color);
+            font-size: 1.25rem;
+        }
+
+        .feature-item span {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .news-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover .news-image img {
+            transform: scale(1.05);
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .news-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0.75rem 0 0.5rem;
+            line-height: 1.4;
+        }
+
+        .news-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .news-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .author-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .read-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .read-more-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Lost Items Grid */
+        .lost-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .lost-item-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .lost-item-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .lost-item-card:hover .item-image img {
+            transform: scale(1.05);
+        }
+
+        .item-content {
+            padding: 1.25rem;
+        }
+
+        .item-category {
+            display: inline-block;
+            background: var(--warning-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .item-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0.75rem 0 0.5rem;
+            line-height: 1.4;
+        }
+
+        .item-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .look-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--warning-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .look-more-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Community Grid */
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .community-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .community-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .community-image {
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .community-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .community-card:hover .community-image img {
+            transform: scale(1.05);
+        }
+
+        .community-content {
+            padding: 1.25rem;
+        }
+
+        .community-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .community-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .community-info {
+            flex: 1;
+        }
+
+        .community-author {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .community-date {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+
+        .community-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .community-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .community-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+
+        .check-out-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .check-out-btn:hover {
+            color: var(--accent-color);
+        }
+
+        /* Business Intro Section */
+        .business-intro-section {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            padding: 5rem 0;
+            margin: 4rem 0;
+        }
+
+        .business-intro-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .business-intro-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .business-intro-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        .business-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .benefit-item {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .benefit-item i {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .benefit-item h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-item p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        /* Section Footer */
+        .section-footer {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .view-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .view-all-btn:hover {
+            background: var(--accent-color);
+        }
+
+        /* Highlight text */
+        .highlight {
+            color: var(--accent-color);
+            position: relative;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 3rem 0 2rem;
+        }
+
+        .footer .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #a0aec0;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #4a5568;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            text-align: center;
+            color: #a0aec0;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 0 2rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 2rem 0;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            /* Keep horizontal grids but make cards smaller */
+            .news-grid,
+            .lost-items-grid,
+            .community-grid,
+            .businesses-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .news-card,
+            .lost-item-card,
+            .community-card,
+            .business-card {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+
+            .news-card h3,
+            .lost-item-card h3,
+            .community-card h3,
+            .business-card h3 {
+                font-size: 1rem;
+            }
+
+            .news-card p,
+            .lost-item-card p,
+            .community-card p,
+            .business-card p {
+                font-size: 0.8rem;
+            }
+
+            .hero-features {
+                gap: 1rem;
+            }
+
+            .feature-item {
+                font-size: 0.85rem;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .header .container {
+                padding: 0.75rem;
+            }
+
+            .cta-section {
+                padding: 2rem 0;
+            }
+
+            .cta-title {
+                font-size: 1.5rem;
+            }
+
+            .cta-description {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .business-card:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        .business-card:nth-child(even) {
+            animation-delay: 0.2s;
         }
     </style>
 </head>
 
 <body>
-    <h1>Welcome to Nexassearch</h1>
-    <p>This is the main domain. Browse site-wide sections or open a business shop using its subdomain.</p>
-    <ul>
-        <li><a href="/community/">Community</a></li>
-        <li><a href="/swap/">Swap</a></li>
-        <li><a href="/lost-and-found/">Lost &amp; Found</a></li>
-        <li><a href="/sitemap_index.xml">Sitemap index (SEO)</a></li>
-        <li><a href="/robots.txt">robots.txt</a></li>
-    </ul>
-    <p>To visit a business storefront use <em>&lt;subdomain&gt;.nexassearch.com</em> (example: <a
-            href="https://acme.nexassearch.com/">acme.nexassearch.com</a>).</p>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="/" class="logo">Nexus</a>
+            <nav class="nav-menu">
+                <a href="#news" class="nav-link">News</a>
+                <a href="#lost-found" class="nav-link">Lost & Found</a>
+                <a href="#community" class="nav-link">Community</a>
+                <a href="#verified" class="nav-link">Verified Businesses</a>
+                <a href="#growing" class="nav-link">Growing Businesses</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Nexus Introduction Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <img src="/assets/icon.png" alt="Nexus Icon"
+                    style="width: 72px; height: 72px; margin-bottom: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); border-radius: 16px; background: #fff; padding: 8px;">
+                <h1 class="hero-title">Welcome to <span class="highlight">Nexus</span></h1>
+                <p class="hero-subtitle">
+                    The smart way to shop in 2026. Put your price, wait for the deal.
+                </p>
+                <div class="hero-features">
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Verified Businesses</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-users"></i>
+                        <span>Active Community</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-search"></i>
+                        <span>Lost & Found</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-newspaper"></i>
+                        <span>Latest News</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketing Messages Section -->
+    <section class="marketing-section">
+        <!-- Marketing section removed as requested -->
+    </section>
+
+    <!-- Trending News Section -->
+    {% if trending_news %}
+    <section class="section" id="news">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-fire" style="color: var(--accent-color); margin-right: 0.5rem;"></i>
+                    Trending News
+                </h2>
+                <p class="section-description">
+                    Stay updated with the latest insights and stories from our community
+                </p>
+            </div>
+
+            <div class="news-grid">
+                {% for article in trending_news %}
+                <div class="news-card fade-in-up">
+                    {% if article.image_url %}
+                    <div class="news-image">
+                        <img src="{{ article.image_url }}" alt="{{ article.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="news-content">
+                        <span class="news-category">{{ article.category|title }}</span>
+                        <h3 class="news-title">{{ article.title }}</h3>
+                        <p class="news-description">{{ article.description|truncatewords:15 }}</p>
+                        <div class="news-meta">
+                            {% if article.news_authors %}
+                            <div class="news-author">
+                                {% if article.news_authors.avatar_url %}
+                                <img src="{{ article.news_authors.avatar_url }}" alt="{{ article.news_authors.name }}"
+                                    class="author-avatar">
+                                {% endif %}
+                                <span>{{ article.news_authors.name }}</span>
+                                {% if article.news_authors.is_verified %}
+                                <i class="fas fa-check-circle"
+                                    style="color: var(--success-color); font-size: 0.75rem;"></i>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            <span><i class="far fa-calendar"></i> {{ article.published_at|date:"M j, Y" }}</span>
+                        </div>
+                        <a href="/news/{{ article.id }}/" class="read-more-btn">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="section-footer">
+                <a href="/news/" class="view-all-btn">
+                    <i class="fas fa-newspaper"></i> View All News
+                </a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Lost & Found Section -->
+    {% if lost_items %}
+    <section class="section" id="lost-found">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-search" style="color: var(--warning-color); margin-right: 0.5rem;"></i>
+                    Lost & Found
+                </h2>
+                <p class="section-description">
+                    Help reunite lost items with their owners in our community
+                </p>
+            </div>
+
+            <div class="lost-items-grid">
+                {% for item in lost_items %}
+                <div class="lost-item-card fade-in-up">
+                    {% if item.image_url %}
+                    <div class="item-image">
+                        <img src="{{ item.image_url }}" alt="{{ item.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="item-content">
+                        <span class="item-category">{{ item.category|title }}</span>
+                        <h3 class="item-title">{{ item.title }}</h3>
+                        <p class="item-description">{{ item.description|truncatewords:12 }}</p>
+                        <div class="item-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> {{ item.location_name|default:"Kampala, Uganda"
+                                }}</span>
+                            <span><i class="far fa-calendar"></i> {{ item.created_at|date:"M j, Y" }}</span>
+                        </div>
+                        <a href="/lost-and-found/{{ item.id }}/" class="look-more-btn">
+                            Look for More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="section-footer">
+                <a href="/lost-and-found/" class="view-all-btn">
+                    <i class="fas fa-search"></i> View All Items
+                </a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Community Section -->
+    {% if community_posts %}
+    <section class="section" id="community">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-users" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                    Community Buzz
+                </h2>
+                <p class="section-description">
+                    See what our community is talking about and sharing
+                </p>
+            </div>
+
+            <div class="community-grid">
+                {% for post in community_posts %}
+                <div class="community-card fade-in-up">
+                    {% if post.image_url %}
+                    <div class="community-image">
+                        <img src="{{ post.image_url }}" alt="{{ post.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="community-content">
+                        <div class="community-header">
+                            {% if post.nexususers and post.nexususers.avatar_url %}
+                            <img src="{{ post.nexususers.avatar_url }}" alt="{{ post.nexususers.name }}"
+                                class="community-avatar">
+                            {% endif %}
+                            <div class="community-info">
+                                <span class="community-author">{{ post.nexususers.name|default:"Anonymous" }}</span>
+                                <span class="community-date">{{ post.created_at|date:"M j, Y" }}</span>
+                            </div>
+                        </div>
+                        <h3 class="community-title">{{ post.title }}</h3>
+                        <p class="community-description">{{ post.body|truncatewords:15 }}</p>
+                        <div class="community-meta">
+                            <span><i class="fas fa-tag"></i> {{ post.category|title }}</span>
+                            <span><i class="fas fa-comments"></i> {{ post.reply_count|default:0 }} replies</span>
+                        </div>
+                        <a href="/community/{{ post.id }}/" class="check-out-btn">
+                            Check Out <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="section-footer">
+                <a href="/community/" class="view-all-btn">
+                    <i class="fas fa-users"></i> Join Community
+                </a>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Business Expression Section -->
+    <section class="business-intro-section">
+        <div class="container">
+            <div class="business-intro-content">
+                <h2 class="business-intro-title">Empowering Local Businesses</h2>
+                <p class="business-intro-description">
+                    Nexus Marketplace provides a platform where local businesses can showcase their products and
+                    services,
+                    connect with customers, and build lasting relationships within their communities. From established
+                    enterprises to emerging startups, we support businesses at every stage of their journey.
+                </p>
+                <div class="business-benefits">
+                    <div class="benefit-item">
+                        <i class="fas fa-store"></i>
+                        <h4>Showcase Products</h4>
+                        <p>Display your offerings to a targeted local audience</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-handshake"></i>
+                        <h4>Build Trust</h4>
+                        <p>Establish credibility with verified business profiles</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Grow Revenue</h4>
+                        <p>Reach more customers and increase your sales</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verified Businesses Section -->
+    {% if verified_businesses %}
+    <section class="section" id="verified">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-shield-alt" style="color: var(--success-color); margin-right: 0.5rem;"></i>
+                    Verified Businesses
+                </h2>
+                <p class="section-description">
+                    Trusted businesses with verified credentials and proven track records
+                </p>
+            </div>
+
+            <div class="businesses-grid">
+                {% for business in verified_businesses %}
+                <a href="https://{{ business.domain }}.nexassearch.com/" class="business-card fade-in-up">
+                    <div class="business-logo-container">
+                        {% if business.logo_url %}
+                        <img src="{{ business.logo_url }}" alt="{{ business.business_name }} logo">
+                        {% else %}
+                        <i class="fas fa-building business-logo-placeholder"></i>
+                        {% endif %}
+                        <div class="business-verified-badge">
+                            <i class="fas fa-check" style="margin-right: 0.25rem;"></i>
+                            Verified
+                        </div>
+                    </div>
+                    <div class="business-content">
+                        <h3 class="business-name">{{ business.business_name }}</h3>
+                        <p class="business-description">
+                            {{ business.business_description|truncatewords:20|default:"Professional services and quality
+                            products" }}
+                        </p>
+                        <div class="business-meta">
+                            <span class="business-category">{{ business.category|default:"Business" }}</span>
+                            {% if business.average_rating %}
+                            <div class="business-rating">
+                                <div class="rating-stars">
+                                    {% for i in "12345"|make_list %}
+                                    {% if forloop.counter <= business.average_rating %} <i class="fas fa-star"></i>
+                                        {% elif forloop.counter <= business.average_rating|add:0.5 %} <i
+                                            class="fas fa-star-half-alt"></i>
+                                            {% else %}
+                                            <i class="far fa-star"></i>
+                                            {% endif %}
+                                            {% endfor %}
+                                </div>
+                                <span>({{ business.total_reviews|default:0 }})</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Growing Businesses Section -->
+    {% if unverified_businesses %}
+    <section class="section" id="growing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-rocket" style="color: var(--accent-color); margin-right: 0.5rem;"></i>
+                    Growing Businesses
+                </h2>
+                <p class="section-description">
+                    Exciting new businesses joining our community and building their reputation
+                </p>
+            </div>
+
+            <div class="businesses-grid">
+                {% for business in unverified_businesses %}
+                <a href="https://{{ business.domain }}.nexassearch.com/" class="business-card fade-in-up">
+                    <div class="business-logo-container">
+                        {% if business.logo_url %}
+                        <img src="{{ business.logo_url }}" alt="{{ business.business_name }} logo">
+                        {% else %}
+                        <i class="fas fa-store business-logo-placeholder"></i>
+                        {% endif %}
+                    </div>
+                    <div class="business-content">
+                        <h3 class="business-name">{{ business.business_name }}</h3>
+                        <p class="business-description">
+                            {{ business.business_description|truncatewords:20|default:"Quality products and services" }}
+                        </p>
+                        <div class="business-meta">
+                            <span class="business-category">{{ business.category|default:"Business" }}</span>
+                            <div class="business-rating">
+                                <span style="font-size: 0.75rem; color: var(--text-light);">New Business</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Ready to Join Our Network?</h2>
+            <p class="cta-description">
+                Start your business journey with Nexus Marketplace and reach thousands of potential customers.
+            </p>
+            <a href="https://play.google.com/store/apps/details?id=com.josh.raynz.nexus" class="cta-button">
+                <i class="fas fa-plus-circle"></i>
+                Join as Business Owner
+            </a>
+        </div>
+    </section>
+
+    <!-- Newsletter Subscribe Section -->
+    <section class="newsletter-section" style="background: var(--bg-secondary); padding: 3rem 0; text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">Subscribe
+                to our Newsletter</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Get the latest news, updates, and exclusive
+                offers from Nexus Marketplace straight to your inbox.</p>
+            <form method="post" action="/newsletter/subscribe/"
+                style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; max-width: 500px; margin: 0 auto;">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Enter your email address" required
+                    style="padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); font-size: 1rem; min-width: 220px;">
+                <button type="submit"
+                    style="padding: 0.75rem 2rem; background: var(--accent-color); color: #fff; border: none; border-radius: var(--radius-md); font-weight: 600; font-size: 1rem; cursor: pointer;">
+                    <i class="fas fa-envelope"></i> Subscribe
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-section">
+                <h3>Platform</h3>
+                <ul class="footer-links">
+                    <li><a href="/community/">Community</a></li>
+                    <li><a href="/swap/">Swap</a></li>
+                    <li><a href="/lost-and-found/">Lost & Found</a></li>
+                    <li><a href="/help/">Help Center</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Business</h3>
+                <ul class="footer-links">
+                    <li><a href="/join-business/">Join as Business</a></li>
+                    <li><a href="/support/">Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul class="footer-links">
+                    <li><a href="https://raynzjosh4-sudo.github.io/nexus-terms/legal.html" target="_blank">Privacy
+                            Policy</a></li>
+                    <li><a href="https://raynzjosh4-sudo.github.io/nexus-terms/legal.html" target="_blank">Terms of
+                            Service</a></li>
+                    <li><a href="https://raynzjosh4-sudo.github.io/nexus-swap-terms/" target="_blank">Swap Terms</a>
+                    </li>
+                    <li><a href="/cookies/">Cookie Policy</a></li>
+                    <li><a href="/sitemap_index.xml">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <ul class="footer-links">
+                    <li><a href="/contact/">Contact Us</a></li>
+                    <li><a href="/about/">About Us</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/newsletter/">Newsletter</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 Nexus Marketplace. All rights reserved. Connecting communities through local commerce.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function () {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-link[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.offsetTop;
+                    const offsetPosition = elementPosition - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        // Observe business cards
+        document.querySelectorAll('.business-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // Add loading animation delay
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                document.querySelectorAll('.business-card').forEach(card => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                });
+            }, 100);
+        });
+    </script>
 </body>
 
 </html>

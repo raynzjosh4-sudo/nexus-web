@@ -1,0 +1,67 @@
+{% extends 'storefront/base.html' %}
+{% block content %}
+<section class="page-hero" style="padding:4rem 0;background:var(--bg-card);color:var(--text-main);">
+    <div class="container" style="max-width:1100px;margin:0 auto;padding:0 20px;">
+        <div style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap;">
+            <div style="flex:1 1 420px;">
+                <h1 style="font-size:3rem;margin:0 0 1rem;">About Us</h1>
+                <p style="font-size:1.05rem;line-height:1.6;color:var(--text-sub);margin:0 0 1.25rem;">Nexus Marketplace
+                    connects communities, businesses, and customers through a trusted, innovative platform. Our mission
+                    is
+                    to empower local commerce and make shopping smarter for everyone.</p>
+                <a href="{% url 'join_business' %}" class="btn-primary"
+                    style="display:inline-block;margin-top:0.5rem;">Join
+                    as a Business</a>
+            </div>
+            <div style="flex:0 0 320px;">
+                <div
+                    style="background:linear-gradient(180deg,rgba(255,255,255,0.03),transparent);padding:1.5rem;border-radius:12px;">
+                    <h4 style="margin-top:0;color:var(--text-main);">Our Vision</h4>
+                    <p style="color:var(--text-sub);margin:0;">To be the leading platform for local business discovery,
+                        fair pricing, and community-driven commerce in 2026 and beyond.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main class="page-content" style="max-width:1100px;margin:2.5rem auto;padding:0 20px;color:var(--text-main);">
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:2rem;align-items:start;">
+        <article style="line-height:1.8;color:var(--text-sub);">
+            <h2 style="margin-top:0;">Our Story</h2>
+            <p>Nexus started as a small project to help neighbourhood businesses reach more customers without
+                excessive fees or lock-in. Over time we've grown into a platform focused on fairness, transparency,
+                and community-first commerce.</p>
+
+            <h3>Our Team</h3>
+            <p>We are a passionate group of technologists, business owners, and community advocates working to make
+                commerce better for all. Our team blends design, engineering, and local market expertise so that the
+                platform works for merchants and shoppers alike.</p>
+
+            <h3>Core Values</h3>
+            <ul>
+                <li>Community first — local businesses power the neighbourhood economy.</li>
+                <li>Fair pricing — transparent fees and predictable costs for merchants.</li>
+                <li>Privacy & safety — we protect user data and prioritize secure transactions.</li>
+            </ul>
+
+            <h3 style="margin-top:1.25rem;">Get Involved</h3>
+            <p>If you're a business owner interested in creating a free shop, click the button to join. If you want to
+                help improve the platform, open-source contributions and feedback are welcome.</p>
+            <p style="margin-top:1rem;"><a class="btn-secondary" href="{% url 'join_business' %}">Create Your
+                    Shop</a></p>
+        </article>
+
+        <aside style="background:var(--bg-card);padding:1rem;border-radius:10px;color:var(--text-sub);">
+            <h4 style="margin-top:0;color:var(--text-main);">Contact & Support</h4>
+            <p>Questions about Nexus? Reach out via <a href="{% url 'contact' %}">our contact page</a> or visit the
+                <a href="{% url 'support' %}">Support</a> page for help articles.
+            </p>
+
+            <h4 style="margin-top:1rem;color:var(--text-main);">Newsletter</h4>
+            <p>Stay up to date — <a href="{% url 'newsletter' %}">subscribe to our newsletter</a> for product updates
+                and community news.</p>
+        </aside>
+    </div>
+</main>
+{% endblock %}
