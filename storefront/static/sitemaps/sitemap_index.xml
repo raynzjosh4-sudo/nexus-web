@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<<<<<<< HEAD
-  
-</sitemapindex>
-=======
     
     <sitemap>
         <loc>https://blend.nexassearch.com/sitemap.xml</loc>
@@ -81,5 +77,3 @@
     </sitemap>
     
 </sitemapindex>
- 
->>>>>>> 9ce1ad3 (Regenerate sitemaps - updated published businesses)
