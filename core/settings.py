@@ -35,7 +35,7 @@ default_hosts = [
     '.nexassearch.com',  
     'nexassearch.com',          # Production: wildcard for all subdomains
     '.localhost',                  # Local dev: wildcard for all localhost subdomains (loom.localhost, etc.)
-    'nexus-web-f9zw.onrender.com', # Keep your internal Render URL
+    '.onrender.com',              # Render preview URLs (handles any onrender.com domain)
     'localhost',
     '127.0.0.1',
 ]

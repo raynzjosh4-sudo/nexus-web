@@ -73,3 +73,4 @@ urlpatterns = [
     path('robots.txt', robots_txt, name='robots_txt'),
     path('static/sitemaps/<str:filename>', serve_sitemap_file, name='serve_sitemap_file'),
 ]
+# https://nexassearch.com/static/sitemaps/sitemap_index.xml
