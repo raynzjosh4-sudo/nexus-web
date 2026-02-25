@@ -36,81 +36,86 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('🚀 Starting static sitemap generation...'))
         self.stdout.write(f'Output directory: {output_dir}\n')
         
+        # Attempt to create a Supabase client; if environment is not configured, proceed safely.
         try:
             supabase = get_supabase_client()
-            
-            # Step 1: Fetch all published businesses
-            self.stdout.write('📦 Fetching published businesses...')
-            biz_response = supabase.table('business_profiles')\
-                .select('id,domain,business_name,created_at,logo_url')\
-                .eq('status', 'active')\
-                .order('created_at', desc=True)\
-                .limit(50000)\
-                .execute()
-            
-            businesses = biz_response.data
-            business_count = len(businesses)
-            
-            if business_count == 0:
-                self.stdout.write(self.style.WARNING('⚠️ No published businesses found!'))
-                return
-            
-            self.stdout.write(f'✅ Found {business_count} published businesses')
-            
-            # Step 2: Generate master sitemap index
-            self.stdout.write('\n📋 Generating master sitemap index...')
-            self._generate_sitemap_index(supabase, businesses, output_dir, verbose)
-            self.stdout.write(f'✅ Saved: {output_dir}/sitemap_index.xml')
-            
-            # Step 3: Generate individual business sitemaps
-            self.stdout.write(f'\n🏪 Generating {business_count} business sitemaps...')
-            success_count = 0
-            error_count = 0
-            
-            for idx, business in enumerate(businesses, 1):
-                try:
-                    self._generate_business_sitemap(
-                        supabase, business, output_dir, verbose
-                    )
-                    success_count += 1
-                    
-                    # Show progress every 100 businesses
-                    if idx % 100 == 0:
-                        self.stdout.write(f'  Progress: {idx}/{business_count} ✓')
-                
-                except Exception as e:
-                    error_count += 1
-                    logger.error(
-                        f'Error generating sitemap for {business["domain"]}: {str(e)}'
-                    )
-                    if verbose:
-                        self.stdout.write(
-                            self.style.ERROR(f'  ❌ {business["domain"]}: {str(e)}')
-                        )
-            
-            # Step 4: Generate summary report
-            self.stdout.write('\n' + '='*60)
-            self.stdout.write(self.style.SUCCESS('✅ SITEMAP GENERATION COMPLETE'))
-            self.stdout.write('='*60)
-            self.stdout.write(f'Businesses processed: {business_count}')
-            self.stdout.write(f'  ✅ Successful: {success_count}')
-            self.stdout.write(f'  ❌ Failed: {error_count}')
-            self.stdout.write(f'\nSitemaps location: {output_dir}')
-            self.stdout.write(f'Master index: {output_dir}/sitemap_index.xml')
-            self.stdout.write(f'\nNext step: Deploy to production server')
-            self.stdout.write(f'Command: cp {output_dir}/* /path/to/static/sitemaps/')
-            self.stdout.write('='*60 + '\n')
-            
-            # Save metadata
-            self._save_metadata(output_dir, business_count, success_count, error_count)
-            self.stdout.write('📊 Metadata saved to sitemaps_metadata.json')
-            
         except Exception as e:
-            logger.error(f'Fatal error in sitemap generation: {str(e)}')
-            self.stdout.write(
-                self.style.ERROR(f'\n❌ FATAL ERROR: {str(e)}')
-            )
-            raise
+            logger.warning('Supabase client unavailable: %s', str(e))
+            self.stdout.write(self.style.WARNING('⚠️ Supabase not configured; generating empty sitemap index'))
+            # Create empty index and metadata so CI/Render has files to work with
+            self._generate_sitemap_index(None, [], output_dir, verbose)
+            self._save_metadata(output_dir, 0, 0, 0)
+            self.stdout.write(self.style.SUCCESS('✅ Generated empty sitemap index and metadata'))
+            return
+
+        # Step 1: Fetch all published businesses
+        self.stdout.write('📦 Fetching published businesses...')
+        biz_response = supabase.table('business_profiles')\
+            .select('id,domain,business_name,created_at,logo_url')\
+            .eq('status', 'active')\
+            .order('created_at', desc=True)\
+            .limit(50000)\
+            .execute()
+
+        businesses = getattr(biz_response, 'data', []) or []
+        business_count = len(businesses)
+
+        if business_count == 0:
+            self.stdout.write(self.style.WARNING('⚠️ No published businesses found! Generating empty index...'))
+            self._generate_sitemap_index(supabase, [], output_dir, verbose)
+            self._save_metadata(output_dir, 0, 0, 0)
+            return
+
+        self.stdout.write(f'✅ Found {business_count} published businesses')
+
+        # Step 2: Generate master sitemap index
+        self.stdout.write('\n📋 Generating master sitemap index...')
+        self._generate_sitemap_index(supabase, businesses, output_dir, verbose)
+        self.stdout.write(f'✅ Saved: {output_dir}/sitemap_index.xml')
+
+        # Step 3: Generate individual business sitemaps
+        self.stdout.write(f'\n🏪 Generating {business_count} business sitemaps...')
+        success_count = 0
+        error_count = 0
+
+        for idx, business in enumerate(businesses, 1):
+            try:
+                self._generate_business_sitemap(
+                    supabase, business, output_dir, verbose
+                )
+                success_count += 1
+
+                # Show progress every 100 businesses
+                if idx % 100 == 0:
+                    self.stdout.write(f'  Progress: {idx}/{business_count} ✓')
+
+            except Exception as e:
+                error_count += 1
+                domain = business.get('domain') if isinstance(business, dict) else str(business)
+                logger.error(
+                    f'Error generating sitemap for {domain}: {str(e)}'
+                )
+                if verbose:
+                    self.stdout.write(
+                        self.style.ERROR(f'  ❌ {domain}: {str(e)}')
+                    )
+            
+        # Step 4: Generate summary report
+        self.stdout.write('\n' + '='*60)
+        self.stdout.write(self.style.SUCCESS('✅ SITEMAP GENERATION COMPLETE'))
+        self.stdout.write('='*60)
+        self.stdout.write(f'Businesses processed: {business_count}')
+        self.stdout.write(f'  ✅ Successful: {success_count}')
+        self.stdout.write(f'  ❌ Failed: {error_count}')
+        self.stdout.write(f'\nSitemaps location: {output_dir}')
+        self.stdout.write(f'Master index: {output_dir}/sitemap_index.xml')
+        self.stdout.write(f'\nNext step: Deploy to production server')
+        self.stdout.write(f'Command: cp {output_dir}/* /path/to/static/sitemaps/')
+        self.stdout.write('='*60 + '\n')
+
+        # Save metadata
+        self._save_metadata(output_dir, business_count, success_count, error_count)
+        self.stdout.write('📊 Metadata saved to sitemaps_metadata.json')
 
     def _generate_sitemap_index(self, supabase, businesses, output_dir, verbose):
         """Generate master sitemap_index.xml listing all businesses."""
