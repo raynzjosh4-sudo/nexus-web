@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <url>
-    <loc>https://chill.nexassearch.com/</loc>
-    <lastmod>2026-02-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     
-  </url>
-  
-  <url>
-    <loc>https://chill.nexassearch.com/product/00c54725-d49d-42e3-801f-c7e069a8f103/</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://chill.nexassearch.com/</loc>
+        <lastmod>2026-02-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://chill.nexassearch.com/product/fbc7d94d-172d-40be-a851-c438aa19e98a/</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://chill.nexassearch.com/product/00c54725-d49d-42e3-801f-c7e069a8f103/</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://chill.nexassearch.com/product/07400a0e-5ba3-4603-a334-87b6ac6ba929/</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://chill.nexassearch.com/product/fbc7d94d-172d-40be-a851-c438aa19e98a/</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
+    <url>
+        <loc>https://chill.nexassearch.com/product/07400a0e-5ba3-4603-a334-87b6ac6ba929/</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
+    
 </urlset>

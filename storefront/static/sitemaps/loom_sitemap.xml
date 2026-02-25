@@ -1,384 +1,405 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <url>
-    <loc>https://loom.nexassearch.com/</loc>
-    <lastmod>2026-01-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/d3d3bca7-82e4-4a11-851a-208be4579d6c/</loc>
-    <lastmod>2026-02-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/</loc>
+        <lastmod>2026-01-31</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/7eb42f4a-0808-4d40-bd3f-c36bbc64dc54/</loc>
-    <lastmod>2026-02-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/d3d3bca7-82e4-4a11-851a-208be4579d6c/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/e5fa2e8b-aaff-4cbc-ad48-d9f3bec33efc/</loc>
-    <lastmod>2026-02-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/7eb42f4a-0808-4d40-bd3f-c36bbc64dc54/</loc>
+        <lastmod>2026-02-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771612201945_compressed.jpg</image:loc>
-        <image:title>T. Shirts</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771612204104_compressed.jpg</image:loc>
-        <image:title>T. Shirts</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771612205397_compressed.jpg</image:loc>
-        <image:title>T. Shirts</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://loom.nexassearch.com/product/e5fa2e8b-aaff-4cbc-ad48-d9f3bec33efc/</loc>
+        <lastmod>2026-02-20</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771612201945_compressed.jpg</image:loc>
+            <image:title>T. Shirts</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771612204104_compressed.jpg</image:loc>
+            <image:title>T. Shirts</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771612205397_compressed.jpg</image:loc>
+            <image:title>T. Shirts</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/34967159-7eb4-4477-83d2-60fbcf4d7d7c/</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/34967159-7eb4-4477-83d2-60fbcf4d7d7c/</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/dc8afe1f-7a51-4d1f-bcaf-11ceced76a76/</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/dc8afe1f-7a51-4d1f-bcaf-11ceced76a76/</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/4c1f7a3d-fd6c-462e-aaa8-c52bd535b38e/</loc>
-    <lastmod>2026-02-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/4c1f7a3d-fd6c-462e-aaa8-c52bd535b38e/</loc>
+        <lastmod>2026-02-16</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771227816842_compressed.jpg</image:loc>
+            <image:title>Premium Soft Absorbent Towels -</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771227818286_compressed.jpg</image:loc>
+            <image:title>Premium Soft Absorbent Towels -</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771227819040_compressed.jpg</image:loc>
+            <image:title>Premium Soft Absorbent Towels -</image:title>
+        </image:image>
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771227816842_compressed.jpg</image:loc>
-        <image:title>Premium Soft Absorbent Towels -</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771227818286_compressed.jpg</image:loc>
-        <image:title>Premium Soft Absorbent Towels -</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771227819040_compressed.jpg</image:loc>
-        <image:title>Premium Soft Absorbent Towels -</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://loom.nexassearch.com/product/c54caa8f-1cae-4eb7-b8c0-144f91d3d208/</loc>
+        <lastmod>2026-02-16</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/c54caa8f-1cae-4eb7-b8c0-144f91d3d208/</loc>
-    <lastmod>2026-02-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/97cfdf3a-5d1d-4f32-a991-e28d4d4a760d/</loc>
+        <lastmod>2026-02-16</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771218438972_compressed.jpg</image:loc>
+            <image:title>Universal Wireless Speaker Wristband Pad Lightweight</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771218441318_compressed.jpg</image:loc>
+            <image:title>Universal Wireless Speaker Wristband Pad Lightweight</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771218442818_compressed.jpg</image:loc>
+            <image:title>Universal Wireless Speaker Wristband Pad Lightweight</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/97cfdf3a-5d1d-4f32-a991-e28d4d4a760d/</loc>
-    <lastmod>2026-02-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/85c53c2b-39a8-49e7-9704-ee3e58c733e8/</loc>
+        <lastmod>2026-02-14</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771218438972_compressed.jpg</image:loc>
-        <image:title>Universal Wireless Speaker Wristband Pad Lightweight</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771218441318_compressed.jpg</image:loc>
-        <image:title>Universal Wireless Speaker Wristband Pad Lightweight</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1771218442818_compressed.jpg</image:loc>
-        <image:title>Universal Wireless Speaker Wristband Pad Lightweight</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://loom.nexassearch.com/product/22563e58-dfa5-484e-b419-1d241a3ecea5/</loc>
+        <lastmod>2026-02-14</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/85c53c2b-39a8-49e7-9704-ee3e58c733e8/</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/02bdbb58-e73e-4777-8df8-aeaf57a77386/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770640363498_compressed.jpg</image:loc>
+            <image:title>dovet</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770640364910_compressed.jpg</image:loc>
+            <image:title>dovet</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770640365624_compressed.jpg</image:loc>
+            <image:title>dovet</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/22563e58-dfa5-484e-b419-1d241a3ecea5/</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/418a7590-9661-4f61-818e-725e4a04508c/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770620632474_compressed.jpg</image:loc>
+            <image:title>luffy Platform Slippers</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770620634365_compressed.jpg</image:loc>
+            <image:title>luffy Platform Slippers</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770620635455_compressed.jpg</image:loc>
+            <image:title>luffy Platform Slippers</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/02bdbb58-e73e-4777-8df8-aeaf57a77386/</loc>
-    <lastmod>2026-02-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/d6b56d9c-29b8-4967-bb0b-b0133b760f38/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770640363498_compressed.jpg</image:loc>
-        <image:title>dovet</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770640364910_compressed.jpg</image:loc>
-        <image:title>dovet</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770640365624_compressed.jpg</image:loc>
-        <image:title>dovet</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://loom.nexassearch.com/product/bfc6a159-0f22-48d3-b358-ce338a2c72d8/</loc>
+        <lastmod>2026-02-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770181585496_compressed.jpg</image:loc>
+            <image:title>Super Tent Mosquito Net</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770181586598_compressed.jpg</image:loc>
+            <image:title>Super Tent Mosquito Net</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770181587398_compressed.jpg</image:loc>
+            <image:title>Super Tent Mosquito Net</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/418a7590-9661-4f61-818e-725e4a04508c/</loc>
-    <lastmod>2026-02-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/170d09d6-63a4-4614-9a8a-91fca7a60efc/</loc>
+        <lastmod>2026-02-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770181293050_compressed.jpg</image:loc>
+            <image:title>Foldable Adjustable Mosquito Nets</image:title>
+        </image:image>
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770620632474_compressed.jpg</image:loc>
-        <image:title>luffy Platform Slippers</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770620634365_compressed.jpg</image:loc>
-        <image:title>luffy Platform Slippers</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770620635455_compressed.jpg</image:loc>
-        <image:title>luffy Platform Slippers</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://loom.nexassearch.com/product/90b31218-3e6b-4351-9856-633983fd49ce/</loc>
+        <lastmod>2026-02-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770180839489_compressed.jpg</image:loc>
+            <image:title>Two Stand Rail Mosquito Net</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770180841017_compressed.jpg</image:loc>
+            <image:title>Two Stand Rail Mosquito Net</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770180841791_compressed.jpg</image:loc>
+            <image:title>Two Stand Rail Mosquito Net</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/d6b56d9c-29b8-4967-bb0b-b0133b760f38/</loc>
-    <lastmod>2026-02-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/b9c11c5c-fb20-4827-b0ad-7258df3a3cc0/</loc>
+        <lastmod>2026-02-04</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770180517045_compressed.jpg</image:loc>
+            <image:title>Grey 6pcs Soft Fluffy Duvet</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/bfc6a159-0f22-48d3-b358-ce338a2c72d8/</loc>
-    <lastmod>2026-02-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/37c935b3-d348-4cef-8a4f-5615092bcb74/</loc>
+        <lastmod>2026-02-03</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770094843898_compressed.jpg</image:loc>
+            <image:title>Center Carpet Rugs</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770094869256_compressed.jpg</image:loc>
+            <image:title>Center Carpet Rugs</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770094871027_compressed.jpg</image:loc>
+            <image:title>Center Carpet Rugs</image:title>
+        </image:image>
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770181585496_compressed.jpg</image:loc>
-        <image:title>Super Tent Mosquito Net</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770181586598_compressed.jpg</image:loc>
-        <image:title>Super Tent Mosquito Net</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770181587398_compressed.jpg</image:loc>
-        <image:title>Super Tent Mosquito Net</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://loom.nexassearch.com/product/434256f8-8714-45e8-b7df-72fdacd00171/</loc>
+        <lastmod>2026-02-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769931057610_compressed.jpg</image:loc>
+            <image:title>Super Quality Blankets</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769931059051_compressed.jpg</image:loc>
+            <image:title>Super Quality Blankets</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769931059836_compressed.jpg</image:loc>
+            <image:title>Super Quality Blankets</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/170d09d6-63a4-4614-9a8a-91fca7a60efc/</loc>
-    <lastmod>2026-02-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/2e16ffd6-1894-4922-9d22-d489fea5051d/</loc>
+        <lastmod>2026-02-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770181293050_compressed.jpg</image:loc>
-        <image:title>Foldable Adjustable Mosquito Nets</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://loom.nexassearch.com/product/7a9eaaff-c91b-4152-b951-00bfec12f760/</loc>
+        <lastmod>2026-02-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929810253_compressed.jpg</image:loc>
+            <image:title>Super Soft Faux Fur Chunky Ribbed Mink Fleece Blanket Gray</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929811645_compressed.jpg</image:loc>
+            <image:title>Super Soft Faux Fur Chunky Ribbed Mink Fleece Blanket Gray</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/90b31218-3e6b-4351-9856-633983fd49ce/</loc>
-    <lastmod>2026-02-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://loom.nexassearch.com/product/b8f9e984-24d0-46e3-91ee-dfd8f6565a2c/</loc>
+        <lastmod>2026-02-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929322167_compressed.jpg</image:loc>
+            <image:title>Shiny Knitted Shirts</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929323795_compressed.jpg</image:loc>
+            <image:title>Shiny Knitted Shirts</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929326605_compressed.jpg</image:loc>
+            <image:title>Shiny Knitted Shirts</image:title>
+        </image:image>
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770180839489_compressed.jpg</image:loc>
-        <image:title>Two Stand Rail Mosquito Net</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770180841017_compressed.jpg</image:loc>
-        <image:title>Two Stand Rail Mosquito Net</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770180841791_compressed.jpg</image:loc>
-        <image:title>Two Stand Rail Mosquito Net</image:title>
-      </image:image>
-      
-    
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/b9c11c5c-fb20-4827-b0ad-7258df3a3cc0/</loc>
-    <lastmod>2026-02-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770180517045_compressed.jpg</image:loc>
-        <image:title>Grey 6pcs Soft Fluffy Duvet</image:title>
-      </image:image>
-      
-    
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/37c935b3-d348-4cef-8a4f-5615092bcb74/</loc>
-    <lastmod>2026-02-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770094843898_compressed.jpg</image:loc>
-        <image:title>Center Carpet Rugs</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770094869256_compressed.jpg</image:loc>
-        <image:title>Center Carpet Rugs</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1770094871027_compressed.jpg</image:loc>
-        <image:title>Center Carpet Rugs</image:title>
-      </image:image>
-      
-    
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/434256f8-8714-45e8-b7df-72fdacd00171/</loc>
-    <lastmod>2026-02-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769931057610_compressed.jpg</image:loc>
-        <image:title>Super Quality Blankets</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769931059051_compressed.jpg</image:loc>
-        <image:title>Super Quality Blankets</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769931059836_compressed.jpg</image:loc>
-        <image:title>Super Quality Blankets</image:title>
-      </image:image>
-      
-    
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/2e16ffd6-1894-4922-9d22-d489fea5051d/</loc>
-    <lastmod>2026-02-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/7a9eaaff-c91b-4152-b951-00bfec12f760/</loc>
-    <lastmod>2026-02-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929810253_compressed.jpg</image:loc>
-        <image:title>Super Soft Faux Fur Chunky Ribbed Mink Fleece Blanket Gray</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929811645_compressed.jpg</image:loc>
-        <image:title>Super Soft Faux Fur Chunky Ribbed Mink Fleece Blanket Gray</image:title>
-      </image:image>
-      
-    
-  </url>
-  
-  <url>
-    <loc>https://loom.nexassearch.com/product/b8f9e984-24d0-46e3-91ee-dfd8f6565a2c/</loc>
-    <lastmod>2026-02-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929322167_compressed.jpg</image:loc>
-        <image:title>Shiny Knitted Shirts</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929323795_compressed.jpg</image:loc>
-        <image:title>Shiny Knitted Shirts</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/acb4e2b6-b4e5-4545-9b94-3a05206c5d2f/feed/1769929326605_compressed.jpg</image:loc>
-        <image:title>Shiny Knitted Shirts</image:title>
-      </image:image>
-      
-    
-  </url>
-  
 </urlset>

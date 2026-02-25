@@ -1,68 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <url>
-    <loc>https://lams.nexassearch.com/</loc>
-    <lastmod>2026-02-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     
-  </url>
-  
-  <url>
-    <loc>https://lams.nexassearch.com/product/6b0f701e-ea31-4736-999f-d9d977ee6836/</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://lams.nexassearch.com/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://lams.nexassearch.com/product/924240be-3ffd-4df7-b6ff-9bf89e9fcc00/</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://lams.nexassearch.com/product/6b0f701e-ea31-4736-999f-d9d977ee6836/</loc>
+        <lastmod>2026-02-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/feed/1771321638667_compressed.jpg</image:loc>
-        <image:title>Oxford Cloth Laptop Bag-Black</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://lams.nexassearch.com/product/924240be-3ffd-4df7-b6ff-9bf89e9fcc00/</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/feed/1771321638667_compressed.jpg</image:loc>
+            <image:title>Oxford Cloth Laptop Bag-Black</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://lams.nexassearch.com/product/6e9b12a5-c15c-4cc9-89c1-25d6756ea629/</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://lams.nexassearch.com/product/6e9b12a5-c15c-4cc9-89c1-25d6756ea629/</loc>
+        <lastmod>2026-02-17</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
-  <url>
-    <loc>https://lams.nexassearch.com/product/d8760d34-b2cb-40e5-a175-6f55ef4d9add/</loc>
-    <lastmod>2026-02-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://lams.nexassearch.com/product/d8760d34-b2cb-40e5-a175-6f55ef4d9add/</loc>
+        <lastmod>2026-02-09</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/feed/1770664166470_compressed.jpg</image:loc>
+            <image:title>jeenz</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/feed/1770664168171_compressed.jpg</image:loc>
+            <image:title>jeenz</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/feed/1770664169229_compressed.jpg</image:loc>
+            <image:title>jeenz</image:title>
+        </image:image>
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/feed/1770664166470_compressed.jpg</image:loc>
-        <image:title>jeenz</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/feed/1770664168171_compressed.jpg</image:loc>
-        <image:title>jeenz</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/f1fcc826-ab55-421d-bfa1-46efe5f6e4fa/feed/1770664169229_compressed.jpg</image:loc>
-        <image:title>jeenz</image:title>
-      </image:image>
-      
-    
-  </url>
-  
 </urlset>

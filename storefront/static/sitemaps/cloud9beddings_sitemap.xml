@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <url>
-    <loc>https://cloud9beddings.nexassearch.com/</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     
-  </url>
-  
-  <url>
-    <loc>https://cloud9beddings.nexassearch.com/product/4150ea83-7414-4acf-8abf-2d442bfc4282/</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://cloud9beddings.nexassearch.com/</loc>
+        <lastmod>2026-02-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        
+        
+        
+    </url>
     
-  </url>
-  
+    <url>
+        <loc>https://cloud9beddings.nexassearch.com/product/4150ea83-7414-4acf-8abf-2d442bfc4282/</loc>
+        <lastmod>2026-02-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
+    
 </urlset>

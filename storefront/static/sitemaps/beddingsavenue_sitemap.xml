@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <url>
-    <loc>https://beddingsavenue.nexassearch.com/</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     
-  </url>
-  
-  <url>
-    <loc>https://beddingsavenue.nexassearch.com/product/cfa9133e-74a3-4f30-938d-9f2b9d8b793f/</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://beddingsavenue.nexassearch.com/</loc>
+        <lastmod>2026-02-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        
+        
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/a9ee7efc-93bf-4d92-a3fa-52678dfd2371/feed/1771840639845_compressed.jpg</image:loc>
-        <image:title>carpets</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/a9ee7efc-93bf-4d92-a3fa-52678dfd2371/feed/1771840642946_compressed.jpg</image:loc>
-        <image:title>carpets</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/a9ee7efc-93bf-4d92-a3fa-52678dfd2371/feed/1771840644830_compressed.jpg</image:loc>
-        <image:title>carpets</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://beddingsavenue.nexassearch.com/product/cfa9133e-74a3-4f30-938d-9f2b9d8b793f/</loc>
+        <lastmod>2026-02-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/a9ee7efc-93bf-4d92-a3fa-52678dfd2371/feed/1771840639845_compressed.jpg</image:loc>
+            <image:title>carpets</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/a9ee7efc-93bf-4d92-a3fa-52678dfd2371/feed/1771840642946_compressed.jpg</image:loc>
+            <image:title>carpets</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/a9ee7efc-93bf-4d92-a3fa-52678dfd2371/feed/1771840644830_compressed.jpg</image:loc>
+            <image:title>carpets</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
 </urlset>

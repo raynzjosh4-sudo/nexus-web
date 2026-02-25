@@ -1,7 +1,13 @@
 {
+<<<<<<< HEAD
   "generated_at": "2026-02-25T07:37:40.947867",
   "total_businesses": 0,
   "successful": 0,
+=======
+  "generated_at": "2026-02-25T07:22:39.474400",
+  "total_businesses": 15,
+  "successful": 15,
+>>>>>>> 9ce1ad3 (Regenerate sitemaps - updated published businesses)
   "failed": 0,
   "status": "success"
 }

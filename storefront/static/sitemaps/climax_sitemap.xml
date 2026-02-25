@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <url>
-    <loc>https://climax.nexassearch.com/</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     
-  </url>
-  
-  <url>
-    <loc>https://climax.nexassearch.com/product/71d23003-d1cf-4bd3-8319-dc86be2cab56/</loc>
-    <lastmod>2026-02-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <url>
+        <loc>https://climax.nexassearch.com/</loc>
+        <lastmod>2026-02-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        
+        
+        
+    </url>
     
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/d2d6891d-3f99-4930-9605-a55e17a7cd3a/feed/1771858782211_compressed.jpg</image:loc>
-        <image:title>duvet</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/d2d6891d-3f99-4930-9605-a55e17a7cd3a/feed/1771858784546_compressed.jpg</image:loc>
-        <image:title>duvet</image:title>
-      </image:image>
-      
-      <image:image>
-        <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/d2d6891d-3f99-4930-9605-a55e17a7cd3a/feed/1771858786220_compressed.jpg</image:loc>
-        <image:title>duvet</image:title>
-      </image:image>
-      
+    <url>
+        <loc>https://climax.nexassearch.com/product/71d23003-d1cf-4bd3-8319-dc86be2cab56/</loc>
+        <lastmod>2026-02-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/d2d6891d-3f99-4930-9605-a55e17a7cd3a/feed/1771858782211_compressed.jpg</image:loc>
+            <image:title>duvet</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/d2d6891d-3f99-4930-9605-a55e17a7cd3a/feed/1771858784546_compressed.jpg</image:loc>
+            <image:title>duvet</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/d2d6891d-3f99-4930-9605-a55e17a7cd3a/feed/1771858786220_compressed.jpg</image:loc>
+            <image:title>duvet</image:title>
+        </image:image>
+        
+    </url>
     
-  </url>
-  
 </urlset>
