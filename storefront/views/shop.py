@@ -43,9 +43,10 @@ def normalize_component_data(component):
         'gallery': 'gallery',
         'images': 'gallery',
         
-        'webtheme': 'webtheme',
         'websitetheme': 'webtheme',
+        'webtheme': 'webtheme',
         'theme': 'webtheme',
+        'profilewebsitethemecomponent': 'webtheme',
     }
 
     # Apply mapping. If not found in mapping, use the cleaned string.

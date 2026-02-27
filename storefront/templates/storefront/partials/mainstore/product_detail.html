@@ -43,15 +43,17 @@
         "description": "{{ product.description|truncatewords:50|striptags|escapejs }}",
         "image": "{{ product.image_url|escapejs }}",
         "sku": "{{ product.id|escapejs }}",
+        {% if product.gtin %}"gtin": "{{ product.gtin|escapejs }}",{% endif %}
+        {% if product.mpi %}"mpn": "{{ product.mpi|escapejs }}",{% endif %}
         "url": "{{ request.build_absolute_uri|escapejs }}",
         "brand": {
             "@type": "Brand",
-            "name": "{{ business.business_name|escapejs }}"
+            "name": "{% if product.brand %}{{ product.brand|escapejs }}{% else %}{{ business.business_name|escapejs }}{% endif %}"
         },
         "offers": {
             "@type": "Offer",
             "price": "{{ product.price|floatformat:2 }}",
-            "priceCurrency": "{{ product.currency|default:'UGX'|escapejs }}",
+            "priceCurrency": "{% if product.currency and product.currency|length > 0 %}{{ product.currency|upper|escapejs }}{% else %}UGX{% endif %}",
             "priceValidUntil": "2027-12-31",
             "availability": "https://schema.org/{% if product.stock_status == 'in_stock' %}InStock{% else %}OutOfStock{% endif %}",
             "url": "{{ request.build_absolute_uri|escapejs }}",
@@ -60,17 +62,39 @@
                 "name": "{{ business.business_name|escapejs }}",
                 "url": "https://{{ request.subdomain }}.nexassearch.com/"
             },
-            "hasMerchantReturnPolicy": true,
+            "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "UG",
+                "returnPolicyCategory": "MerchantReturnFiniteReturnWindow",
+                "merchantReturnDays": 30,
+                "returnMethod": "ReturnMailIn",
+                "returnFees": "FreeReturn"
+            },
             "shippingDetails": {
                 "@type": "OfferShippingDetails",
                 "shippingRate": {
                     "@type": "MonetaryAmount",
                     "value": "0",
-                    "currency": "{{ product.currency|default:'UGX'|escapejs }}"
+                    "currency": "{% if product.currency and product.currency|length > 0 %}{{ product.currency|upper|escapejs }}{% else %}UGX{% endif %}"
                 },
                 "shippingDestination": {
                     "@type": "DefinedRegion",
                     "addressCountry": "UG"
+                },
+                "deliveryTime": {
+                    "@type": "ShippingDeliveryTime",
+                    "handlingTime": {
+                        "@type": "QuantitativeValue",
+                        "minValue": 0,
+                        "maxValue": 1,
+                        "unitCode": "DAY"
+                    },
+                    "transitTime": {
+                        "@type": "QuantitativeValue",
+                        "minValue": 2,
+                        "maxValue": 5,
+                        "unitCode": "DAY"
+                    }
                 }
             }
         }

@@ -8,6 +8,61 @@ from .shop import normalize_component_data
 logger = logging.getLogger(__name__)
 
 
+# ISO 4217 Valid Currency Codes (common in Africa/EastAfrica)
+VALID_CURRENCY_CODES = {
+    'UGX',  # Uganda Shilling (primary)
+    'USD',  # US Dollar
+    'EUR',  # Euro
+    'GBP',  # British Pound
+    'KES',  # Kenyan Shilling
+    'TZS',  # Tanzanian Shilling
+    'RWF',  # Rwandan Franc
+    'BDI',  # Burundian Franc
+    'ZAR',  # South African Rand
+    'NGN',  # Nigerian Naira
+    'EGP',  # Egyptian Pound
+    'MAD',  # Moroccan Dirham
+    'GHS',  # Ghanaian Cedis
+    'ZWL',  # Zimbabwean Dollar
+    'ZMW',  # Zambian Kwacha
+    'ETB',  # Ethiopian Birr
+    'AED',  # UAE Dirham
+    'INR',  # Indian Rupee
+    'PKR',  # Pakistani Rupee
+}
+
+
+def validate_currency(currency_input):
+    """
+    Validate and normalize currency code to ISO 4217 standard.
+    
+    Args:
+        currency_input: Raw currency string from database
+    
+    Returns:
+        Valid ISO 4217 currency code (uppercase) or 'UGX' if invalid
+    
+    Examples:
+        validate_currency('UGX')    → 'UGX'
+        validate_currency('usd ')   → 'USD'
+        validate_currency('INVALID') → 'UGX' (logs warning)
+        validate_currency(None)     → 'UGX'
+    """
+    if not currency_input:
+        return 'UGX'  # Default fallback
+    
+    # Clean: strip whitespace and convert to uppercase
+    clean = str(currency_input).strip().upper()
+    
+    # Check if valid
+    if clean in VALID_CURRENCY_CODES:
+        return clean
+    
+    # Invalid - log warning and return default
+    logger.warning(f"Invalid currency code detected: '{currency_input}' → defaulting to 'UGX'")
+    return 'UGX'
+
+
 def get_theme_component(business_data):
     """
     Extract the theme component from business components.
@@ -142,7 +197,7 @@ def product_detail(request, product_id):
         'productName': post_data.get('productName', post.get('title')),
         'description': post_data.get('textContent', ''),
         'price': post_data.get('productPrice', 0),
-        'currency': post_data.get('productCurrency', 'UGX'),
+        'currency': validate_currency(post_data.get('productCurrency')),  # ✅ VALIDATED
         'image_url': display_image,
         'images': images,
         'video_url': post_data.get('videoUrl'),
@@ -153,6 +208,9 @@ def product_detail(request, product_id):
         'timestamp': post_data.get('timestamp') or post.get('created_at'),
         'reviews_count': reviews_count,
         'reviews_avg': reviews_avg,
+        'brand': post_data.get('brand', ''),                    # ✅ NEW
+        'gtin': post_data.get('gtin', ''),                      # ✅ NEW (barcode/EAN)
+        'mpi': post_data.get('mpi', ''),                        # ✅ NEW (manufacturer part number)
     }
 
     # Schema helpers: detect swap mode (heuristic) and provide schema-friendly fields
@@ -198,7 +256,7 @@ def product_detail(request, product_id):
                 'id': p.get('id'),
                 'name': p_data.get('productName'),
                 'price': p_data.get('productPrice'),
-                'currency': p_data.get('productCurrency'),
+                'currency': validate_currency(p_data.get('productCurrency')),  # ✅ VALIDATED
                 'image_url': img,
                 'category': p_cat,
                 'reviews_count': p_reviews_count,
@@ -277,7 +335,7 @@ def category_view(request, category_name):
                 'id': post['id'],
                 'name': post_data.get('productName', 'Untitled'),
                 'price': post_data.get('productPrice', 0),
-                'currency': post_data.get('productCurrency', 'UGX'),
+                'currency': validate_currency(post_data.get('productCurrency')),  # ✅ VALIDATED
                 'image_url': img,
                 'video_url': post_data.get('videoUrl'),
             })
@@ -340,7 +398,7 @@ def create_order(request, product_id):
         'name': post_data.get('productName', 'Untitled'),
         'description': post_data.get('textContent', ''),
         'price': post_data.get('productPrice', 0),
-        'currency': post_data.get('productCurrency', 'UGX'),
+        'currency': validate_currency(post_data.get('productCurrency')),  # ✅ VALIDATED
         'image_url': display_image,
         'category_id': post.get('category_id'),
     }

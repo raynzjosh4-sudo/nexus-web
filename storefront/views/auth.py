@@ -11,8 +11,15 @@ def login_view(request):
     subdomain = getattr(request, 'subdomain', None)
     
     if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        email = request.POST.get('email', '').strip()
+        password = request.POST.get('password', '').strip()
+        
+        if not email or not password:
+            return render(request, 'storefront/login.html', {
+                'error': 'Email and password are required.',
+                'business': _get_business_context(request)
+            })
+        
         supabase = get_supabase_client()
         
         try:
@@ -82,8 +89,11 @@ def login_view(request):
             logger.exception(f"❌ Login exception: {str(e)}")
             logger.error(f"Exception type: {type(e).__name__}")
             logger.error(f"Exception message: {str(e)}")
+            error_msg = "Login error. Please check your credentials and try again."
+            if "Invalid login credentials" in str(e):
+                error_msg = "Invalid email or password."
             return render(request, 'storefront/login.html', {
-                'error': f"Login error: {str(e)[:100]}",
+                'error': error_msg,
                 'business': _get_business_context(request)
             })
             
@@ -95,10 +105,17 @@ def signup_view(request):
     subdomain = getattr(request, 'subdomain', None)
     
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        confirm_password = request.POST.get('confirm_password')
+        # Validate and sanitize inputs
+        name = (request.POST.get('name') or '').strip()
+        email = (request.POST.get('email') or '').strip()
+        password = (request.POST.get('password') or '').strip()
+        confirm_password = (request.POST.get('confirm_password') or '').strip()
+        
+        if not name or not email or not password:
+            return render(request, 'storefront/signup.html', {
+                'error': "All fields are required.",
+                'business': _get_business_context(request)
+            })
         
         if password != confirm_password:
             return render(request, 'storefront/signup.html', {
@@ -179,41 +196,56 @@ def logout_view(request):
 def _get_business_context(request):
     """Helper to get basic business info for the template (Logo, Name)"""
     subdomain = getattr(request, 'subdomain', None)
-    if not subdomain: return {}
+    if not subdomain: 
+        return {}
     
-    supabase = get_supabase_client()
     try:
+        supabase = get_supabase_client()
         res = supabase.table('business_profiles').select('*').eq('domain', subdomain).execute()
-        if res.data:
+        
+        if res.data and len(res.data) > 0:
             biz = res.data[0]
-            # Normalize components to find the theme
-            components_raw = biz.get('components', [])
             
-            if isinstance(components_raw, str):
-                try: components_raw = json.loads(components_raw)
-                except: components_raw = []
-            
-            # Find the WebTheme component and normalize all components
-            components_list = []
-            for c in components_raw:
-                if isinstance(c, dict):
-                    components_list.append(normalize_component_data(c))
-            
-            theme_comp = next((c for c in components_list if c.get('clean_type') == 'webtheme'), None)
-            
-            biz['components'] = components_list
-            biz['theme_component'] = theme_comp
-            
-            # DEBUG LOGGING
+            # Safely handle components
             try:
-                with open('theme_debug.log', 'a') as f:
-                    f.write(f"Business Context Theme: {theme_comp}\n")
-            except: pass
+                components_raw = biz.get('components', [])
+                
+                if isinstance(components_raw, str):
+                    try: 
+                        components_raw = json.loads(components_raw)
+                    except: 
+                        components_raw = []
+                
+                if not isinstance(components_raw, list):
+                    components_raw = []
+                
+                # Find the WebTheme component and normalize all components
+                components_list = []
+                for c in components_raw:
+                    if isinstance(c, dict):
+                        try:
+                            normalized = normalize_component_data(c)
+                            if normalized:
+                                components_list.append(normalized)
+                        except Exception as comp_err:
+                            logger.warning(f"Failed to normalize component: {comp_err}")
+                            continue
+                
+                theme_comp = next((c for c in components_list if c.get('clean_type') == 'webtheme'), None)
+                
+                biz['components'] = components_list
+                biz['theme_component'] = theme_comp or {}
+                
+            except Exception as theme_err:
+                logger.warning(f"Error processing business theme: {theme_err}")
+                biz['components'] = []
+                biz['theme_component'] = {}
             
             return biz
+    
     except Exception as e:
-        logger.error(f"Business Context Error: {e}")
-        pass
+        logger.warning(f"Business Context Error (non-critical): {e}")
+    
     return {}
 
 from django.urls import reverse
@@ -223,21 +255,32 @@ import os
 def google_login_view(request):
     supabase = get_supabase_client()
 
-    # Prefer an explicitly configured OAuth callback base (useful for production)
-    # Example: OAUTH_CALLBACK_BASE=https://nexassearch.com
-    oauth_base = os.getenv('OAUTH_CALLBACK_BASE')
-    if oauth_base:
-        # Include the original request origin as `next` so the central callback can return to the subdomain
-        original_origin = f"{request.scheme}://{request.get_host()}"
-        callback_url = oauth_base.rstrip('/') + reverse('auth_callback') + f"?next={original_origin}"
+    # Build the callback URL based on environment and request
+    # IMPORTANT: This must match a URL registered in Supabase OAuth settings
+    oauth_callback_base = os.getenv('OAUTH_CALLBACK_BASE')
+    
+    if oauth_callback_base:
+        # Production: Use configured base URL
+        callback_url = oauth_callback_base.rstrip('/') + '/auth/callback/'
     else:
-        # Fallback to the request host (good for local testing)
-        callback_url = request.build_absolute_uri(reverse('auth_callback'))
+        # Local development: Build from request, but handle localhost subdomains
+        # For localhost, we strip the subdomain to use the base localhost
+        host = request.get_host()  # e.g., "alice.localhost:8000" or "localhost:8000" or "example.com"
+        
+        # Check if it's localhost with subdomain - we need to use localhost without subdomain for OAuth
+        if 'localhost' in host and '.' in host:
+            # Replace "alice.localhost:8000" with "localhost:8000" for OAuth callback
+            parts = host.split('.')
+            base_host = '.'.join(parts[-2:])  # Get last 2 parts: "localhost:8000"
+            callback_url = f"{request.scheme}://{base_host}/auth/callback/"
+        else:
+            # Regular hostname - use as is
+            callback_url = request.build_absolute_uri(reverse('auth_callback'))
     
     try:
         # Prepare OAuth options with proper redirect URL
         # Note: Make sure the value of `callback_url` is registered in your
-        # Supabase project's OAuth redirect URIs (e.g. https://nexassearch.com/auth/callback)
+        # Supabase project's OAuth redirect URIs
         oauth_options = {
             "provider": "google",
             "options": {
@@ -246,6 +289,8 @@ def google_login_view(request):
                 "scopes": "openid email profile"
             }
         }
+        
+        logger.info(f"Google OAuth: Using callback URL: {callback_url}")
         
         # Get OAuth URL from Supabase
         res = supabase.auth.sign_in_with_oauth(oauth_options)
@@ -256,18 +301,21 @@ def google_login_view(request):
         else:
             logger.error(f"Invalid Supabase OAuth response: {res}")
             return render(request, 'storefront/login.html', {
-                'error': 'Google login service temporarily unavailable. Please try email login.'
+                'error': 'Google login service temporarily unavailable. Please try email login.',
+                'business': _get_business_context(request)
             })
             
     except AttributeError as e:
         logger.error(f"Supabase OAuth method error (check auth config): {e}")
         return render(request, 'storefront/login.html', {
-            'error': 'OAuth configuration error. Please contact support or use email login.'
+            'error': 'OAuth configuration error. Please contact support or use email login.',
+            'business': _get_business_context(request)
         })
     except Exception as e:
         logger.error(f"Google Login Error: {type(e).__name__}: {str(e)}", exc_info=True)
         return render(request, 'storefront/login.html', {
-            'error': f'Google login failed. Please try again or use email login.'
+            'error': 'Google login failed. Please try again or use email login.',
+            'business': _get_business_context(request)
         })
 
 

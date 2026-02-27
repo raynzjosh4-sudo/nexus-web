@@ -35,8 +35,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .message {
@@ -101,7 +106,7 @@
                 const errorMsg = errorDescription || error;
                 console.error('OAuth Error:', errorMsg);
                 statusDetail.textContent = errorMsg;
-                
+
                 container.innerHTML = `
                     <div style="text-align: center; margin: 40px 0;">
                         <p style="font-size: 32px; margin-bottom: 16px;">⚠️</p>
@@ -119,7 +124,7 @@
             if (!accessToken) {
                 console.error('No access token found in URL');
                 statusDetail.textContent = 'Invalid response from authentication service';
-                
+
                 container.innerHTML = `
                     <div style="text-align: center; margin: 40px 0;">
                         <p style="font-size: 32px; margin-bottom: 16px;">❌</p>
@@ -136,7 +141,7 @@
 
             // Send token to backend to set Django session
             statusDetail.textContent = 'Verifying credentials...';
-            
+
             fetch('{% url "confirm_auth" %}', {
                 method: 'POST',
                 headers: {
@@ -165,7 +170,7 @@
                 })
                 .catch(err => {
                     console.error('Auth confirmation error:', err);
-                    
+
                     container.innerHTML = `
                         <div style="text-align: center; margin: 40px 0;">
                             <p style="font-size: 32px; margin-bottom: 16px;">⚠️</p>

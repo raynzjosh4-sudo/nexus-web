@@ -51,7 +51,7 @@ CREATE TABLE public.business_categories (
 );
 CREATE TABLE public.business_profiles (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL,
+  user_id uuid NOT NULL UNIQUE,
   created_at timestamp with time zone DEFAULT now(),
   business_name text NOT NULL,
   business_description text,
@@ -779,7 +779,8 @@ CREATE TABLE public.user_fcm_tokens (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   user_id uuid NOT NULL,
   token text NOT NULL,
-  device_type text,
+  device_type text NOT NULL,
+  is_active boolean DEFAULT true,
   last_used timestamp with time zone DEFAULT now(),
   created_at timestamp with time zone DEFAULT now(),
   CONSTRAINT user_fcm_tokens_pkey PRIMARY KEY (id),

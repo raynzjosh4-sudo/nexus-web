@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>{{ business_name }} - Google Shopping Feed</title>
+    <link>https://{{ request.get_host }}</link>
+    <description>Product feed for Google Merchant Center</description>
+    
+    {% for product in products %}
+    <item>
+      <g:id>{{ product.id }}</g:id>
+      <title>{{ product.title }}</title>
+      <description>{{ product.description }}</description>
+      <link>{{ product.link }}</link>
+      <g:image_link>{{ product.image_link }}</g:image_link>
+      <g:price>{{ product.price }} {{ product.currency }}</g:price>
+      <g:availability>{{ product.availability }}</g:availability>
+      
+      <!-- ✅ NEW FIELDS FOR GOOGLE SHOPPING 2026 -->
+      {% if product.brand %}
+      <g:brand>{{ product.brand }}</g:brand>
+      {% endif %}
+      
+      {% if product.gtin %}
+      <g:gtin>{{ product.gtin }}</g:gtin>
+      {% endif %}
+      
+      {% if product.mpi %}
+      <g:mpn>{{ product.mpi }}</g:mpn>
+      {% endif %}
+    </item>
+    {% endfor %}
+    
+  </channel>
+</rss>

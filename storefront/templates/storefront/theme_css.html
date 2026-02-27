@@ -3,21 +3,81 @@
     :root {
 
         /* Colors from ProfileWebsiteThemeComponent - Safe fallbacks */
-        {% if theme_component %}
-            --bg-page: {{ theme_component.backgroundColor|default:"#0D062C" }};
-            --bg-card: {{ theme_component.surfaceColor|default:"#181b21" }};
-            --text-main: {{ theme_component.textColor|default:"#ffffff" }};
-            --text-sub: {{ theme_component.secondaryTextColor|default:"#9ca3af" }};
-            --accent-color: {{ theme_component.primaryColor|default:"#22d5ff" }};
-            --secondary-color: {{ theme_component.secondaryColor|default:"#DA03D0" }};
-        {% else %}
-            --bg-page: #0D062C;
-            --bg-card: #181b21;
-            --text-main: #ffffff;
-            --text-sub: #9ca3af;
-            --accent-color: #22d5ff;
-            --secondary-color: #DA03D0;
-        {% endif %}
+            {
+            % if theme_component %
+        }
+
+        --bg-page: {
+                {
+                theme_component.backgroundColor|default: "#0A191D"
+            }
+        }
+
+        ;
+
+        --bg-card: {
+                {
+                theme_component.surfaceColor|default: "#0C0F21"
+            }
+        }
+
+        ;
+
+        --text-main: {
+                {
+                theme_component.textColor|default: "#F78E0E"
+            }
+        }
+
+        ;
+
+        --text-sub: {
+                {
+                theme_component.textColor|default: "#F78E0E"
+            }
+        }
+
+        ;
+
+        --accent-color: {
+                {
+                theme_component.accentColor|default: "#FF5722"
+            }
+        }
+
+        ;
+
+        --primary-color: {
+                {
+                theme_component.primaryColor|default: "#6200EE"
+            }
+        }
+
+        ;
+
+        --secondary-color: {
+                {
+                theme_component.secondaryColor|default: "#3B03DA"
+            }
+        }
+
+        ;
+
+            {
+            % else %
+        }
+
+        --bg-page: #0A191D;
+        --bg-card: #0C0F21;
+        --text-main: #F78E0E;
+        --text-sub: #F78E0E;
+        --accent-color: #FF5722;
+        --primary-color: #6200EE;
+        --secondary-color: #3B03DA;
+
+            {
+            % endif %
+        }
 
         /* Derived/Static Variables */
         --glass-border: rgba(255, 255, 255, 0.08);
@@ -103,13 +163,13 @@
     /* Button Colors */
     .btn-primary,
     .switch-btn.active {
-        background-color: var(--accent-color) !important;
+        background-color: var(--primary-color) !important;
         color: #ffffff !important;
         border: none !important;
     }
 
     .nexus-section-title {
-        border-left: 4px solid var(--secondary-color) !important;
+        border-left: 4px solid var(--accent-color) !important;
         color: var(--text-main) !important;
     }
 
@@ -120,7 +180,7 @@
         }
 
         .switch-btn.active {
-            background: var(--accent-color) !important;
+            background: var(--primary-color) !important;
         }
 
         .nexus-tabs-nav {
@@ -128,7 +188,7 @@
         }
 
         .nexus-tab-btn.active {
-            background: var(--accent-color) !important;
+            background: var(--primary-color) !important;
         }
     }
 </style>
