@@ -8,6 +8,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{{ business.business_name|default:"Nexus Shop" }}{% endblock %}</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://www.nexassearch.com/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://www.nexassearch.com/favicon.ico" />
+
     <!-- Basic SEO Meta Tags -->
     <meta name="description" content="{% block meta_description %}{{ business.business_description|default:" Shop
         premium products online" }}{% endblock %}" />

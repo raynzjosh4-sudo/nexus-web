@@ -358,7 +358,22 @@
             },
             credentials: 'same-origin'
         })
-            .then(response => response.json())
+            .then(response => {
+                // Check if response is successful before parsing JSON
+                if (response.status === 403) {
+                    btn.disabled = false;
+                    icon.className = originalClass;
+                    showNotification('Please log in to add to wishlist', 'warning');
+                    throw new Error('Forbidden - not authenticated');
+                }
+                if (!response.ok) {
+                    btn.disabled = false;
+                    icon.className = originalClass;
+                    showNotification('Error toggling wishlist', 'error');
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 btn.disabled = false;
 

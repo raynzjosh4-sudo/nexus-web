@@ -66,7 +66,7 @@ def validate_currency(currency_input):
 def get_theme_component(business_data):
     """
     Extract the theme component from business components.
-    Returns the theme component dict or None if not found.
+    Returns the theme component dict or a sensible default dark theme if not found.
     """
     import json
     components_raw = business_data.get('components')
@@ -83,7 +83,8 @@ def get_theme_component(business_data):
         biz_components = components_raw
     else:
         print(f"Unknown components type: {type(components_raw)}")
-        return None
+        # Return default theme if can't parse
+        return _get_default_theme()
 
     print(f"Searching for theme in {len(biz_components)} components...")
     
@@ -110,8 +111,23 @@ def get_theme_component(business_data):
             print(f"Error normalizing component {raw_type}: {e}")
             continue
     
-    print("No theme component found.")
-    return None
+    print("No theme component found. Using default theme.")
+    return _get_default_theme()
+
+
+def _get_default_theme():
+    """
+    Return a sensible default dark theme when no theme is configured.
+    """
+    return {
+        'type': 'ProfileWebsiteThemeComponent',
+        'backgroundColor': '#121418',
+        'surfaceColor': '#181b21',
+        'textColor': '#ffffff',
+        'secondaryTextColor': '#9ca3af',
+        'accentColor': '#f97316',
+        'secondaryColor': '#DA03D0',
+    }
 
 def product_detail(request, product_id):
     subdomain = getattr(request, 'subdomain', None)
