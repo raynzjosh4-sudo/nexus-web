@@ -79,12 +79,12 @@
             % endif %
         }
 
-        /* Derived/Static Variables */
+        /* Shared UI Variables */
         --glass-border: rgba(255, 255, 255, 0.08);
         --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* --- SHIMMER LOADING ANIMATION --- */
+    /* Shimmer Effect for Loading States */
     @keyframes shimmer {
         0% {
             background-position: -200% 0;
@@ -96,17 +96,14 @@
     }
 
     .skeleton {
-        background: linear-gradient(90deg,
-                var(--bg-card) 25%,
-                rgba(255, 255, 255, 0.1) 37%,
-                var(--bg-card) 63%);
+        background: linear-gradient(90deg, var(--bg-card) 25%, rgba(255, 255, 255, 0.1) 37%, var(--bg-card) 63%);
         background-size: 200% 100%;
         animation: shimmer 1.5s infinite;
         position: relative;
         overflow: hidden;
     }
 
-    /* Helper to hide image until loaded */
+    /* Image Fade-in */
     .img-loading {
         opacity: 0;
         transition: opacity 0.5s ease;
@@ -116,7 +113,7 @@
         opacity: 1;
     }
 
-    /* Reset all HTML elements to listen to our variables */
+    /* Global Typography & Layout Overrides */
     * {
         box-sizing: border-box;
     }
@@ -148,7 +145,7 @@
         color: var(--text-main) !important;
     }
 
-    /* Target the common White Background classes */
+    /* Reusable Dark Cards with Glassmorphism */
     .dark-card,
     .component-item,
     .pd-sheet,
@@ -160,7 +157,6 @@
         color: var(--text-main) !important;
     }
 
-    /* Button Colors */
     .btn-primary,
     .switch-btn.active {
         background-color: var(--primary-color) !important;
@@ -173,7 +169,7 @@
         color: var(--text-main) !important;
     }
 
-    /* Mobile Polish */
+    /* Mobile Responsive Overrides */
     @media (max-width: 768px) {
         .navbar-top {
             background: rgba(var(--bg-card-rgb, 5, 6, 35), 0.95) !important;

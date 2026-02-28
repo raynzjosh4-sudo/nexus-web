@@ -1,0 +1,1111 @@
+﻿?
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Nexus Shop</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://www.nexassearch.com/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://www.nexassearch.com/favicon.ico" />
+
+    <!-- Basic SEO Meta Tags -->
+    <meta name="description" content="{{ business.business_description|default:" Shop
+        premium products online" }}" />
+    <meta name="keywords"
+        content="online shopping, products, shop" />
+    <meta name="author" content="Nexus" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="canonical" href="http://localhost:8000/login/" />
+
+    <!-- Open Graph Tags for Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title"
+        content="Nexus Shop" />
+    <meta property="og:description"
+        content="Shop online" />
+    <meta property="og:image" content="" />
+    <meta property="og:url" content="http://localhost:8000/login/" />
+    <meta property="og:site_name" content="Nexus" />
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title"
+        content="Nexus Shop" />
+    <meta name="twitter:description"
+        content="Shop online" />
+    <meta name="twitter:image" content="" />
+
+    <!-- Mobile App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Nexus" />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": "Nexus",
+            "description": "Online store",
+            "url": "http://localhost:8000/login/",
+            "logo": "",
+            
+            
+            
+            
+            
+            "priceRange": "$"
+        }
+        </script>
+    <!-- Sitelinks SearchBox -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "url": "http://localhost:8000/login/",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "http://localhost:8000/?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+        </script>
+
+    <!-- Breadcrumbs (BreadcrumbList) - will use `breadcrumbs` context var when provided -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "http://localhost:8000"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "login",
+                        "item": "http://localhost:8000/login/"
+                    }
+                
+            ]
+        }
+        </script>
+
+    <link rel="icon" type="image/png" href="/static/icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Global Theme & Fonts -->
+    <style>
+    /* --- GLOBAL THEME VARIABLES --- */
+    :root {
+
+        /* Colors from ProfileWebsiteThemeComponent - Safe fallbacks */
+            {
+            % if theme_component %
+        }
+
+        --bg-page: {
+                {
+                theme_component.backgroundColor|default: "#0A191D"
+            }
+        }
+
+        ;
+
+        --bg-card: {
+                {
+                theme_component.surfaceColor|default: "#0C0F21"
+            }
+        }
+
+        ;
+
+        --text-main: {
+                {
+                theme_component.textColor|default: "#F78E0E"
+            }
+        }
+
+        ;
+
+        --text-sub: {
+                {
+                theme_component.textColor|default: "#F78E0E"
+            }
+        }
+
+        ;
+
+        --accent-color: {
+                {
+                theme_component.accentColor|default: "#FF5722"
+            }
+        }
+
+        ;
+
+        --primary-color: {
+                {
+                theme_component.primaryColor|default: "#6200EE"
+            }
+        }
+
+        ;
+
+        --secondary-color: {
+                {
+                theme_component.secondaryColor|default: "#3B03DA"
+            }
+        }
+
+        ;
+
+            {
+            % else %
+        }
+
+        --bg-page: #0A191D;
+        --bg-card: #0C0F21;
+        --text-main: #F78E0E;
+        --text-sub: #F78E0E;
+        --accent-color: #FF5722;
+        --primary-color: #6200EE;
+        --secondary-color: #3B03DA;
+
+            {
+            % endif %
+        }
+
+        /* Derived/Static Variables */
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* --- SHIMMER LOADING ANIMATION --- */
+    @keyframes shimmer {
+        0% {
+            background-position: -200% 0;
+        }
+
+        100% {
+            background-position: 200% 0;
+        }
+    }
+
+    .skeleton {
+        background: linear-gradient(90deg,
+                var(--bg-card) 25%,
+                rgba(255, 255, 255, 0.1) 37%,
+                var(--bg-card) 63%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Helper to hide image until loaded */
+    .img-loading {
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+    .img-loaded {
+        opacity: 1;
+    }
+
+    /* Reset all HTML elements to listen to our variables */
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden !important;
+    }
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bg-page) !important;
+        color: var(--text-main) !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: 'Outfit', sans-serif;
+        color: var(--text-main) !important;
+    }
+
+    /* Target the common White Background classes */
+    .dark-card,
+    .component-item,
+    .pd-sheet,
+    .market-container,
+    .store-layout,
+    .profile-mobile-container {
+        background-color: var(--bg-card) !important;
+        border: 1px solid var(--glass-border) !important;
+        color: var(--text-main) !important;
+    }
+
+    /* Button Colors */
+    .btn-primary,
+    .switch-btn.active {
+        background-color: var(--primary-color) !important;
+        color: #ffffff !important;
+        border: none !important;
+    }
+
+    .nexus-section-title {
+        border-left: 4px solid var(--accent-color) !important;
+        color: var(--text-main) !important;
+    }
+
+    /* Mobile Polish */
+    @media (max-width: 768px) {
+        .navbar-top {
+            background: rgba(var(--bg-card-rgb, 5, 6, 35), 0.95) !important;
+        }
+
+        .switch-btn.active {
+            background: var(--primary-color) !important;
+        }
+
+        .nexus-tabs-nav {
+            background: var(--bg-card) !important;
+        }
+
+        .nexus-tab-btn.active {
+            background: var(--primary-color) !important;
+        }
+    }
+</style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    
+</head>
+
+<body>
+    <!-- <style>
+    /* --- GLOBAL NAV VARS --- */
+    :root {
+        --header-bg: #161b22;       /* GitHub-like dark background */
+        --header-border: #30363d;   /* Subtle bottom border */
+        --header-text: #f0f6fc;
+        --accent-color: #f97316;
+        --nav-height: 64px;
+    }
+
+    /* --- 1. THE BAR (GitHub Style) --- */
+    .navbar-top {
+        position: sticky; /* Stays fixed at the top */
+        top: 0;
+        left: 0;
+        width: 100%;      /* Touches all sides */
+        height: var(--nav-height);
+        
+        background-color: var(--header-bg);
+        border-bottom: 1px solid var(--header-border);
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        
+        /* Spacing on left and right */
+        padding: 0 24px; 
+        box-sizing: border-box; /* Ensures padding doesn't break width */
+        z-index: 9999;
+    }
+
+    /* --- 2. LEFT SIDE (Logo + Name) --- */
+    .nav-left { 
+        display: flex; 
+        align-items: center; 
+        gap: 12px; 
+    }
+    .nav-logo-img { 
+        width: 32px; 
+        height: 32px; 
+        border-radius: 50%; 
+        object-fit: cover; 
+        border: 1px solid var(--header-border); 
+    }
+    .nav-brand-text { 
+        font-weight: 600; 
+        font-size: 1rem; 
+        color: var(--header-text); 
+        white-space: nowrap; 
+    }
+
+    /* --- 3. CENTER (The Switcher) --- */
+    .nav-center { 
+        position: absolute; 
+        left: 50%; 
+        transform: translateX(-50%);
+    }
+
+    /* Switcher Container */
+    .nav-switcher { 
+        display: flex; 
+        gap: 0; 
+    }
+
+    .switch-btn { 
+        background: transparent; 
+        border: none; 
+        color: var(--text-sub);
+        padding: 12px 20px; 
+        border-radius: 0;
+        cursor: pointer; 
+        font-weight: 600; 
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        border-bottom: 3px solid transparent;
+    }
+
+    .switch-btn:hover { 
+        color: white; 
+        background: rgba(255,255,255,0.05);
+    }
+
+    .switch-btn.active { 
+        color: white;
+        border-bottom-color: var(--accent-color);
+        background: rgba(255, 115, 22, 0.05);
+    }
+
+    /* --- 4. RIGHT SIDE (Actions) --- */
+    .nav-right { 
+        display: flex; 
+        align-items: center; 
+        gap: 16px; 
+    }
+    .btn-login { 
+        text-decoration: none; 
+        color: var(--header-text); 
+        font-size: 0.9rem; 
+        font-weight: 500; 
+    }
+    .btn-signup { 
+        text-decoration: none; 
+        background: transparent; 
+        color: var(--header-text); 
+        padding: 5px 12px; 
+        border: 1px solid var(--header-border); 
+        border-radius: 6px; 
+        font-weight: 500; 
+        font-size: 0.85rem; 
+        transition: 0.2s;
+    }
+    .btn-signup:hover {
+        border-color: #8b949e;
+        background-color: rgba(255,255,255,0.05);
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+        .nav-brand-text { display: none; } /* Hide name on small screens */
+        .navbar-top { padding: 0 16px; }
+        .switch-btn { padding: 6px 10px; font-size: 0.8rem; }
+    }
+</style>
+
+<header class="navbar-top">
+    <div class="nav-left">
+        <img src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23e5e7eb%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E" class="nav-logo-img" alt="Logo">
+        <span class="nav-brand-text"></span>
+    </div>
+
+    <div class="nav-center">
+        <div class="nav-switcher">
+            <button id="btn-about" class="switch-btn active" onclick="switchView('about')">Profile</button>
+            <button id="btn-products" class="switch-btn" onclick="switchView('products')">Store</button>
+            <button id="btn-market" class="switch-btn" onclick="switchView('market')">Market</button>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <a href="#" class="btn-login">Sign in</a>
+        <a href="#" class="btn-signup">Sign up</a>
+    </div>
+</header> -->
+
+
+
+<!-- Global Nexus navbar for non-business pages -->
+<header class="navbar-top">
+    <div class="nav-left">
+        <img src="/static/icon.png" class="nav-logo-img">
+        <span class="nav-brand-text">Nexus</span>
+    </div>
+
+    <div class="nav-center">
+        <nav class="nav-switcher">
+            <a class="switch-btn" href="/">Home</a>
+            <a class="switch-btn" href="/about/">About</a>
+            <a class="switch-btn" href="/blog/">Blog</a>
+            <a class="switch-btn" href="/newsletter/">Newsletter</a>
+            <a class="switch-btn" href="/contact/">Contact</a>
+        </nav>
+    </div>
+
+    <div class="nav-right">
+        <a href="/login/" class="btn-login">Sign in</a>
+        <a href="/join-business/" class="btn-signup">Join as Business</a>
+    </div>
+</header>
+
+<style>
+    .navbar-top {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 64px;
+        background-color: var(--bg-card) !important;
+        /* Matches your Surface Color */
+        border-bottom: 1px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        z-index: 9999;
+    }
+
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .nav-logo-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 1px solid var(--accent-color);
+    }
+
+    .nav-brand-text {
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: var(--text-main) !important;
+    }
+
+    .nav-switcher {
+        display: flex;
+        gap: 8px;
+    }
+
+    .switch-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-main);
+        opacity: 0.6;
+        padding: 6px 16px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .switch-btn:hover {
+        opacity: 1;
+    }
+
+    .switch-btn.active {
+        opacity: 1;
+        border-bottom: 2px solid var(--accent-color) !important;
+    }
+
+    .btn-signup {
+        text-decoration: none;
+        border: 1px solid var(--accent-color);
+        color: var(--text-main);
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+    }
+
+    /* Profile Dropdown Styles */
+    .profile-dropdown {
+        position: relative;
+    }
+
+    .profile-trigger {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: transparent;
+        border: 1px solid var(--glass-border);
+        border-radius: 50px;
+        padding: 6px 16px 6px 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--text-main);
+    }
+
+    .profile-trigger:hover {
+        border-color: var(--accent-color);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .profile-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--accent-color);
+    }
+
+    .profile-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .dropdown-arrow {
+        font-size: 0.75rem;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-trigger:hover .dropdown-arrow {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: var(--bg-card);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 8px;
+        min-width: 220px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+    }
+
+    .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        color: var(--text-main);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .dropdown-item i {
+        width: 20px;
+        text-align: center;
+        color: var(--accent-color);
+        font-size: 0.95rem;
+    }
+
+    .dropdown-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(4px);
+    }
+
+    .dropdown-divider {
+        height: 1px;
+        background: var(--glass-border);
+        margin: 8px 0;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+        .profile-name {
+            display: none;
+        }
+
+        .profile-trigger {
+            padding: 6px;
+        }
+    }
+</style>
+
+<script>
+    function toggleProfileMenu() {
+        const menu = document.getElementById('profileMenu');
+        menu.classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (event) {
+        const dropdown = document.querySelector('.profile-dropdown');
+        const menu = document.getElementById('profileMenu');
+
+        if (dropdown && !dropdown.contains(event.target)) {
+            menu.classList.remove('show');
+        }
+    });
+</script>
+
+    <div class="main-wrapper">
+        
+<style>
+    :root {
+        --bg-page: {
+                {
+                business.theme_component.backgroundColor|default: "#121418"
+            }
+        }
+
+        ;
+
+        --bg-card: {
+                {
+                business.theme_component.surfaceColor|default: "#181b21"
+            }
+        }
+
+        ;
+
+        --text-main: {
+                {
+                business.theme_component.textColor|default: "#ffffff"
+            }
+        }
+
+        ;
+
+        --text-sub: {
+                {
+                business.theme_component.secondaryTextColor|default: "#9ca3af"
+            }
+        }
+
+        ;
+
+        --accent-color: {
+                {
+                business.theme_component.accentColor|default: "#f97316"
+            }
+        }
+
+        ;
+
+        --secondary-color: {
+                {
+                business.theme_component.secondaryColor|default: "#DA03D0"
+            }
+        }
+
+        ;
+        --glass-border: rgba(255, 255, 255, 0.08);
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-card">
+        <h2 class="login-title">Sign In</h2>
+        <p class="login-subtitle">Access your account and orders</p>
+        
+        <form method="POST" action="/login/" class="login-form">
+            <input type="hidden" name="csrfmiddlewaretoken" value="9Pm9WHcVMQLmLGG7sAvNzY7eC1kd05VTJXxlimM37Vgg7rl3WH24QFZV0rBjJv7E">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrap">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" required placeholder="">
+                </div>
+            </div>
+            <button type="submit" class="btn-submit">Sign In</button>
+        </form>
+        <div class="login-footer">
+            <p>Don't have an account? <a href="/signup/">Create one</a></p>
+        </div>
+    </div>
+</div>
+
+<style>
+    .login-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bg-page);
+        padding: 24px;
+    }
+
+    .login-card {
+        background: var(--bg-card);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 40px;
+        width: 100%;
+        max-width: 480px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-title {
+        color: var(--text-main);
+        font-size: 2rem;
+        font-weight: 800;
+        margin: 0 0 8px 0;
+        text-align: center;
+    }
+
+    .login-subtitle {
+        color: var(--text-sub);
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    .alert-error {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        color: var(--text-sub);
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+        font-weight: 500;
+    }
+
+    .input-wrap {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-sub);
+        font-size: 1rem;
+        pointer-events: none;
+    }
+
+    .input-wrap input {
+        width: 100%;
+        padding: 14px 16px 14px 48px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        color: var(--text-main);
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.2s ease;
+    }
+
+    .input-wrap input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 0 0 3px rgba(34, 213, 255, 0.1);
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+        border: none;
+        background: var(--accent-color);
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-top: 12px;
+    }
+
+    .btn-submit:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+
+    .login-footer {
+        margin-top: 24px;
+        text-align: center;
+        color: var(--text-sub);
+        font-size: 0.95rem;
+    }
+
+    .login-footer a {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .login-footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+    </div>
+
+    
+
+<style>
+    /* Scoped styles for the footer to ensure it looks good immediately */
+    .nexus-footer-wrapper {
+        background-color: #111827; /* Dark background */
+        color: #f3f4f6;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        padding: 60px 20px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: auto; /* Pushes to bottom if flex is set on body */
+    }
+
+    .nexus-footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 40px;
+    }
+
+    /* Brand Section */
+    .nexus-brand-col {
+        flex: 1 1 300px;
+        min-width: 280px;
+    }
+
+    .nexus-brand-col h3 {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+    }
+
+    .nexus-brand-col p {
+        color: #9ca3af;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin: 0 0 20px 0;
+        max-width: 300px;
+    }
+
+    /* The Badge */
+    .nexus-sponsored-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .store-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .store-button:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .store-icon {
+        width: 20px;
+        height: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        transition: transform 0.2s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .nexus-sponsored-badge:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.3);
+    }
+
+    /* Links Section */
+    .nexus-links-group {
+        display: flex;
+        gap: 60px;
+        flex-wrap: wrap;
+    }
+
+    .nexus-col strong {
+        display: block;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 16px;
+    }
+
+    .nexus-col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nexus-col li {
+        margin-bottom: 12px;
+    }
+
+    .nexus-col a {
+        color: #9ca3af;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: color 0.2s;
+    }
+
+    .nexus-col a:hover {
+        color: #fff;
+    }
+
+    /* Bottom Copyright */
+    .nexus-footer-bottom {
+        max-width: 1200px;
+        margin: 40px auto 0;
+        padding-top: 24px;
+        border-top: 1px solid #374151;
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 640px) {
+        .nexus-footer-content {
+            flex-direction: column;
+            gap: 30px;
+        }
+        .nexus-links-group {
+            gap: 40px;
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+</style>
+
+<footer class="nexus-footer-wrapper">
+    <div class="nexus-footer-content">
+        
+        <div class="nexus-brand-col">
+            <h3></h3>
+            <p>Empowering your digital journey with seamless commerce solutions.</p>
+            
+            <div class="nexus-sponsored-badge">
+                <a href="https://play.google.com/store/apps/details?id=com.josh.raynz.nexus" 
+                   target="_blank" rel="noopener noreferrer" class="store-button">
+                    <img src="/static/playstore.png" alt="Play Store" class="store-icon">
+                    Play Store
+                </a>
+                <a href="https://apps.apple.com/app/nexus/id" 
+                   target="_blank" rel="noopener noreferrer" class="store-button">
+                    <svg class="store-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Apple Logo -->
+                        <path d="M18.71 19.46c-.77 1.23-1.58 2.36-2.76 3.46-1.62 1.62-2.72.99-3.59.99-.99 0-1.62.77-3.39.77-1.77 0-2.99-1.33-3.71-2.77C2.46 18.53 1.31 14.95 3.29 11.36c1.19-2.06 3.26-3.21 5.46-3.21h.39c1.13 0 2.36-.38 4.07-1.27 1.35.81 3.04 1.27 4.07 1.27h.39c2.2 0 4.27 1.15 5.46 3.21-.93 1.78-1.73 3.38-2.79 4.64zm-9.49-9.62c-.56.63-.68 1.51-.59 2.43.99-.04 2.15-.6 2.81-1.39.6-.67.95-1.64.87-2.62-.95.06-2.06.66-2.69 1.58z" fill="currentColor"/>
+                    </svg>
+                    App Store
+                </a>
+            </div>
+        </div>
+
+        <div class="nexus-links-group">
+            <div class="nexus-col">
+                <strong>Platform</strong>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                </ul>
+            </div>
+            
+            <div class="nexus-col">
+                <strong>Legal</strong>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="https://raynzjosh4-sudo.github.io/nexus-terms/" target="_blank">Terms of Use</a></li>
+                    <li><a href="https://raynzjosh4-sudo.github.io/nexus-terms/" target="_blank">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <div class="nexus-col">
+                <strong>Support</strong>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="nexus-footer-bottom">
+        &copy; <script>document.write(new Date().getFullYear())</script> . 
+        <span style="opacity: 0.7;">Powered by Nexus Ecosystem.</span>
+    </div>
+</footer>
+</body>
+
+</html>

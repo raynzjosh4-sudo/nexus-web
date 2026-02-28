@@ -9,78 +9,33 @@
     {% include "storefront/theme_css.html" %}
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script>
+        (function () {
+            const theme = {
+                '--bg-page': '{{ theme_component.backgroundColor|default:"#0d0f12" }}',
+                '--bg-card': '{{ theme_component.surfaceColor|default:"#161a1f" }}',
+                '--accent-color': '{{ theme_component.primaryColor|default:"#f97316" }}',
+                '--text-main': '{{ theme_component.textColor|default:"#ffffff" }}',
+                '--text-sub': '{{ theme_component.secondaryTextColor|default:"#9ca3af" }}'
+            };
+            const root = document.documentElement;
+            for (const [key, value] of Object.entries(theme)) {
+                if (value && value !== 'None') root.style.setProperty(key, value);
+            }
+        })();
+    </script>
+
     <style>
         :root {
-                {
-                % if theme_component %
-            }
-
-            /* Dynamic Theme from User Settings */
-            --bg-page: {
-                    {
-                    theme_component.backgroundColor|default: "#0d0f12"
-                }
-            }
-
-            ;
-
-            --bg-card: {
-                    {
-                    theme_component.surfaceColor|default: "#161a1f"
-                }
-            }
-
-            ;
             --bg-glass: rgba(22, 26, 31, 0.7);
-
-            --accent-color: {
-                    {
-                    theme_component.primaryColor|default: "#f97316"
-                }
-            }
-
-            ;
-
-            --text-main: {
-                    {
-                    theme_component.textColor|default: "#ffffff"
-                }
-            }
-
-            ;
-
-            --text-sub: {
-                    {
-                    theme_component.secondaryTextColor|default: "#9ca3af"
-                }
-            }
-
-            ;
             --glass-border: rgba(255, 255, 255, 0.08);
             --nav-height: 64px;
-
-                {
-                % else %
-            }
-
-            /* Fallback Dark Theme */
-            --bg-page: #0d0f12;
-            --bg-card: #161a1f;
-            --bg-glass: rgba(22, 26, 31, 0.7);
-            --accent-color: #f97316;
-            --text-main: #ffffff;
-            --text-sub: #9ca3af;
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --nav-height: 64px;
-
-                {
-                % endif %
-            }
         }
 
         body {
-            background-color: var(--bg-page);
-            color: var(--text-main);
+            background-color: var(--bg-page, #0d0f12);
+            color: var(--text-main, #ffffff);
             font-family: 'Outfit', sans-serif;
             margin: 0;
             padding: 0;
@@ -133,7 +88,7 @@
         }
 
         .preview-category {
-            color: var(--accent-color);
+            color: var(--accent-color, #f97316);
             text-transform: uppercase;
             font-size: 14px;
             font-weight: 700;
@@ -152,11 +107,11 @@
         .preview-price {
             font-size: 28px;
             font-weight: 300;
-            color: var(--text-sub);
+            color: var(--text-sub, #9ca3af);
         }
 
         .preview-price span {
-            color: var(--text-main);
+            color: var(--text-main, #ffffff);
             font-weight: 700;
         }
 
@@ -167,7 +122,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            background: var(--bg-page);
+            background: var(--bg-page, #0d0f12);
         }
 
         .form-container {
@@ -181,7 +136,7 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            color: var(--text-sub);
+            color: var(--text-sub, #9ca3af);
             text-decoration: none;
             font-weight: 500;
             margin-bottom: 40px;
@@ -189,12 +144,12 @@
         }
 
         .back-link:hover {
-            color: var(--accent-color);
+            color: var(--accent-color, #f97316);
             transform: translateX(-5px);
         }
 
         .form-card {
-            background: var(--bg-card);
+            background: var(--bg-card, #161a1f);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
             padding: 40px;
@@ -214,13 +169,13 @@
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            border: 1px solid var(--accent-color);
+            border: 1px solid var(--accent-color, #f97316);
         }
 
         .biz-name {
             font-weight: 600;
             font-size: 15px;
-            color: var(--text-sub);
+            color: var(--text-sub, #9ca3af);
         }
 
         /* --- FORM ELEMENTS --- */
@@ -238,7 +193,7 @@
             padding: 12px;
             border: none;
             background: transparent;
-            color: var(--text-sub);
+            color: var(--text-sub, #9ca3af);
             font-family: inherit;
             font-weight: 600;
             font-size: 14px;
@@ -248,7 +203,7 @@
         }
 
         .tab-btn.active {
-            background: var(--accent-color);
+            background: var(--accent-color, #f97316);
             color: #fff;
             box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
         }
@@ -263,7 +218,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: var(--text-sub);
+            color: var(--text-sub, #9ca3af);
             margin-bottom: 10px;
         }
 
@@ -276,7 +231,7 @@
             left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-sub);
+            color: var(--text-sub, #9ca3af);
             font-size: 18px;
         }
 
@@ -295,7 +250,7 @@
 
         .form-control:focus {
             outline: none;
-            border-color: var(--accent-color);
+            border-color: var(--accent-color, #f97316);
             background: rgba(255, 255, 255, 0.06);
             box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
         }
@@ -308,7 +263,7 @@
 
         .submit-btn {
             width: 100%;
-            background: var(--accent-color);
+            background: var(--accent-color, #f97316);
             color: #fff;
             border: none;
             padding: 18px;
@@ -414,7 +369,8 @@
     <div class="order-page-wrapper">
         <aside class="product-column">
             <div class="preview-image-frame">
-                <img src="{{ product.image_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22600%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22%239ca3af%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3ENo Image%3C/text%3E%3C/svg%3E' }}" alt="{{ product.name }}">
+                <img src="{{ product.image_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22600%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22%239ca3af%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3ENo Image%3C/text%3E%3C/svg%3E' }}"
+                    alt="{{ product.name }}">
             </div>
             <div class="preview-info">
                 <span class="preview-category">Order Checkout</span>
@@ -435,7 +391,7 @@
                     <div class="success-content">
                         <i class="fas fa-check-circle success-icon"></i>
                         <h2 style="margin: 0 0 12px 0; font-size: 28px;">Order Received!</h2>
-                        <p style="color: var(--text-sub); margin-bottom: 40px; line-height: 1.6;">
+                        <p style="color: var(--text-sub, #9ca3af); margin-bottom: 40px; line-height: 1.6;">
                             The seller from <strong>{{ business.business_name }}</strong> will contact you on your phone
                             number shortly.
                         </p>
@@ -446,7 +402,8 @@
                 {% else %}
                 <div class="form-card">
                     <div class="biz-tag">
-                        <img src="{{ business.logo_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23e5e7eb%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E' }}" class="biz-logo">
+                        <img src="{{ business.logo_url|default:'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2250%22 height=%2250%22%3E%3Crect fill=%22%23e5e7eb%22 width=%2250%22 height=%2250%22/%3E%3C/svg%3E' }}"
+                            class="biz-logo">
                         <span class="biz-name">Buying from {{ business.business_name }}</span>
                     </div>
 

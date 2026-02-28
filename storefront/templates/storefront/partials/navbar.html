@@ -47,6 +47,11 @@
         font-size: 1rem; 
         color: var(--header-text); 
         white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+        display: inline-block;
+        vertical-align: middle;
     }
 
     /* --- 3. CENTER (The Switcher) --- */
@@ -149,13 +154,26 @@
     <div class="nav-left">
         <img src="{% if business.logo_url %}{{ business.logo_url }}{% else %}{% static 'icon.png' %}{% endif %}"
             class="nav-logo-img">
-        <span class="nav-brand-text">{{ business.business_name }}</span>
+        <span class="nav-brand-text" title="{{ business.business_name }}">{{ business.business_name }}</span>
     </div>
 
     <div class="nav-center">
         <div class="nav-switcher">
-            <button class="switch-btn active" onclick="switchView('view-about')">Profile</button>
-            <button class="switch-btn" onclick="switchView('view-products')">Store</button>
+            <button class="switch-btn active" onclick="handleNavClick('view-about')">Profile</button>
+            <button class="switch-btn" onclick="handleNavClick('view-products')">Store</button>
+
+            <script>
+                function handleNavClick(viewName) {
+                    // Check if switchView function exists and is callable
+                    if (typeof switchView === 'function') {
+                        switchView(viewName);
+                    } else {
+                        // Fallback to URL navigation with hash
+                        const baseUrl = "{% url 'shop_home' %}";
+                        window.location.href = baseUrl + '#' + viewName;
+                    }
+                }
+            </script>
         </div>
     </div>
 

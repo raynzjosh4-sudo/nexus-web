@@ -1,216 +1,238 @@
 ﻿{% extends "storefront/base.html" %}
 
 {% block content %}
+{# 1. Inject Theme via JavaScript to avoid aggressive CSS auto-formatting #}
+<script>
+    (function () {
+        const theme = {
+            '--bg-page': '{{ business.theme_component.backgroundColor|default:"#121418" }}',
+            '--bg-card': '{{ business.theme_component.surfaceColor|default:"#181b21" }}',
+            '--text-main': '{{ business.theme_component.textColor|default:"#ffffff" }}',
+            '--text-sub': '{{ business.theme_component.secondaryTextColor|default:"#9ca3af" }}',
+            '--accent-color': '{{ business.theme_component.accentColor|default:"#f97316" }}',
+            '--secondary-color': '{{ business.theme_component.secondaryColor|default:"#DA03D0" }}'
+        };
+        const root = document.documentElement;
+        for (const [key, value] of Object.entries(theme)) {
+            if (value && value !== 'None') {
+                root.style.setProperty(key, value);
+            }
+        }
+    })();
+</script>
+
 <style>
+    /* Static CSS using the variables injected above */
     :root {
-        --bg-page: {
-                {
-                business.theme_component.backgroundColor|default: "#121418"
-            }
-        }
-
-        ;
-
-        --bg-card: {
-                {
-                business.theme_component.surfaceColor|default: "#181b21"
-            }
-        }
-
-        ;
-
-        --text-main: {
-                {
-                business.theme_component.textColor|default: "#ffffff"
-            }
-        }
-
-        ;
-
-        --text-sub: {
-                {
-                business.theme_component.secondaryTextColor|default: "#9ca3af"
-            }
-        }
-
-        ;
-
-        --accent-color: {
-                {
-                business.theme_component.accentColor|default: "#f97316"
-            }
-        }
-
-        ;
-
-        --secondary-color: {
-                {
-                business.theme_component.secondaryColor|default: "#DA03D0"
-            }
-        }
-
-        ;
         --glass-border: rgba(255, 255, 255, 0.08);
     }
-</style>
 
-<div class="login-container">
-    <div class="login-card">
-        <h2 class="login-title">Sign In</h2>
-        <p class="login-subtitle">Access your account and orders</p>
-        {% if error %}
-        <div class="alert-error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
-        {% endif %}
-        <form method="POST" action="{% url 'login' %}" class="login-form">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <div class="input-wrap">
-                    <i class="fas fa-envelope input-icon"></i>
-                    <input type="email" id="email" name="email" required placeholder="you@example.com">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="input-wrap">
-                    <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="password" name="password" required placeholder="">
-                </div>
-            </div>
-            <button type="submit" class="btn-submit">Sign In</button>
-        </form>
-        <div class="login-footer">
-            <p>Don't have an account? <a href="{% url 'signup' %}">Create one</a></p>
-        </div>
-    </div>
-</div>
-
-<style>
-    .login-container {
-        min-height: 80vh;
+    .login-wrapper {
+        min-height: calc(100vh - 200px);
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--bg-page);
-        padding: 24px;
+        padding: 40px 20px;
+        background-color: var(--bg-page, #121418);
     }
 
     .login-card {
-        background: var(--bg-card);
+        background-color: var(--bg-card, #181b21);
         border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        padding: 40px;
+        border-radius: 20px;
         width: 100%;
-        max-width: 480px;
-        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
+        max-width: 440px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        animation: fadeIn 0.5s ease-out;
     }
 
-    .login-title {
-        color: var(--text-main);
-        font-size: 2rem;
-        font-weight: 800;
-        margin: 0 0 8px 0;
-        text-align: center;
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    .login-subtitle {
-        color: var(--text-sub);
+    .login-header {
         text-align: center;
         margin-bottom: 32px;
     }
 
-    .alert-error {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.2);
-        color: #ef4444;
-        padding: 12px;
-        border-radius: 12px;
+    .login-title {
+        color: var(--text-main, #ffffff);
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+        color: var(--text-sub, #9ca3af);
+        font-size: 14px;
+    }
+
+    .alert {
+        padding: 12px 16px;
+        border-radius: 10px;
         margin-bottom: 24px;
+        font-size: 14px;
         display: flex;
         align-items: center;
         gap: 10px;
-        font-size: 0.9rem;
+    }
+
+    .alert-error {
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
     }
 
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 24px;
     }
 
-    .form-group label {
+    .form-label {
         display: block;
-        color: var(--text-sub);
-        font-size: 0.9rem;
+        color: var(--text-sub, #9ca3af);
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
         margin-bottom: 8px;
-        font-weight: 500;
     }
 
-    .input-wrap {
+    .input-container {
         position: relative;
     }
 
     .input-icon {
         position: absolute;
-        left: 16px;
+        left: 14px;
         top: 50%;
         transform: translateY(-50%);
-        color: var(--text-sub);
-        font-size: 1rem;
-        pointer-events: none;
+        color: var(--text-sub, #9ca3af);
+        font-size: 16px;
     }
 
-    .input-wrap input {
+    .form-input {
         width: 100%;
-        padding: 14px 16px 14px 48px;
-        background: rgba(255, 255, 255, 0.03);
+        background-color: rgba(255, 255, 255, 0.03);
         border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        color: var(--text-main);
-        font-size: 1rem;
-        font-family: inherit;
-        transition: all 0.2s ease;
+        border-radius: 10px;
+        padding: 12px 12px 12px 42px;
+        color: var(--text-main, #ffffff);
+        font-size: 15px;
+        transition: all 0.2s;
     }
 
-    .input-wrap input:focus {
+    .form-input:focus {
         outline: none;
-        border-color: var(--accent-color);
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: 0 0 0 3px rgba(34, 213, 255, 0.1);
+        border-color: var(--accent-color, #f97316);
+        background-color: rgba(255, 255, 255, 0.06);
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 24px;
+    }
+
+    .forgot-link {
+        color: var(--accent-color, #f97316);
+        font-size: 13px;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .forgot-link:hover {
+        text-decoration: underline;
     }
 
     .btn-submit {
         width: 100%;
-        padding: 16px;
-        border-radius: 12px;
+        background-color: var(--accent-color, #f97316);
+        color: white;
         border: none;
-        background: var(--accent-color);
-        color: #fff;
-        font-size: 1rem;
-        font-weight: 700;
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 600;
         cursor: pointer;
-        transition: all 0.2s ease;
-        margin-top: 12px;
+        transition: transform 0.2s, opacity 0.2s;
     }
 
     .btn-submit:hover {
         opacity: 0.9;
-        transform: translateY(-2px);
+        transform: translateY(-1px);
     }
 
     .login-footer {
-        margin-top: 24px;
         text-align: center;
-        color: var(--text-sub);
-        font-size: 0.95rem;
+        margin-top: 32px;
+        font-size: 14px;
+        color: var(--text-sub, #9ca3af);
     }
 
-    .login-footer a {
-        color: var(--accent-color);
+    .signup-link {
+        color: var(--accent-color, #f97316);
         text-decoration: none;
         font-weight: 600;
     }
 
-    .login-footer a:hover {
+    .signup-link:hover {
         text-decoration: underline;
     }
 </style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-header">
+            <h1 class="login-title">Sign In</h1>
+            <p class="login-subtitle">Welcome back to {{ business.business_name }}</p>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i> {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'login' %}?next={{ request.GET.next }}" class="login-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <div class="input-container">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-container">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="#" class="forgot-link">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-submit">Sign In</button>
+        </form>
+
+        <div class="login-footer">
+            <p>Don't have an account? <a href="{% url 'signup' %}" class="signup-link">Create one</a></p>
+        </div>
+    </div>
+</div>
 {% endblock %}

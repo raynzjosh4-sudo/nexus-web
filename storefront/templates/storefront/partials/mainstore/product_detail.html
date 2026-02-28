@@ -153,64 +153,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <script>
+        (function () {
+            const theme = {
+                '--bg-page': '{{ theme_component.backgroundColor|default:"#121418" }}',
+                '--bg-card': '{{ theme_component.surfaceColor|default:"#181b21" }}',
+                '--text-main': '{{ theme_component.textColor|default:"#ffffff" }}',
+                '--text-sub': '{{ theme_component.secondaryTextColor|default:"#9ca3af" }}',
+                '--accent-color': '{{ theme_component.accentColor|default:"#f97316" }}',
+                '--secondary-color': '{{ theme_component.secondaryColor|default:"#DA03D0" }}'
+            };
+            const root = document.documentElement;
+            for (const [key, value] of Object.entries(theme)) {
+                if (value && value !== 'None') root.style.setProperty(key, value);
+            }
+        })();
+    </script>
+
     <style>
         :root {
-            --bg-page: {
-                    {
-                    theme_component.backgroundColor|default: "#121418"
-                }
-            }
-
-            ;
-
-            --bg-card: {
-                    {
-                    theme_component.surfaceColor|default: "#181b21"
-                }
-            }
-
-            ;
-
-            --text-main: {
-                    {
-                    theme_component.textColor|default: "#ffffff"
-                }
-            }
-
-            ;
-
-            --text-sub: {
-                    {
-                    theme_component.secondaryTextColor|default: "#9ca3af"
-                }
-            }
-
-            ;
             --glass-border: rgba(255, 255, 255, 0.08);
-
-            --accent-color: {
-                    {
-                    theme_component.accentColor|default: "#f97316"
-                }
-            }
-
-            ;
-
-            --secondary-color: {
-                    {
-                    theme_component.secondaryColor|default: "#DA03D0"
-                }
-            }
-
-            ;
         }
 
         html,
         body,
         .main-wrapper,
         .product-dynamic-content {
-            background-color: var(--bg-page) !important;
-            color: var(--text-main) !important;
+            background-color: var(--bg-page, #121418) !important;
+            color: var(--text-main, #ffffff) !important;
         }
 
         body {
