@@ -195,15 +195,15 @@ def shop_home(request):
         biz_components = components_raw
 
     # Normalize EVERY component (including those inside tabs)
-    biz_components = [normalize_component_data(c) for c in biz_components]
+    biz_components = [normalize_component_data(c) for c in biz_components if isinstance(c, dict)]
 
     # Separate Components for layout
-    hero_component = next((c for c in biz_components if c['clean_type'] == 'hero'), None)
-    tab_component = next((c for c in biz_components if c['clean_type'] == 'tabbedcontent'), None)
-    theme_component = next((c for c in biz_components if c['clean_type'] == 'webtheme'), None)
+    hero_component = next((c for c in biz_components if c.get('clean_type') == 'hero'), None)
+    tab_component = next((c for c in biz_components if c.get('clean_type') == 'tabbedcontent'), None)
+    theme_component = next((c for c in biz_components if c.get('clean_type') == 'webtheme'), None)
     
     # Everything else goes into the main stack
-    other_components = [c for c in biz_components if c['clean_type'] not in ['hero', 'tabbedcontent', 'webtheme']]
+    other_components = [c for c in biz_components if c.get('clean_type') not in ['hero', 'tabbedcontent', 'webtheme']]
 
 
     # Render components
@@ -249,8 +249,8 @@ def shop_home(request):
 
     # Breadcrumbs for structured data (Home -> Shop)
     context['breadcrumbs'] = [
-        {'name': 'Home', 'url': f"{request.scheme}://{request.get_host}/"},
-        {'name': business_data.get('business_name', 'Store'), 'url': request.build_absolute_uri}
+        {'name': 'Home', 'url': f"{request.scheme}://{request.get_host()}/"},
+        {'name': business_data.get('business_name', 'Store'), 'url': request.build_absolute_uri()}
     ]
     
     return render(request, 'storefront/shop_home.html', context) 
