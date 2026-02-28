@@ -1,55 +1,14 @@
-{% extends "storefront/base.html" %}
+﻿{% extends "storefront/base.html" %}
 
 {% block content %}
 <style>
     :root {
-        --bg-page: {
-                {
-                business.theme_component.backgroundColor|default: "#121418"
-            }
-        }
-
-        ;
-
-        --bg-card: {
-                {
-                business.theme_component.surfaceColor|default: "#181b21"
-            }
-        }
-
-        ;
-
-        --text-main: {
-                {
-                business.theme_component.textColor|default: "#ffffff"
-            }
-        }
-
-        ;
-
-        --text-sub: {
-                {
-                business.theme_component.secondaryTextColor|default: "#9ca3af"
-            }
-        }
-
-        ;
-
-        --accent-color: {
-                {
-                business.theme_component.accentColor|default: "#f97316"
-            }
-        }
-
-        ;
-
-        --secondary-color: {
-                {
-                business.theme_component.secondaryColor|default: "#DA03D0"
-            }
-        }
-
-        ;
+        --bg-page: {{ business.theme_component.backgroundColor|default:"#121418" }};
+        --bg-card: {{ business.theme_component.surfaceColor|default:"#181b21" }};
+        --text-main: {{ business.theme_component.textColor|default:"#ffffff" }};
+        --text-sub: {{ business.theme_component.secondaryTextColor|default:"#9ca3af" }};
+        --accent-color: {{ business.theme_component.accentColor|default:"#f97316" }};
+        --secondary-color: {{ business.theme_component.secondaryColor|default:"#DA03D0" }};
         --glass-border: rgba(255, 255, 255, 0.08);
     }
 </style>
@@ -58,16 +17,11 @@
     <div class="login-card">
         <h2 class="login-title">Sign In</h2>
         <p class="login-subtitle">Access your account and orders</p>
-
         {% if error %}
-        <div class="alert-error">
-            <i class="fas fa-exclamation-circle"></i> {{ error }}
-        </div>
+        <div class="alert-error"><i class="fas fa-exclamation-circle"></i> {{ error }}</div>
         {% endif %}
-
         <form method="POST" action="{% url 'login' %}" class="login-form">
             {% csrf_token %}
-
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <div class="input-wrap">
@@ -75,150 +29,37 @@
                     <input type="email" id="email" name="email" required placeholder="you@example.com">
                 </div>
             </div>
-
             <div class="form-group">
                 <label for="password">Password</label>
                 <div class="input-wrap">
                     <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="password" name="password" required placeholder="••••••••">
+                    <input type="password" id="password" name="password" required placeholder="">
                 </div>
             </div>
-
             <button type="submit" class="btn-submit">Sign In</button>
         </form>
-
         <div class="login-footer">
-            <p>Don't have an account? <a href="{% url 'signup' %}">Create one</a></p>
+            <p>Dont have an account? <a href="{% url 'signup' %}">Create one</a></p>
         </div>
     </div>
 </div>
 
 <style>
-    .login-container {
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--bg-page);
-        padding: 24px;
-    }
-
-    .login-card {
-        background: var(--bg-card);
-        border: 1px solid var(--glass-border);
-        border-radius: 24px;
-        padding: 40px;
-        width: 100%;
-        max-width: 480px;
-        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.2);
-    }
-
-    .login-title {
-        color: var(--text-main);
-        font-size: 2rem;
-        font-weight: 800;
-        margin: 0 0 8px 0;
-        text-align: center;
-    }
-
-    .login-subtitle {
-        color: var(--text-sub);
-        text-align: center;
-        margin-bottom: 32px;
-    }
-
-    .alert-error {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.2);
-        color: #ef4444;
-        padding: 12px;
-        border-radius: 12px;
-        margin-bottom: 24px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 0.9rem;
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        color: var(--text-sub);
-        font-size: 0.9rem;
-        margin-bottom: 8px;
-        font-weight: 500;
-    }
-
-    .input-wrap {
-        position: relative;
-    }
-
-    .input-icon {
-        position: absolute;
-        left: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-sub);
-        font-size: 1rem;
-        pointer-events: none;
-    }
-
-    .input-wrap input {
-        width: 100%;
-        padding: 14px 16px 14px 48px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--glass-border);
-        border-radius: 12px;
-        color: var(--text-main);
-        font-size: 1rem;
-        font-family: inherit;
-        transition: all 0.2s ease;
-    }
-
-    .input-wrap input:focus {
-        outline: none;
-        border-color: var(--accent-color);
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: 0 0 0 3px rgba(34, 213, 255, 0.1);
-    }
-
-    .btn-submit {
-        width: 100%;
-        padding: 16px;
-        border-radius: 12px;
-        border: none;
-        background: var(--accent-color);
-        color: #fff;
-        font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        margin-top: 12px;
-    }
-
-    .btn-submit:hover {
-        opacity: 0.9;
-        transform: translateY(-2px);
-    }
-
-    .login-footer {
-        margin-top: 24px;
-        text-align: center;
-        color: var(--text-sub);
-        font-size: 0.95rem;
-    }
-
-    .login-footer a {
-        color: var(--accent-color);
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    .login-footer a:hover {
-        text-decoration: underline;
-    }
+    .login-container { min-height: 80vh; display: flex; align-items: center; justify-content: center; background-color: var(--bg-page); padding: 24px; }
+    .login-card { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px; width: 100%; max-width: 480px; box-shadow: 0 40px 100px rgba(0,0,0,0.2); }
+    .login-title { color: var(--text-main); font-size: 2rem; font-weight: 800; margin: 0 0 8px 0; text-align: center; }
+    .login-subtitle { color: var(--text-sub); text-align: center; margin-bottom: 32px; }
+    .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: #ef4444; padding: 12px; border-radius: 12px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; color: var(--text-sub); font-size: 0.9rem; margin-bottom: 8px; font-weight: 500; }
+    .input-wrap { position: relative; }
+    .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-sub); font-size: 1rem; pointer-events: none; }
+    .input-wrap input { width: 100%; padding: 14px 16px 14px 48px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-main); font-size: 1rem; font-family: inherit; transition: all 0.2s ease; }
+    .input-wrap input:focus { outline: none; border-color: var(--accent-color); background: rgba(255,255,255,0.05); box-shadow: 0 0 0 3px rgba(34,213,255,0.1); }
+    .btn-submit { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--accent-color); color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; margin-top: 12px; }
+    .btn-submit:hover { opacity: 0.9; transform: translateY(-2px); }
+    .login-footer { margin-top: 24px; text-align: center; color: var(--text-sub); font-size: 0.95rem; }
+    .login-footer a { color: var(--accent-color); text-decoration: none; font-weight: 600; }
+    .login-footer a:hover { text-decoration: underline; }
 </style>
 {% endblock %}

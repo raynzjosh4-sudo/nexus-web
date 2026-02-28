@@ -17,7 +17,8 @@
         <img src="{{ item.image }}" alt="{{ item.title }}" loading="lazy">
     </div>
     {% else %}
-    <div class="image-container" style="background: #2d1b4e; padding: 60px; border-radius: 8px; color: #8b5cf6;">
+    <div class="image-container"
+        style="background: var(--theme-border); padding: 60px; border-radius: 8px; color: var(--theme-accent-soft);">
         📷 No image provided
     </div>
     {% endif %}
@@ -28,17 +29,17 @@
     </div>
 
     <!-- Item Details -->
-    <div style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0;">
-        <div style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 15px;">
+    <div style="background: var(--theme-surface-alt); padding: 20px; border-radius: 8px; margin: 30px 0;">
+        <div style="color: var(--theme-accent-soft); font-size: 0.9rem; margin-bottom: 15px;">
             <strong>📍 Location Found:</strong> {{ item.location_name }}
         </div>
-        <div style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 15px;">
+        <div style="color: var(--theme-accent-soft); font-size: 0.9rem; margin-bottom: 15px;">
             <strong>📅 Date:</strong> {{ item.item_date|date:"F j, Y" }}
         </div>
-        <div style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 15px;">
+        <div style="color: var(--theme-accent-soft); font-size: 0.9rem; margin-bottom: 15px;">
             <strong>📂 Category:</strong> {{ item.category }}
         </div>
-        <div style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 15px;">
+        <div style="color: var(--theme-accent-soft); font-size: 0.9rem; margin-bottom: 15px;">
             <strong>Status:</strong>
             {% if item.status == 'open' %}
             <span style="color: #ef4444;">🔴 STILL LOOKING FOR OWNER</span>
@@ -49,7 +50,7 @@
             {% endif %}
         </div>
         {% if item.view_count %}
-        <div style="color: #8b5cf6; font-size: 0.9rem;">
+        <div style="color: var(--theme-accent-soft); font-size: 0.9rem;">
             <strong>👁️ Views:</strong> {{ item.view_count }}
         </div>
         {% endif %}
@@ -58,12 +59,12 @@
     <!-- Contact Information -->
     {% if item.contact_value %}
     <div
-        style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #a855f7;">
-        <h3 style="color: #a855f7; margin-bottom: 10px;">📞 Contact the Poster</h3>
-        <p style="color: #d1d5db; word-break: break-all;">
+        style="background: var(--theme-surface-alt); padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid var(--theme-accent);">
+        <h3 style="color: var(--theme-accent); margin-bottom: 10px;">📞 Contact the Poster</h3>
+        <p style="color: var(--theme-text); word-break: break-all;">
             {{ item.contact_value }}
         </p>
-        <p style="color: #8b5cf6; font-size: 0.9rem; margin-top: 10px;">
+        <p style="color: var(--theme-accent-soft); font-size: 0.9rem; margin-top: 10px;">
             ⚠️ If you found this item, please contact the poster to arrange return.
         </p>
     </div>
@@ -81,9 +82,9 @@
 
     <!-- Safety Tips -->
     <div
-        style="background: #2d1b4e; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #10b981;">
+        style="background: var(--theme-border); padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #10b981;">
         <h3 style="color: #10b981; margin-bottom: 10px;">🛡️ Safety Tips</h3>
-        <ul style="color: #d1d5db; padding-left: 20px;">
+        <ul style="color: var(--theme-text); padding-left: 20px;">
             <li>Meet in public places only</li>
             <li>Bring someone with you</li>
             <li>Verify the item before payment</li>

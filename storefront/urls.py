@@ -10,7 +10,8 @@ from .views.profile import profile_view
 from .views.contact import contact
 from .views.pages import contact_view as standalone_contact_view
 from .views.wishlist import toggle_wishlist, check_wishlist_status
-from .views.sitemap import sitemap_products, sitemap_businesses  # ✅ CHANGED: Use dynamic sitemaps
+from .views.sitemap import sitemap_products  # Dynamic per-business sitemap
+from .views.sitemap_static import sitemap_index as sitemap_index_view  # Proper sitemapindex format
 from .views.robots import robots_txt
 from .views.order import order_confirmation
 from .views.sections import lost_and_found_view, community_view, swap_view, help_view
@@ -70,7 +71,7 @@ urlpatterns = [
     path('support/', support_view, name='support'),
     path('join-business/', join_business_view, name='join_business'),
     path('sitemap.xml', sitemap_products, name='sitemap_products'),
-    path('sitemap_index.xml', sitemap_businesses, name='sitemap_index'),
+    path('sitemap_index.xml', sitemap_index_view, name='sitemap_index'),
     path('robots.txt', robots_txt, name='robots_txt'),
     path('merchant/products.csv', export_google_merchant_csv, name='merchant_csv'),  # ✅ NEW
     path('merchant/products.xml', export_google_merchant_xml, name='merchant_xml'),  # ✅ NEW

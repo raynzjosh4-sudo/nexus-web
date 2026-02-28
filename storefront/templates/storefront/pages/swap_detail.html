@@ -17,23 +17,24 @@
         <img src="{{ swap.image }}" alt="{{ swap.title }}" loading="lazy" style="max-height: 500px;">
     </div>
     {% else %}
-    <div class="image-container" style="background: #2d1b4e; padding: 60px; border-radius: 8px; color: #8b5cf6;">
+    <div class="image-container"
+        style="background: var(--theme-border); padding: 60px; border-radius: 8px; color: var(--theme-accent-soft);">
         📷 No image provided
     </div>
     {% endif %}
 
     <!-- Item Offering -->
     <div
-        style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #c084fc;">
-        <h2 style="color: #c084fc; margin-bottom: 10px;">📦 I'm Offering</h2>
-        <p style="font-size: 1.3rem; color: #a855f7; font-weight: 600; margin-bottom: 10px;">
+        style="background: var(--theme-surface-alt); padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid var(--theme-accent-hover);">
+        <h2 style="color: var(--theme-accent-hover); margin-bottom: 10px;">📦 I'm Offering</h2>
+        <p style="font-size: 1.3rem; color: var(--theme-accent); font-weight: 600; margin-bottom: 10px;">
             {{ swap.title }}
         </p>
-        <p style="color: #d1d5db;">
+        <p style="color: var(--theme-text);">
             {{ swap.description }}
         </p>
         {% if swap.condition %}
-        <p style="color: #8b5cf6; margin-top: 10px;">
+        <p style="color: var(--theme-accent-soft); margin-top: 10px;">
             <strong>Condition:</strong> {{ swap.condition }}
         </p>
         {% endif %}
@@ -42,13 +43,13 @@
     <!-- Item Wanted -->
     {% if swap.wanted_item %}
     <div
-        style="background: #0f0f1a; padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #10b981;">
+        style="background: var(--theme-surface); padding: 20px; border-radius: 8px; margin: 30px 0; border-left: 4px solid #10b981;">
         <h2 style="color: #10b981; margin-bottom: 10px;">🎯 I Want</h2>
         <p style="font-size: 1.3rem; color: #10b981; font-weight: 600;">
             {{ swap.wanted_item }}
         </p>
         {% if swap.wanted_details %}
-        <p style="color: #d1d5db; margin-top: 10px;">
+        <p style="color: var(--theme-text); margin-top: 10px;">
             {{ swap.wanted_details }}
         </p>
         {% endif %}
@@ -56,17 +57,17 @@
     {% endif %}
 
     <!-- Additional Details -->
-    <div style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin: 30px 0;">
+    <div style="background: var(--theme-surface-alt); padding: 20px; border-radius: 8px; margin: 30px 0;">
         {% if swap.location %}
-        <div style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 15px;">
+        <div style="color: var(--theme-accent-soft); font-size: 0.9rem; margin-bottom: 15px;">
             <strong>📍 Location:</strong> {{ swap.location }}
         </div>
         {% endif %}
-        <div style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 15px;">
+        <div style="color: var(--theme-accent-soft); font-size: 0.9rem; margin-bottom: 15px;">
             <strong>📅 Posted:</strong> {{ swap.created_at|date:"F j, Y" }}
         </div>
         {% if swap.views %}
-        <div style="color: #8b5cf6; font-size: 0.9rem;">
+        <div style="color: var(--theme-accent-soft); font-size: 0.9rem;">
             <strong>👁️ Views:</strong> {{ swap.views }}
         </div>
         {% endif %}
@@ -84,9 +85,9 @@
 
     <!-- How Swaps Work -->
     <div
-        style="background: #2d1b4e; padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid #a855f7;">
-        <h3 style="color: #a855f7; margin-bottom: 10px;">🔄 How Swapping Works</h3>
-        <ol style="color: #d1d5db; padding-left: 20px;">
+        style="background: var(--theme-border); padding: 20px; border-radius: 8px; margin-top: 30px; border-left: 4px solid var(--theme-accent);">
+        <h3 style="color: var(--theme-accent); margin-bottom: 10px;">🔄 How Swapping Works</h3>
+        <ol style="color: var(--theme-text); padding-left: 20px;">
             <li>Find an item you want to swap</li>
             <li>Message the seller on the Nexus app</li>
             <li>Agree on the trade details</li>
@@ -97,9 +98,9 @@
 
     <!-- Safety Tips -->
     <div
-        style="background: #1a0f2e; padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f59e0b;">
+        style="background: var(--theme-surface-alt); padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #f59e0b;">
         <h3 style="color: #f59e0b; margin-bottom: 10px;">🛡️ Swap Safety Tips</h3>
-        <ul style="color: #d1d5db; padding-left: 20px;">
+        <ul style="color: var(--theme-text); padding-left: 20px;">
             <li>Always meet in public places</li>
             <li>Inspect the item carefully before swapping</li>
             <li>Bring someone with you for safety</li>
