@@ -426,12 +426,8 @@ def create_order(request, product_id):
         # Authentication check
         user_id = request.session.get('user_id')
         if not user_id:
-            return render(request, 'storefront/partials/mainstore/create_order.html', {
-                'business': business_data,
-                'product': product,
-                'theme_component': theme_component,
-                'error': 'Please log in to place an order'
-            })
+            # Redirect to signup with next URL to return after signup
+            return redirect(f"{request.build_absolute_uri('/signup/')}?next={request.build_absolute_uri(request.path)}")
 
         # Get form data
         order_type = request.POST.get('order_type')

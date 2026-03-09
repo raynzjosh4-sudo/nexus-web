@@ -1,4 +1,8 @@
 from django.utils.deprecation import MiddlewareMixin
+import logging
+import traceback
+
+logger = logging.getLogger(__name__)
 
 class SubdomainMiddleware(MiddlewareMixin):
     def process_request(self, request):
@@ -43,3 +47,25 @@ class SubdomainMiddleware(MiddlewareMixin):
         else:
             logger.debug("No subdomain detected, using main site.")
             request.subdomain = None
+
+
+class ExceptionMiddleware(MiddlewareMixin):
+    """Captures exceptions and logs them for debugging"""
+    
+    def process_exception(self, request, exception):
+        if exception:
+            error_details = f"{type(exception).__name__}: {str(exception)}"
+            full_traceback = traceback.format_exc()
+            
+            logger.error(f"Exception caught: {error_details}")
+            logger.error(f"Full traceback:\n{full_traceback}")
+            logger.error(f"Request: {request.method} {request.path}")
+            logger.error(f"User: {request.session.get('user_id', 'Anonymous')}")
+            
+            # Store exception details for display in error template
+            request.exception_details = {
+                'error': error_details,
+                'traceback': full_traceback
+            }
+        
+        return None  # Let Django's error handling take over

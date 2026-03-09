@@ -22,6 +22,31 @@ from django.views.static import serve
 from django.urls import re_path
 import os
 
+# Custom error view handlers  
+def error_500(request):
+    """Custom 500 error handler that passes exception details to template"""
+    from django.template.response import TemplateResponse
+    exception = request.META.get('exc_info', {})
+    if isinstance(exception, tuple) and len(exception) >= 2:
+        exception_str = str(exception[1])
+    else:
+        exception_str = "Internal Server Error"
+    
+    return TemplateResponse(
+        request, '500.html', 
+        {'exception': exception_str}, 
+        status=500
+    )
+
+def error_404(request, exception=None):
+    """Custom 404 error handler"""
+    from django.template.response import TemplateResponse
+    return TemplateResponse(
+        request, '404.html', 
+        {'exception': exception}, 
+        status=404
+    )
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('storefront.urls')),
@@ -56,4 +81,9 @@ if settings.DEBUG:
     ]
     # Add default static file serving
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+# Register custom error handlers
+handler404 = error_404
+handler500 = error_500
 
