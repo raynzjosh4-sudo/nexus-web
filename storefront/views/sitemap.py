@@ -83,9 +83,11 @@ def _generate_sitemap_for_business(request, subdomain):
                 except:
                     pass
             
-            # Extract images for sitemap (max 3 per product)
+            # Extract images for sitemap with fallback chain (max 3 per product)
             images = []
             images_list = post_data.get('images', [])
+            
+            # Primary source: images array
             if images_list and isinstance(images_list, list):
                 for idx, img in enumerate(images_list[:3]):
                     img_url = img.get('url') if isinstance(img, dict) else str(img)
@@ -94,6 +96,24 @@ def _generate_sitemap_for_business(request, subdomain):
                             'loc': img_url,
                             'title': f"{post_data.get('productName', 'Product')} - Image {idx+1}",
                         })
+            
+            # Fallback 1: thumbnailUrl
+            if not images and post_data.get('thumbnailUrl'):
+                thumb_url = post_data.get('thumbnailUrl')
+                if isinstance(thumb_url, str) and thumb_url.startswith('http'):
+                    images.append({
+                        'loc': thumb_url,
+                        'title': f"{post_data.get('productName', 'Product')} - Thumbnail",
+                    })
+            
+            # Fallback 2: imageUrl
+            if not images and post_data.get('imageUrl'):
+                img_url = post_data.get('imageUrl')
+                if isinstance(img_url, str) and img_url.startswith('http'):
+                    images.append({
+                        'loc': img_url,
+                        'title': f"{post_data.get('productName', 'Product')} - Image",
+                    })
             
             urls.append({
                 'loc': product_url,
@@ -154,8 +174,12 @@ def sitemap_businesses(request):
     """Generate sitemap index for all active businesses (use with main domain only)."""
     supabase = get_supabase_client()
     
-    # Fetch all published businesses (only select business domain, id exists)
-    biz_response = supabase.table('business_profiles').select('id,domain').eq('status', 'active').limit(50000).execute()
+    # Fetch all ACTIVE published businesses only (filter to active status for SEO)
+    biz_response = supabase.table('business_profiles')\
+        .select('id,domain')\
+        .eq('status', 'active')\
+        .limit(50000)\
+        .execute()
     
     urls = []
     for biz in biz_response.data:

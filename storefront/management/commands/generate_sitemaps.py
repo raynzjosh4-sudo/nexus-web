@@ -30,19 +30,21 @@ class Command(BaseCommand):
         supabase = get_supabase_client()
         service_client = get_supabase_service_client()
 
-        # 1. One sitemap per business
+        # 1. One sitemap per ACTIVE business (filter: status='active')
         master_links = []
-        businesses_response = supabase.table('business_profiles').select('*').execute()
+        businesses_response = supabase.table('business_profiles').select('*').eq('status', 'active').execute()
         businesses = businesses_response.data
+        self.stdout.write(f"Found {len(businesses)} active businesses to process")
 
         for business in businesses:
-            # Example: https://nexassearch.com/business/slug/product/...
+            # Example: https://nexassearch.com/product/...
             posts_response = supabase.table('posts').select('id').eq('business_id', business['id']).execute()
             product_urls = [
                 f"https://nexassearch.com/product/{post['id']}/"
                 for post in posts_response.data
             ]
             if not product_urls:
+                self.stdout.write(f"  ⚠️  Skipped: {business['business_name']} - No products")
                 continue
             xml_bytes = make_sitemap_xml(product_urls)
             filename = f"business-{business['id']}.xml"
@@ -53,9 +55,10 @@ class Command(BaseCommand):
             service_client.storage.from_(BUCKET).upload(filename, xml_bytes, {"content-type": "application/xml"})
             public_url = f"{SUPABASE_URL}/storage/v1/object/public/{BUCKET}/{filename}"
             master_links.append(public_url)
-            self.stdout.write(f"Uploaded {filename} for {business['business_name']}")
+            self.stdout.write(f"  ✅ {business['business_name']} ({business['domain']}) - {len(product_urls)} products")
 
         # 2. Master index
+        self.stdout.write(f"Creating master index with {len(master_links)} sitemaps...")
         index_xml = make_index_xml(master_links)
         try:
             service_client.storage.from_(BUCKET).remove(["master_index.xml"])
@@ -64,4 +67,4 @@ class Command(BaseCommand):
         service_client.storage.from_(BUCKET).upload(
             "master_index.xml", index_xml, {"content-type": "application/xml"}
         )
-        self.stdout.write("Uploaded master_index.xml with all business sitemaps")
+        self.stdout.write("✅ Uploaded master_index.xml")
