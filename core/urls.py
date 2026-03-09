@@ -26,17 +26,34 @@ import os
 def error_500(request):
     """Custom 500 error handler that passes exception details to template"""
     from django.template.response import TemplateResponse
-    exception = request.META.get('exc_info', {})
-    if isinstance(exception, tuple) and len(exception) >= 2:
-        exception_str = str(exception[1])
-    else:
-        exception_str = "Internal Server Error"
     
-    return TemplateResponse(
+    # Get exception details that were captured by ExceptionMiddleware
+    exception_details = getattr(request, 'exception_details', None)
+    
+    # Also try to get from META as fallback
+    exc_info = request.META.get('exc_info', None)
+    if not exception_details and exc_info:
+        if isinstance(exc_info, tuple) and len(exc_info) >= 2:
+            exception_details = {
+                'error': str(exc_info[1]),
+                'traceback': str(exc_info[2])
+            }
+    
+    # Build context - the template will look for request.exception_details
+    context = {
+        'exception': exception_details.get('error') if exception_details else "Internal Server Error",
+    }
+    
+    response = TemplateResponse(
         request, '500.html', 
-        {'exception': exception_str}, 
+        context, 
         status=500
     )
+    
+    # Ensure the request object with exception_details is available to the template
+    response.context_data['request'] = request
+    
+    return response
 
 def error_404(request, exception=None):
     """Custom 404 error handler"""
