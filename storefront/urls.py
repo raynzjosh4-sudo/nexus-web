@@ -11,6 +11,7 @@ from .views.contact import contact
 from .views.pages import contact_view as standalone_contact_view
 from .views.wishlist import toggle_wishlist, check_wishlist_status
 from .views.sitemap import sitemap_products  # Dynamic per-business sitemap
+from .views.sitemap import sitemap_index_proxy  # Redirect to Supabase master index
 from .views.sitemap_static import sitemap_index as sitemap_index_view  # Proper sitemapindex format
 from .views.robots import robots_txt
 from .views.order import order_confirmation
@@ -70,7 +71,7 @@ urlpatterns = [
     path('cookies/', cookie_policy_view, name='cookie_policy'),
     path('support/', support_view, name='support'),
     path('join-business/', join_business_view, name='join_business'),
-    path('sitemap.xml', sitemap_products, name='sitemap_products'),
+    path('sitemap.xml', sitemap_index_proxy, name='sitemap_index_proxy'),
     path('sitemap_index.xml', sitemap_index_view, name='sitemap_index'),
     path('robots.txt', robots_txt, name='robots_txt'),
     path('merchant/products.csv', export_google_merchant_csv, name='merchant_csv'),  # ✅ NEW

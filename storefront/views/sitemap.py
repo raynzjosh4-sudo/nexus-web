@@ -5,8 +5,10 @@ from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import condition
+from django.shortcuts import redirect
 from ..client import get_supabase_client
 from datetime import datetime
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -172,3 +174,11 @@ def sitemap_businesses(request):
         content_type='application/xml; charset=utf-8',
         headers={'Cache-Control': 'public, max-age=21600, must-revalidate'}
     )
+
+
+def sitemap_index_proxy(request):
+    # This points Google to master_index.xml in Supabase
+    SUPABASE_URL = os.environ["SUPABASE_URL"]
+    BUCKET = "sitemaps"
+    master_url = f"{SUPABASE_URL}/storage/v1/object/public/{BUCKET}/master_index.xml"
+    return redirect(master_url)
