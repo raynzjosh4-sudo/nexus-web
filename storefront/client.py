@@ -24,3 +24,22 @@ def get_supabase_client() -> Client:
         raise ValueError("Supabase URL or Key is missing in .env file")
 
     return create_client(url, key)
+
+
+def get_supabase_service_client() -> Client:
+    """Get a Supabase client with service role credentials.
+    
+    This bypasses RLS policies and is intended for server-side operations only.
+    """
+    url = os.getenv("SUPABASE_URL")
+    service_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    
+    if not url or not service_key:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug("Looking for .env at: %s", env_path)
+        logger.debug("URL found? %s", url is not None)
+        logger.debug("Service key found? %s", service_key is not None)
+        raise ValueError("Supabase URL or SERVICE_ROLE_KEY is missing in .env file")
+
+    return create_client(url, service_key)

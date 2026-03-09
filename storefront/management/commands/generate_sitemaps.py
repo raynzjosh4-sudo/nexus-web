@@ -1,9 +1,8 @@
 import os
 from django.core.management.base import BaseCommand
-from storefront.client import get_supabase_client
+from storefront.client import get_supabase_client, get_supabase_service_client
 
 SUPABASE_URL = os.environ["SUPABASE_URL"]
-SUPABASE_KEY = os.environ["SUPABASE_KEY"]
 BUCKET = "sitemaps"
 
 def make_sitemap_xml(product_urls):
@@ -29,6 +28,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         supabase = get_supabase_client()
+        service_client = get_supabase_service_client()
 
         # 1. One sitemap per business
         master_links = []
@@ -46,14 +46,22 @@ class Command(BaseCommand):
                 continue
             xml_bytes = make_sitemap_xml(product_urls)
             filename = f"business-{business['id']}.xml"
-            supabase.storage.from_(BUCKET).upload(filename, xml_bytes, {"content-type": "application/xml"}, upsert=True)
+            try:
+                service_client.storage.from_(BUCKET).remove([filename])
+            except Exception:
+                pass  # File doesn't exist yet, that's okay
+            service_client.storage.from_(BUCKET).upload(filename, xml_bytes, {"content-type": "application/xml"})
             public_url = f"{SUPABASE_URL}/storage/v1/object/public/{BUCKET}/{filename}"
             master_links.append(public_url)
             self.stdout.write(f"Uploaded {filename} for {business['business_name']}")
 
         # 2. Master index
         index_xml = make_index_xml(master_links)
-        supabase.storage.from_(BUCKET).upload(
-            "master_index.xml", index_xml, {"content-type": "application/xml"}, upsert=True
+        try:
+            service_client.storage.from_(BUCKET).remove(["master_index.xml"])
+        except Exception:
+            pass  # File doesn't exist yet, that's okay
+        service_client.storage.from_(BUCKET).upload(
+            "master_index.xml", index_xml, {"content-type": "application/xml"}
         )
         self.stdout.write("Uploaded master_index.xml with all business sitemaps")
