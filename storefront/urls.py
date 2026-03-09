@@ -35,6 +35,7 @@ from .views.seo_views import (
     faq_view,
 )
 from .views.google_merchant import export_google_merchant_csv, export_google_merchant_xml
+from .views.sitemap_webhook import trigger_sitemap_job
 
 urlpatterns = [
     path('', shop_home, name='shop_home'),
@@ -76,5 +77,6 @@ urlpatterns = [
     path('robots.txt', robots_txt, name='robots_txt'),
     path('merchant/products.csv', export_google_merchant_csv, name='merchant_csv'),  # ✅ NEW
     path('merchant/products.xml', export_google_merchant_xml, name='merchant_xml'),  # ✅ NEW
+    path('run-sitemap-update/', trigger_sitemap_job, name='trigger_sitemap_job'),  # Webhook for sitemap generation
 ]
 # https://nexassearch.com/static/sitemaps/sitemap_index.xml
