@@ -10,19 +10,28 @@ logger = logging.getLogger(__name__)
 def login_view(request):
     subdomain = getattr(request, 'subdomain', None)
 
+    # Debug: log session state
+    user_id = request.session.get('user_id')
+    logger.info(f"🔍 Login view: subdomain={subdomain}, user_id={user_id}, method={request.method}")
+
     # if the user is already authenticated, send them to the shop
-    if request.session.get('user_id'):
+    if user_id:
+        logger.info(f"✅ User {user_id} already logged in, redirecting to shop_home")
         return redirect('shop_home')
 
     try:
         if request.method == 'POST':
+            logger.info(f"📨 Processing login POST request")
             # clear any stale session data before we attempt login
             request.session.flush()
+            logger.info(f"🧹 Session flushed")
 
             email = request.POST.get('email', '').strip()
             password = request.POST.get('password', '').strip()
+            logger.info(f"📧 Login attempt: email={email}, has_password={bool(password)}")
 
             if not email or not password:
+                logger.warning(f"❌ Missing credentials: email={bool(email)}, password={bool(password)}")
                 return render(request, 'storefront/login.html', {
                     'error': 'Email and password are required.',
                     'business': _get_business_context(request)
