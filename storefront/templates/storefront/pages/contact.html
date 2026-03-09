@@ -17,6 +17,12 @@
                     Thanks — your message has been received. We'll reply to you at the email provided.</div>
                 {% endif %}
 
+                {% if error %}
+                <div class="notice error"
+                    style="padding:1rem;border-radius:8px;background:#ffe6e6;border:1px solid #f5b7b7;color:#660202;">
+                    {{ error }}</div>
+                {% endif %}
+
                 {{ form.non_field_errors }}
 
                 <label style="display:block;font-weight:600;color:var(--text-main);">Name</label>
