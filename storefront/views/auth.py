@@ -13,6 +13,8 @@ def login_view(request):
     # Debug: log session state
     user_id = request.session.get('user_id')
     logger.info(f"🔍 Login view: subdomain={subdomain}, user_id={user_id}, method={request.method}")
+    logger.info(f"🔍 Session keys: {list(request.session.keys())}")
+    logger.info(f"🔍 Session data: {dict(request.session)}")
 
     # if the user is already authenticated, send them to the shop
     if user_id:
