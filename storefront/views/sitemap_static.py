@@ -271,12 +271,14 @@ def generate_dynamic_sitemap_index(request):
     try:
         supabase = get_supabase_client()
         
-        # Fetch all published businesses
+        # Fetch all ACTIVE businesses (not 'published' - that status doesn't exist in DB)
         biz_response = supabase.table('business_profiles')\
             .select('domain,updated_at')\
-            .eq('status', 'published')\
+            .eq('status', 'active')\
             .limit(50000)\
             .execute()
+        
+        logger.info(f'Found {len(biz_response.data)} active businesses for sitemap index')
         
         sitemaps = []
         for biz in biz_response.data:
