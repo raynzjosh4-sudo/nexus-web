@@ -41,25 +41,6 @@ def format_date(date_str):
         return datetime.now().strftime('%Y-%m-%d')
 
 
-def get_sitemap_file(subdomain=None):
-    """Get the path to the sitemap file."""
-    sitemaps_dir = os.path.join(settings.BASE_DIR, 'storefront', 'static', 'sitemaps')
-    
-    if subdomain:
-        # Business subdomain: {subdomain}_sitemap.xml
-        filename = f"{subdomain}_sitemap.xml"
-    else:
-        # Main domain: sitemap_index.xml
-        filename = "sitemap_index.xml"
-    
-    filepath = os.path.join(sitemaps_dir, filename)
-    
-    # Security: prevent directory traversal
-    if not os.path.abspath(filepath).startswith(os.path.abspath(sitemaps_dir)):
-        return None
-    
-    return filepath if os.path.exists(filepath) else None
-
 
 def sitemap_last_modified(request, subdomain=None):
     """Return the last modified time of the sitemap file."""
