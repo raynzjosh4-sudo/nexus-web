@@ -20,20 +20,22 @@ def format_date(date_str):
         return datetime.now().strftime('%Y-%m-%d')
 
 
-@cache_page(60 * 60 * 6)  # Cache for 6 hours (21600 seconds) - less frequent than per-business sitemaps
+@cache_page(60 * 5)  # Cache for 5 minutes only - to allow quicker updates and avoid cache issues
 def sitemap_index(request):
     """
     Generate sitemap index for all published business sitemaps.
     
     ✅ Dynamic: Queries database for all active businesses
-    ✅ Cached: 6-hour cache prevents hammering DB (business list changes less frequently)
+    ✅ Cached: 5-minute cache to prevent hammering DB while allowing updates
     ✅ Instant: Subsequent requests served from cache
     ✅ SEO: Google crawls this once, then individual sitemaps via <loc> refs
     
     Returns: sitemap_index.xml with references to all business sitemaps
     """
     try:
+        logger.info("sitemap_index: Starting sitemap generation")
         supabase = get_supabase_client()
+        logger.info("sitemap_index: Supabase client initialized")
         
         # Fetch all ACTIVE published businesses with domains
         # Filter: status='active' → ensures only live shops are indexed
