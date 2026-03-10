@@ -179,20 +179,18 @@
             "reviewCount": "{{ business.total_reviews|default:0 }}"
         },
         {% endif %}
+        {% if business.category_pillar %}
         "hasOfferCatalog": {
             "@type": "OfferCatalog",
-            "name": "{{ business.category_pillar|default:'Products' }}",
+            "name": "{{ business.category_pillar }}",
             "itemListElement": [
                 {% if business.category %}
-                { "@type": "OfferCatalog", "name": "{{ business.category }}" }
+                { "@type": "Offer", "name": "{{ business.category }}" }
                 {% endif %}
             ]
         },
-        "sameAs": [
-            "https://facebook.com",
-            "https://instagram.com",
-            "https://wa.me/{{ business.business_phone_number|default:'256746010410' }}"
-        ]
+        {% endif %}
+        "sameAs": {{ business.same_as|default:'["https://facebook.com", "https://instagram.com", "https://wa.me/256746010410"]'|safe }}
     }
     </script>
 </head>
