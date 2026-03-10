@@ -208,8 +208,14 @@ def product_detail(request, product_id):
         reviews_avg = sum(ratings) / len(ratings) if ratings else 0
 
     # Fetch wish count
-    wish_response = supabase.table('wishlists').select('id', count='exact').eq('product_id', str(product_id)).execute()
-    wish_count = wish_response.count or 0
+    wish_count = 0
+    try:
+        wish_response = supabase.table('wishlists').select('id', count='exact').eq('product_id', str(product_id)).execute()
+        wish_count = wish_response.count or 0
+    except Exception as e:
+        # Handle missing column or table gracefully
+        logger.warning(f"Wishlist query failed for product {product_id}: {str(e)}")
+        wish_count = 0
 
     product = {
         'id': post.get('id'),
