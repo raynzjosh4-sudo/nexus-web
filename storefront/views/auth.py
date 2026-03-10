@@ -352,10 +352,11 @@ def google_login_view(request):
         # Prepare OAuth options with proper redirect URL
         # Note: Make sure the value of `callback_url` is registered in your
         # Supabase project's OAuth redirect URIs
+        # Note: Supabase expects `redirect_to` (snake_case) not camelCase.
         oauth_options = {
             "provider": "google",
             "options": {
-                "redirectTo": callback_url,
+                "redirect_to": callback_url,
                 "skipBrowserRedirect": False,
                 "scopes": "openid email profile"
             }
@@ -363,11 +364,22 @@ def google_login_view(request):
         
         logger.info(f"Google OAuth: Using callback URL: {callback_url}")
         
-        # Get OAuth URL from Supabase
+        # Get OAuth URL from Supabase; the returned `res.url` should include
+        # our redirect_to parameter so we can verify it.
         res = supabase.auth.sign_in_with_oauth(oauth_options)
         
         if res and hasattr(res, 'url') and res.url:
             logger.info(f"Google OAuth redirect initiated to: {res.url}")
+
+            # log query string for debugging
+            from urllib.parse import urlparse, parse_qs
+            try:
+                parsed = urlparse(res.url)
+                qs = parse_qs(parsed.query)
+                logger.debug(f"OAuth URL query params: {qs}")
+            except Exception:
+                pass
+
             return redirect(res.url)
         else:
             logger.error(f"Invalid Supabase OAuth response: {res}")
