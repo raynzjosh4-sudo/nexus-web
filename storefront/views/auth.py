@@ -343,10 +343,20 @@ def google_login_view(request):
             # Regular hostname - use as is
             callback_url = request.build_absolute_uri(reverse('auth_callback'))
     
-    # Include subdomain in callback URL so we can redirect back after auth
-    subdomain = getattr(request, 'subdomain', None)
-    if subdomain:
-        callback_url += f'?subdomain={subdomain}'
+    # Include subdomain in callback URL path instead of query string
+    # Supabase may not support query parameters in redirect URLs
+    if oauth_callback_base:
+        # Production: Use configured base URL
+        callback_url = oauth_callback_base.rstrip('/') + f'/auth/callback/{subdomain}/'
+    else:
+        # Local development: Build from request
+        host = request.get_host()
+        if 'localhost' in host and '.' in host:
+            parts = host.split('.')
+            base_host = '.'.join(parts[-2:])
+            callback_url = f"{request.scheme}://{base_host}/auth/callback/{subdomain}/"
+        else:
+            callback_url = request.build_absolute_uri(reverse('auth_callback', kwargs={'subdomain': subdomain}))
     
     try:
         # Prepare OAuth options with proper redirect URL
@@ -402,8 +412,8 @@ def google_login_view(request):
         })
 
 
-def auth_callback_view(request):
-    return render(request, 'storefront/auth_callback.html')
+def auth_callback_view(request, subdomain):
+    return render(request, 'storefront/auth_callback.html', {'subdomain': subdomain})
 
 def confirm_auth_view(request):
     if request.method == 'POST':

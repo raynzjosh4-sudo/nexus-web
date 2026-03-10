@@ -161,13 +161,13 @@
                         // If the central callback included a `next` origin, redirect there
                         const urlParams = new URLSearchParams(window.location.search);
                         const nextOrigin = urlParams.get('next');
-                        const subdomain = urlParams.get('subdomain');
-                        
+                        // subdomain is passed from Django template context
+
                         let target;
                         if (nextOrigin) {
                             target = nextOrigin.replace(/\/$/, '') + '/profile/';
-                        } else if (subdomain) {
-                            target = `https://${subdomain}.nexassearch.com/profile/`;
+                        } else if ('{{ subdomain }}') {
+                            target = `https://{{ subdomain }}.nexassearch.com/profile/`;
                         } else {
                             target = '/profile/';
                         }
