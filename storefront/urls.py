@@ -32,6 +32,7 @@ from .views.seo_views import (
     faq_view,
 )
 from .views.google_merchant import export_google_merchant_csv, export_google_merchant_xml
+from .views.sitemap import sitemap_view, sitemap_index_view
 
 urlpatterns = [
     path('', shop_home, name='shop_home'),
@@ -72,5 +73,7 @@ urlpatterns = [
     path('robots.txt', robots_txt, name='robots_txt'),
     path('merchant/products.csv', export_google_merchant_csv, name='merchant_csv'),  # ✅ NEW
     path('merchant/products.xml', export_google_merchant_xml, name='merchant_xml'),  # ✅ NEW
+    path('sitemap.xml', sitemap_view, name='sitemap'),
+    path('sitemap_index.xml', sitemap_index_view, name='sitemap_index'),
 ]
 # https://nexassearch.com/static/sitemaps/sitemap_index.xml
