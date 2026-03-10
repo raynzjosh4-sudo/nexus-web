@@ -21,7 +21,7 @@
     <style>
         :root {
 
-            /* Apply theme from database, fall back to defaults */
+            /* apply theme from database, fallback defaults */
                 {
                 % if theme_component %
             }
@@ -123,14 +123,17 @@
         "url": "https://{{ request.META.HTTP_HOST }}/",
         "logo": "{{ business.logo_url|default:'https://nexassearch.com/logo.png' }}",
         "image": [
-            "{{ business.cover_small_url|default:'https://nexassearch.com/default-cover.jpg' }}"
+            "{{ business.cover_small_url|default:business.logo_url}}"
         ],
         "description": "{{ business.business_description|default:'Premium products and services available on Nexus - Your trusted local marketplace.' }}",
-        "telephone": [
-            "+256746010410",
-            "+256790915604",
-            "+256703590034"
-        ],
+        "telephone": "{{ business.business_phone_number|default:'+256746010410' }}",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "{{ business.business_phone_number|default:'+256746010410' }}",
+            "contactType": "customer service",
+            "areaServed": "UG",
+            "availableLanguage": ["en", "Swahili", "Luganda", "Runyankore", "Rukiga", "Lusoga", "Ateso", "Langi"]
+        },
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "{% if business.business_address %}{{ business.business_address }}{% else %}Church House Building, Kampala Road{% endif %}",
@@ -144,6 +147,9 @@
             "longitude": "{% if business.longitude %}{{ business.longitude }}{% else %}32.5812{% endif %}"
         },
         "openingHoursSpecification": [
+            {% if business.opening_hours %}
+                {{ business.opening_hours|safe }}
+            {% else %}
             {
                 "@type": "OpeningHoursSpecification",
                 "dayOfWeek": [
@@ -157,15 +163,35 @@
                 "opens": "00:00",
                 "closes": "23:59"
             }
+            {% endif %}
         ],
         "priceRange": "{{ business.price_range|default:'$$' }}",
         "currenciesAccepted": "UGX",
         "paymentAccepted": "Cash, Mobile Money, Credit Card",
-        "areaServed": "Uganda",
+        "areaServed": {
+            "@type": "Country",
+            "name": "Uganda"
+        },
+        {% if business.average_rating %}
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "{{ business.average_rating }}",
+            "reviewCount": "{{ business.total_reviews|default:0 }}"
+        },
+        {% endif %}
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "{{ business.category_pillar|default:'Products' }}",
+            "itemListElement": [
+                {% if business.category %}
+                { "@type": "OfferCatalog", "name": "{{ business.category }}" }
+                {% endif %}
+            ]
+        },
         "sameAs": [
             "https://facebook.com",
             "https://instagram.com",
-            "https://wa.me/256746010410"
+            "https://wa.me/{{ business.business_phone_number|default:'256746010410' }}"
         ]
     }
     </script>
