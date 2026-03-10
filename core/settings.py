@@ -103,6 +103,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 CSRF_TRUSTED_ORIGINS = [
     "https://nexassearch.com",
     "https://*.nexassearch.com",
+    "https://*.onrender.com",  # Render preview URLs
     "http://localhost:8000",
     "http://127.0.0.1:8000",
     "http://*.localhost",
@@ -112,6 +113,7 @@ CSRF_TRUSTED_ORIGINS = [
 # Allows nexassearch.com AND all subdomains to communicate
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://([a-zA-Z0-9-]+\.)?nexassearch\.com$",
+    r"^https://([a-zA-Z0-9-]+\.)?onrender\.com$",  # Render preview URLs
     r"^http://.*\.localhost(:\d+)?$",  # Allow localhost subdomains
 ]
 
