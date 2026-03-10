@@ -207,6 +207,10 @@ def product_detail(request, product_id):
         reviews_count = len(ratings)
         reviews_avg = sum(ratings) / len(ratings) if ratings else 0
 
+    # Fetch wish count
+    wish_response = supabase.table('wishlists').select('id', count='exact').eq('product_id', str(product_id)).execute()
+    wish_count = wish_response.count or 0
+
     product = {
         'id': post.get('id'),
         'name': post_data.get('productName', 'Untitled'),
@@ -227,6 +231,8 @@ def product_detail(request, product_id):
         'brand': post_data.get('brand', ''),                    # ✅ NEW
         'gtin': post_data.get('gtin', ''),                      # ✅ NEW (barcode/EAN)
         'mpi': post_data.get('mpi', ''),                        # ✅ NEW (manufacturer part number)
+        'wish_count': wish_count,
+        'comment_count': len(post_data.get('comments') or []),
     }
 
     # Schema helpers: detect swap mode (heuristic) and provide schema-friendly fields

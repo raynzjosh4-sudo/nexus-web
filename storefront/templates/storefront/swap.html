@@ -14,96 +14,9 @@
     <link rel="stylesheet" href="/assets/css/theme-variables.css">
     <link rel="stylesheet" href="/assets/css/google-dark.css">
     <style>
-        {
-            % if theme_component %
-        }
-
-        :root {
-            --bg-page: {
-                    {
-                    theme_component.backgroundColor|default: "#121418"
-                }
-            }
-
-            ;
-
-            --bg-card: {
-                    {
-                    theme_component.surfaceColor|default: "#181b21"
-                }
-            }
-
-            ;
-
-            --text-main: {
-                    {
-                    theme_component.textColor|default: "#ffffff"
-                }
-            }
-
-            ;
-
-            --text-sub: {
-                    {
-                    theme_component.secondaryTextColor|default: "#9ca3af"
-                }
-            }
-
-            ;
-
-            --accent-color: {
-                    {
-                    theme_component.accentColor|default: "#f97316"
-                }
-            }
-
-            ;
-        }
-
-            {
-            % endif %
-        }
-
         body {
-            background: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.backgroundColor|default: "#121418"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #000000 {
-                % endif %
-            }
-
-            ;
-
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.textColor|default: "#ffffff"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #ffffff {
-                % endif %
-            }
-
-            ;
+            background: #000000;
+            color: #ffffff;
         }
 
         .container {
@@ -123,101 +36,10 @@
         }
 
         .shimmer {
-            background-color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.surfaceColor|default: "#2d1b4e"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #2d1b4e {
-                % endif %
-            }
-
-            ;
-
-            background-image: linear-gradient(90deg, {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.surfaceColor|default:"#2d1b4e"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #2d1b4e {
-                % endif %
-            }
-
-            0%, {
-            % if theme_component %
-        }
-
-            {
-                {
-                theme_component.accentColor|default:"#4a3a6e"
-            }
-        }
-
-            {
-            % else %
-        }
-
-        #4a3a6e {
-            % endif %
-        }
-
-        20%, {
-        % if theme_component %
-        }
-
-            {
-                {
-                theme_component.surfaceColor|default:"#2d1b4e"
-            }
-        }
-
-            {
-            % else %
-        }
-
-        #2d1b4e {
-            % endif %
-        }
-
-        40%, {
-        % if theme_component %
-        }
-
-            {
-                {
-                theme_component.surfaceColor|default:"#2d1b4e"
-            }
-        }
-
-            {
-            % else %
-        }
-
-        #2d1b4e {
-            % endif %
-        }
-
-        100%);
-        background-size: 1000px 100%;
-        animation: shimmer 2s infinite;
+            background-color: #2d1b4e;
+            background-image: linear-gradient(90deg, #2d1b4e 0%, #4a3a6e 20%, #2d1b4e 40%, #2d1b4e 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
         }
 
         .page-header {
@@ -227,75 +49,20 @@
         .page-title {
             font-size: 2rem;
             font-weight: 700;
-
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.accentColor|default: "#a855f7"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #a855f7 {
-                % endif %
-            }
-
-            ;
+            color: #a855f7;
             margin-bottom: 12px;
         }
 
         .page-description {
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.secondaryTextColor|default: "#b0b0b0"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #b0b0b0 {
-                % endif %
-            }
-
-            ;
+            color: #b0b0b0;
             font-size: 1.1rem;
         }
 
         .filter-bar {
-            background: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.surfaceColor|default: "#1a0f2e"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #1a0f2e {
-                % endif %
-            }
-
-            ;
+            background: #1a0f2e;
             padding: 20px;
             border-radius: 12px;
-            border: 1px solid rgba(168, 85, 247, 0.2);
+            border: 1px solid #2d1b4e;
             margin-bottom: 24px;
             display: flex;
             gap: 12px;
@@ -304,28 +71,9 @@
         }
 
         .filter-button {
-            background: rgba(168, 85, 247, 0.1);
-
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.accentColor|default: "#a855f7"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #a855f7 {
-                % endif %
-            }
-
-            ;
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            background: #2d1b4e;
+            color: #a855f7;
+            border: 1px solid #4a3a6e;
             padding: 10px 16px;
             border-radius: 8px;
             cursor: pointer;
@@ -335,52 +83,15 @@
 
         .filter-button:hover,
         .filter-button.active {
-            background: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.accentColor|default: "#a855f7"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #a855f7 {
-                % endif %
-            }
-
-            ;
-
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.backgroundColor|default: "#ffffff"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #ffffff {
-                % endif %
-            }
-
-            ;
+            background: #a855f7;
+            color: #ffffff;
         }
 
         .search-bar {
-            background: rgba(168, 85, 247, 0.1);
+            background: #1a0f2e;
             padding: 12px 16px;
             border-radius: 8px;
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            border: 1px solid #4a3a6e;
             display: flex;
             align-items: center;
             gap: 12px;
@@ -391,50 +102,13 @@
         .search-bar input {
             background: transparent;
             border: none;
-
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.textColor|default: "#ffffff"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #ffffff {
-                % endif %
-            }
-
-            ;
+            color: #ffffff;
             width: 100%;
             font-size: 1rem;
         }
 
         .search-bar input::placeholder {
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.secondaryTextColor|default: "#666"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #666 {
-                % endif %
-            }
-
-            ;
+            color: #666;
         }
 
         .search-bar input:focus {
@@ -448,27 +122,9 @@
         }
 
         .item-card {
-            background: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.surfaceColor|default: "#1a0f2e"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #1a0f2e {
-                % endif %
-            }
-
-            ;
+            background: #1a0f2e;
             border-radius: 12px;
-            border: 1px solid rgba(168, 85, 247, 0.2);
+            border: 1px solid #2d1b4e;
             overflow: hidden;
             cursor: pointer;
             transition: all 0.3s;
@@ -479,32 +135,14 @@
         }
 
         .item-card:hover {
-            border-color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.accentColor|default: "#a855f7"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #a855f7 {
-                % endif %
-            }
-
-            ;
+            border-color: #a855f7;
             transform: translateY(-4px);
         }
 
         .item-image {
             width: 100%;
             height: 200px;
-            background: rgba(168, 85, 247, 0.1);
+            background: #2d1b4e;
             object-fit: cover;
         }
 
@@ -517,125 +155,31 @@
 
         .item-title {
             font-weight: 600;
-
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.accentColor|default: "#a855f7"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #a855f7 {
-                % endif %
-            }
-
-            ;
+            color: #a855f7;
             margin-bottom: 8px;
             line-height: 1.4;
         }
 
         .item-meta {
             font-size: 0.85rem;
-
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.secondaryTextColor|default: "#8b5cf6"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #8b5cf6 {
-                % endif %
-            }
-
-            ;
+            color: #8b5cf6;
             margin-bottom: 8px;
         }
 
         .item-location {
             font-size: 0.85rem;
-
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.secondaryTextColor|default: "#8b5cf6"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #8b5cf6 {
-                % endif %
-            }
-
-            ;
+            color: #8b5cf6;
             margin-top: auto;
         }
 
         .no-items {
             text-align: center;
             padding: 60px 20px;
-
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.secondaryTextColor|default: "#8b5cf6"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #8b5cf6 {
-                % endif %
-            }
-
-            ;
+            color: #8b5cf6;
         }
 
         .back-link {
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.accentColor|default: "#a855f7"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #a855f7 {
-                % endif %
-            }
-
-            ;
+            color: #a855f7;
             text-decoration: none;
             margin-bottom: 20px;
             display: inline-block;
@@ -643,50 +187,13 @@
         }
 
         .back-link:hover {
-            color: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.accentColor|default: "#c084fc"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #c084fc {
-                % endif %
-            }
-
-            ;
-            opacity: 0.8;
+            color: #c084fc;
         }
 
         .skeleton-card {
-            background: {
-                % if theme_component %
-            }
-
-                {
-                    {
-                    theme_component.surfaceColor|default: "#1a0f2e"
-                }
-            }
-
-                {
-                % else %
-            }
-
-            #1a0f2e {
-                % endif %
-            }
-
-            ;
+            background: #1a0f2e;
             border-radius: 12px;
-            border: 1px solid rgba(168, 85, 247, 0.2);
+            border: 1px solid #2d1b4e;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -752,8 +259,7 @@
 
         <div class="filter-bar">
             <div class="search-bar">
-                <span style="color: {% if theme_component %}{{ theme_component.accentColor|default:" #a855f7" }}{% else
-                    %}#a855f7{% endif %}; font-size: 1.2rem;">🔍</span>
+                <span style="color: #a855f7; font-size: 1.2rem;">🔍</span>
                 <input type="text" id="search-input" placeholder="Search items...">
             </div>
             <button class="filter-button active" onclick="filterCategory('all')">All</button>
@@ -908,6 +414,7 @@
                 const search = e.target.value.toLowerCase().trim();
 
                 if (!search) {
+                    // Reset filter when search is empty
                     displayItems(allItems);
                     return;
                 }

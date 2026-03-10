@@ -228,23 +228,6 @@ class ProductionDeployer:
             self.print_error(f"SEO views validation failed: {str(e)}")
             return False
             
-    # ========================================================================
-    # STEP 6: Generate Sitemaps
-    # ========================================================================
-    
-    def generate_sitemaps(self):
-        """Generate sitemap files for SEO"""
-        self.print_header("STEP 6: Generate Sitemaps")
-        
-        if self.run_command(
-            "python run_sitemap_generation.py",
-            "Sitemap generation completed"
-        ):
-            self.print_success("Sitemaps generated successfully")
-            return True
-        else:
-            self.print_warning("Sitemap generation failed, continuing anyway")
-            return True  # Don't stop deployment for this
             
     # ========================================================================
     # STEP 7: Production Settings Check
@@ -375,7 +358,6 @@ class ProductionDeployer:
             ("Database", self.validate_database),
             ("Django", self.test_django),
             ("SEO Views", self.validate_seo_views),
-            ("Sitemaps", self.generate_sitemaps),
             ("Production Settings", self.check_production_settings),
             ("Security", self.security_checks),
             ("Google OAuth", self.validate_google_oauth),

@@ -55,7 +55,7 @@
             "price": "{{ product.price|floatformat:2 }}",
             "priceCurrency": "{% if product.currency and product.currency|length > 0 %}{{ product.currency|upper|escapejs }}{% else %}UGX{% endif %}",
             "priceValidUntil": "2027-12-31",
-            "availability": "https://schema.org/{% if product.stock_status == 'in_stock' %}InStock{% else %}OutOfStock{% endif %}",
+            "availability": "https://schema.org/InStock",
             "url": "{{ request.build_absolute_uri|escapejs }}",
             "seller": {
                 "@type": "Organization",
@@ -98,13 +98,11 @@
                 }
             }
         }
-        {% if product.reviews_avg and product.reviews_count %},
+        {% if product.wish_count > 0 %},
         "aggregateRating": {
             "@type": "AggregateRating",
-            "ratingValue": "{{ product.reviews_avg|floatformat:1 }}",
-            "reviewCount": "{{ product.reviews_count }}",
-            "bestRating": "5",
-            "worstRating": "1"
+            "ratingValue": "{{ product.wish_count|floatformat:1 }}",
+            "reviewCount": "{{ product.comment_count }}"
         }
         {% endif %}
     }

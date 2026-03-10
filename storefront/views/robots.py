@@ -11,11 +11,15 @@ def robots_txt(request):
     subdomain = getattr(request, 'subdomain', None)
     
     if subdomain:
-        # Business subdomain - Point to static sitemap file
-        # Sitemap generated via: python manage.py generate_static_sitemaps
+        # Business subdomain - Point to sitemap stored in Supabase storage bucket
+        # Each business sitemap is uploaded to the `sitemaps` bucket with
+        # filename `<domain>_sitemap.xml`. Using direct public URL avoids
+        # generating anything on the Django side.
+        import os
+        SUPABASE_URL = os.environ.get('SUPABASE_URL', '').rstrip('/')
+        bucket_url = f"{SUPABASE_URL}/storage/v1/object/public/sitemaps/{request.subdomain}_sitemap.xml"
         robots_content = f"""# Nexus Marketplace - Production Sitemaps
-# Generated: Daily via cron job
-# Command: python manage.py generate_static_sitemaps
+# Sitemap hosted in Supabase storage bucket
 
 User-agent: *
 Allow: /
@@ -42,8 +46,8 @@ Request-rate: 30/1h
 User-agent: *
 Crawl-delay: 1
 
-# Static sitemap - generated daily, prevents database overload
-Sitemap: https://{request.get_host()}/sitemap.xml
+# Sitemap URL
+Sitemap: {bucket_url}
 """
     else:
         # Main domain (nexassearch.com) - Point to static master index

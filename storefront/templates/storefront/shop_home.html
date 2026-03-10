@@ -1,4 +1,5 @@
 {% load static %}
+{% load schema_filters %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -146,10 +147,7 @@
             "latitude": "{% if business.latitude %}{{ business.latitude }}{% else %}0.3136{% endif %}",
             "longitude": "{% if business.longitude %}{{ business.longitude }}{% else %}32.5812{% endif %}"
         },
-        "openingHoursSpecification": [
-            {% if business.opening_hours %}
-                {{ business.opening_hours|safe }}
-            {% else %}
+        "openingHoursSpecification": {% if business.opening_hours %}{{ business.opening_hours|format_opening_hours|safe }}{% else %}[
             {
                 "@type": "OpeningHoursSpecification",
                 "dayOfWeek": [
@@ -163,8 +161,7 @@
                 "opens": "00:00",
                 "closes": "23:59"
             }
-            {% endif %}
-        ],
+        ]{% endif %},
         "priceRange": "{{ business.price_range|default:'$$' }}",
         "currenciesAccepted": "UGX",
         "paymentAccepted": "Cash, Mobile Money, Credit Card",

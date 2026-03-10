@@ -60,13 +60,5 @@ for i, b in enumerate(biz.data[:5]):  # Check first 5
     posts = supabase.table('posts').select('id').eq('business_id', b['id']).execute()
     print(f"  Products: {len(posts.data)}")
 
-print("\n" + "=" * 70)
-print("ACTIVE BUSINESSES THAT SHOULD BE IN SITEMAPS")
-print("=" * 70)
+# Previous sitemap-related section removed since sitemaps are handled via Supabase storage.
 
-active_biz = [b for b in biz.data if b.get('status') == 'active']
-print(f"\nActive businesses: {len(active_biz)}\n")
-
-for b in active_biz:
-    posts = supabase.table('posts').select('id').eq('business_id', b['id']).execute()
-    print(f"✅ {b.get('business_name')} ({b.get('domain')}) - {len(posts.data)} products")

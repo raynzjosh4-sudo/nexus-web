@@ -187,6 +187,61 @@
     .signup-link:hover {
         text-decoration: underline;
     }
+
+    .google-signin-container {
+        margin-bottom: 24px;
+    }
+
+    .btn-google {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: #4285f4;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .btn-google:hover {
+        background-color: #3367d6;
+        transform: translateY(-1px);
+    }
+
+    .btn-google i {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+
+    .divider {
+        text-align: center;
+        margin: 24px 0;
+        position: relative;
+    }
+
+    .divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: var(--glass-border);
+    }
+
+    .divider span {
+        background-color: var(--bg-card, #181b21);
+        color: var(--text-sub, #9ca3af);
+        padding: 0 16px;
+        font-size: 14px;
+        position: relative;
+        z-index: 1;
+    }
 </style>
 
 <div class="login-wrapper">
@@ -201,6 +256,18 @@
             <i class="fas fa-exclamation-circle"></i> {{ error }}
         </div>
         {% endif %}
+
+        <!-- Google Sign In Button -->
+        <div class="google-signin-container">
+            <a href="{% url 'google_login' %}" class="btn-google">
+                <i class="fab fa-google"></i>
+                Continue with Google
+            </a>
+        </div>
+
+        <div class="divider">
+            <span>or</span>
+        </div>
 
         <form method="POST" action="{% url 'login' %}?next={{ request.GET.next }}" class="login-form">
             {% csrf_token %}
