@@ -13,7 +13,7 @@
         {% endif %}
 
         <!-- Wishlist Heart Icon -->
-        <button class="wishlist-btn" onclick="event.preventDefault(); alert('Add to wishlist');">
+        <button class="wishlist-btn" onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(this);">
             <i class="far fa-heart"></i>
         </button>
 
@@ -393,4 +393,123 @@
         }
     }
 }
+</script>
+
+<script>
+    // Wishlist functionality helper functions
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.textContent = message;
+
+        // Add styles if not already present
+        if (!document.getElementById('notification-styles')) {
+            const style = document.createElement('style');
+            style.id = 'notification-styles';
+            style.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                border-radius: 4px;
+                background: #333;
+                color: white;
+                z-index: 10000;
+                animation: slideIn 0.3s ease-out;
+                max-width: 400px;
+            }
+            .notification-success { background: #4caf50; }
+            .notification-error { background: #f44336; }
+            .notification-warning { background: #ff9800; }
+            .notification-info { background: #2196f3; }
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+            document.head.appendChild(style);
+        }
+
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 3000);
+    }
+
+    function toggleWishlist(btn) {
+        const productId = btn.closest('a').href.match(/\/product\/([^\/]+)\//)?.[1];
+        if (!productId) {
+            showNotification('Unable to identify product', 'error');
+            return;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+        // Show loading state
+        btn.disabled = true;
+        const icon = btn.querySelector('i');
+        const originalClass = icon.className;
+        icon.className = 'fas fa-spinner fa-spin';
+
+        fetch(`/wishlist/toggle/${productId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json',
+            },
+            credentials: 'same-origin'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw data;
+                    }).catch(err => {
+                        if (!err.error) throw new Error(`HTTP error! status: ${response.status}`);
+                        throw err;
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                btn.disabled = false;
+
+                if (data.success) {
+                    btn.classList.toggle('active');
+                    if (data.action === 'added') {
+                        icon.className = 'fas fa-heart';
+                        showNotification('Added to wishlist!', 'success');
+                    } else {
+                        icon.className = 'far fa-heart';
+                        showNotification('Removed from wishlist', 'info');
+                    }
+                }
+            })
+            .catch(error => {
+                btn.disabled = false;
+                icon.className = originalClass;
+
+                if (error && error.redirect) {
+                    showNotification(error.error || 'Please log in first', 'warning');
+                    setTimeout(() => window.location.href = error.redirect, 1500);
+                } else {
+                    showNotification(error.error || 'Network error. Please try again.', 'error');
+                    console.error('Wishlist error:', error);
+                }
+            });
+    }
 </script>

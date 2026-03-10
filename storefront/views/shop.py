@@ -21,32 +21,51 @@ def normalize_component_data(component):
     clean = raw_type.replace('Profile', '').replace('Component', '').lower()
     
     # 2. EXPLICIT MAPPING (The Fix for "Missing Components")
-    # This maps what the DB gives -> what your HTML {% elif %} checks for.
+    # This maps what the DB gives -> actual template file names (without .html)
     type_mapping = {
-        'services': 'servicelist',
-        'service': 'servicelist',
-        'servicelist': 'servicelist',
+        'services': 'services',
+        'service': 'services',
+        'servicelist': 'services',
         
-        'features': 'featurelist',
-        'feature': 'featurelist',
-        'featurelist': 'featurelist',
+        'features': 'features',
+        'feature': 'features',
+        'featurelist': 'features',
         
-        'downloads': 'filedownload',
-        'download': 'filedownload',
-        'filedownload': 'filedownload',
-        'files': 'filedownload',
+        'downloads': 'downloads',
+        'download': 'downloads',
+        'filedownload': 'downloads',
+        'files': 'downloads',
         
-        'tabs': 'tabbedcontent',
-        'tab': 'tabbedcontent',
-        'tabbedcontent': 'tabbedcontent',
+        'tabs': 'tabs',
+        'tab': 'tabs',
+        'tabbedcontent': 'tabs',
         
         'gallery': 'gallery',
         'images': 'gallery',
         
-        'websitetheme': 'webtheme',
-        'webtheme': 'webtheme',
-        'theme': 'webtheme',
-        'profilewebsitethemecomponent': 'webtheme',
+        'testimonials': 'testimonials',
+        'testimonial': 'testimonials',
+        
+        'team': 'team',
+        'faq': 'faq',
+        'pricing': 'pricing',
+        'hero': 'hero',
+        'bio': 'bio',
+        'contact': 'contact',
+        'video': 'video',
+        'booking': 'booking',
+        'portfolio': 'portfolio',
+        'timeline': 'timeline',
+        'map': 'map',
+        'cta': 'cta',
+        'heading': 'heading',
+        'divider': 'divider',
+        'awards': 'awards',
+        
+        'websitetheme': 'hero',
+        'webtheme': 'hero',
+        'theme': 'hero',
+        'profilewebsitethemecomponent': 'hero',
     }
 
     # Apply mapping. If not found in mapping, use the cleaned string.
@@ -57,18 +76,18 @@ def normalize_component_data(component):
         if 'imageUrls' not in component:
             component['imageUrls'] = component.get('images') or component.get('items') or []
     
-    if component['clean_type'] == 'testimonial':
+    if component['clean_type'] == 'testimonials':
         testimonials = component.get('testimonials', [])
         for t in testimonials:
             if 'authorImageUrl' not in t and 'imageUrl' in t:
                 t['authorImageUrl'] = t['imageUrl']
 
-    # 4. Recursive Fix for Tabs
-    if component['clean_type'] == 'tabbedcontent':
+    # 4. Recursive Fix for Tabs - normalize all nested components
+    if component['clean_type'] == 'tabs':
         for tab in component.get('tabs', []):
             tab_sub_components = tab.get('components', [])
             tab['components'] = [normalize_component_data(sub) for sub in tab_sub_components]
-            
+    
     return component
 
 def shop_home(request):
@@ -199,11 +218,11 @@ def shop_home(request):
 
     # Separate Components for layout
     hero_component = next((c for c in biz_components if c.get('clean_type') == 'hero'), None)
-    tab_component = next((c for c in biz_components if c.get('clean_type') == 'tabbedcontent'), None)
+    tab_component = next((c for c in biz_components if c.get('clean_type') == 'tabs'), None)
     theme_component = next((c for c in biz_components if c.get('clean_type') == 'webtheme'), None)
     
     # Everything else goes into the main stack
-    other_components = [c for c in biz_components if c.get('clean_type') not in ['hero', 'tabbedcontent', 'webtheme']]
+    other_components = [c for c in biz_components if c.get('clean_type') not in ['hero', 'tabs', 'webtheme']]
 
 
     # Render components

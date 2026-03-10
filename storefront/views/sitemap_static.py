@@ -223,42 +223,14 @@ def sitemap_index(request):
     
     Call: GET /sitemap_index.xml (from main domain like nexassearch.com)
     
-    Two-tier approach:
-    1. **STATIC** (preferred): Pre-generated master index (24-hour cache, no DB queries)
-    2. **DYNAMIC FALLBACK**: Generate on-the-fly if static not available
-    
-    Performance:
-    - Static: No database queries, instant response
-    - Fallback: Database query only if static missing, 1-hour cache
+    Always generate dynamically to ensure accuracy.
     """
     subdomain = getattr(request, 'subdomain', None)
     
     if subdomain:
         raise Http404("Use /sitemap.xml for business sitemaps")
     
-    # Try static first
-    filepath = get_sitemap_file(subdomain=None)
-    
-    if filepath:
-        # Static sitemap index found
-        try:
-            with open(filepath, 'r', encoding='utf-8') as f:
-                content = f.read()
-            
-            return HttpResponse(
-                content,
-                content_type='application/xml; charset=utf-8',
-                headers={
-                    'Cache-Control': 'public, max-age=86400, must-revalidate',  # 24 hours for static
-                    'X-Sitemap-Generated': 'static',
-                }
-            )
-        except IOError as e:
-            logger.error(f'Error reading sitemap index {filepath}: {str(e)}')
-            # Fall through to dynamic generation
-    
-    # Static not found - generate dynamically
-    logger.info('Static sitemap index not found, falling back to dynamic generation')
+    # Always generate dynamically for reliability
     return generate_dynamic_sitemap_index(request)
 
 
@@ -273,7 +245,7 @@ def generate_dynamic_sitemap_index(request):
         
         # Fetch all ACTIVE businesses (not 'published' - that status doesn't exist in DB)
         biz_response = supabase.table('business_profiles')\
-            .select('domain,updated_at')\
+            .select('domain,created_at')\
             .eq('status', 'active')\
             .limit(50000)\
             .execute()
@@ -285,7 +257,7 @@ def generate_dynamic_sitemap_index(request):
             if biz.get('domain'):
                 sitemaps.append({
                     'loc': f"https://{biz['domain']}.nexassearch.com/sitemap.xml",
-                    'lastmod': format_date(biz.get('updated_at')),
+                    'lastmod': format_date(biz.get('created_at')),
                 })
         
         sitemap_index_xml = render_to_string('storefront/sitemap_index.xml', {

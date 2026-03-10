@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    
+    <url>
+        <loc>https://eron.nexassearch.com/</loc>
+        <lastmod>2026-03-07</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        
+        
+        
+    </url>
+    
+    <url>
+        <loc>https://eron.nexassearch.com/product/4b70a2cd-6df3-4580-b932-b0d89fc23b88/</loc>
+        <lastmod>2026-03-07</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/0dc75266-8c8f-4ca9-b413-4e482ebc83c0/feed/1772881837636_compressed.jpg</image:loc>
+            <image:title>Product Image</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/0dc75266-8c8f-4ca9-b413-4e482ebc83c0/feed/1772881839436_compressed.jpg</image:loc>
+            <image:title>Product Image</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/0dc75266-8c8f-4ca9-b413-4e482ebc83c0/feed/1772881841132_compressed.jpg</image:loc>
+            <image:title>Product Image</image:title>
+        </image:image>
+        
+    </url>
+    
+    <url>
+        <loc>https://eron.nexassearch.com/product/e0d1ebf8-b43c-4442-908e-169a80a8b5d3/</loc>
+        <lastmod>2026-03-07</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/0dc75266-8c8f-4ca9-b413-4e482ebc83c0/feed/1772881704485_compressed.jpg</image:loc>
+            <image:title>Product Image</image:title>
+        </image:image>
+        
+        <image:image>
+            <image:loc>https://tdyebwcyamsqnnivynuk.supabase.co/storage/v1/object/public/posts/0dc75266-8c8f-4ca9-b413-4e482ebc83c0/feed/1772881706308_compressed.jpg</image:loc>
+            <image:title>Product Image</image:title>
+        </image:image>
+        
+    </url>
+    
+    <url>
+        <loc>https://eron.nexassearch.com/product/a22dc0ad-81ef-4337-9b3d-b4f74fbeaf88/</loc>
+        <lastmod>2026-03-07</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        
+        
+        
+    </url>
+    
+</urlset>

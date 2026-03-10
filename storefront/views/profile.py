@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from ..client import get_supabase_client
+from ..client import get_supabase_client, get_supabase_service_client
 from .auth import _get_business_context
 import logging
 
@@ -14,6 +14,7 @@ def profile_view(request):
         return redirect('login') 
     
     supabase = get_supabase_client()
+    service_supabase = get_supabase_service_client()
     
     # 1. User Profile Data
     user_data = {}
@@ -32,7 +33,8 @@ def profile_view(request):
     # 2. Orders (Market Orders) - Hydrated with product & business details
     orders = []
     try:
-        o_res = supabase.table('market_orders').select('*').eq('buyer_id', uid).order('created_at', desc=True).execute()
+        # Use service role to bypass RLS policies for reading user's own orders
+        o_res = service_supabase.table('market_orders').select('*').eq('buyer_id', uid).order('created_at', desc=True).execute()
         orders = o_res.data
         logger.debug(f"Profile View: Fetched {len(orders)} orders for user {uid}")
         
@@ -75,7 +77,8 @@ def profile_view(request):
     # 3. Wishlist Details
     wishes = []
     try:
-        w_res = supabase.table('wishlists').select('product_id').eq('user_id', uid).execute()
+        # Use service role to bypass RLS policies for reading user's wishlists
+        w_res = service_supabase.table('wishlists').select('product_id').eq('user_id', uid).execute()
         w_ids = [w['product_id'] for w in w_res.data]
         logger.debug(f"Profile View: Found {len(w_ids)} wishlist IDs for user {uid}")
         

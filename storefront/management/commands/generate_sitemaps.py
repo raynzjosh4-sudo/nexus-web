@@ -37,17 +37,20 @@ class Command(BaseCommand):
         self.stdout.write(f"Found {len(businesses)} active businesses to process")
 
         for business in businesses:
-            # Example: https://nexassearch.com/product/...
+            domain = business['domain']
+            # Build URLs with subdomain
             posts_response = supabase.table('posts').select('id').eq('business_id', business['id']).execute()
             product_urls = [
-                f"https://nexassearch.com/product/{post['id']}/"
+                f"https://{domain}.nexassearch.com/product/{post['id']}/"
                 for post in posts_response.data
             ]
+            # Add homepage
+            product_urls.insert(0, f"https://{domain}.nexassearch.com/")
             if not product_urls:
                 self.stdout.write(f"  ⚠️  Skipped: {business['business_name']} - No products")
                 continue
             xml_bytes = make_sitemap_xml(product_urls)
-            filename = f"business-{business['id']}.xml"
+            filename = f"{domain}_sitemap.xml"
             try:
                 service_client.storage.from_(BUCKET).remove([filename])
             except Exception:

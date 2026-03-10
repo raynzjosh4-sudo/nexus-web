@@ -201,8 +201,23 @@ def sitemap_businesses(request):
 
 
 def sitemap_index_proxy(request):
-    # This points Google to master_index.xml in Supabase
-    SUPABASE_URL = os.environ["SUPABASE_URL"]
-    BUCKET = "sitemaps"
-    master_url = f"{SUPABASE_URL}/storage/v1/object/public/{BUCKET}/master_index.xml"
-    return redirect(master_url)
+    """
+    Handle /sitemap.xml requests:
+    - Main domain: Redirect to master sitemap index
+    - Subdomain: Redirect to business sitemap in Supabase storage
+    """
+    subdomain = getattr(request, 'subdomain', None)
+    
+    if subdomain:
+        # Subdomain request: redirect to Supabase sitemap
+        import os
+        SUPABASE_URL = os.environ["SUPABASE_URL"]
+        BUCKET = "sitemaps"
+        sitemap_url = f"{SUPABASE_URL}/storage/v1/object/public/{BUCKET}/{subdomain}_sitemap.xml"
+        return redirect(sitemap_url)
+    else:
+        # Main domain: redirect to master index
+        SUPABASE_URL = os.environ["SUPABASE_URL"]
+        BUCKET = "sitemaps"
+        master_url = f"{SUPABASE_URL}/storage/v1/object/public/{BUCKET}/master_index.xml"
+        return redirect(master_url)

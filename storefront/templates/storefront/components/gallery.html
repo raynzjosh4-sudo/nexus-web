@@ -1,27 +1,125 @@
 <style>
-    :root { --nexus-accent: var(--nexus-accent, #f97316); }
-    .nexus-gallery-section { width:100%; position:relative; padding:40px 16px; max-width:1200px; margin:0 auto; }
-    .gallery-header { text-align:center; margin-bottom:20px; }
-    .gallery-title { color:var(--nexus-text, #0f172a); font-size:1.25rem; font-weight:700; margin:0; }
+    :root {
+        --nexus-accent: var(--nexus-accent, #f97316);
+    }
 
-    .gallery-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:20px; }
-    .gallery-item { position:relative; border-radius:12px; overflow:hidden; cursor:pointer; background:var(--bg-card, #fff); border:1px solid rgba(15,23,42,0.04); transition: transform 0.18s ease, box-shadow 0.18s ease; }
-    .gallery-item:hover { transform: translateY(-6px); box-shadow:0 12px 36px rgba(16,24,40,0.08); }
+    .nexus-gallery-section {
+        width: 100%;
+        position: relative;
+        padding: 40px 16px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
 
-    .gallery-img { width:100%; height:100%; display:block; object-fit:cover; transition: transform 0.5s ease; }
-    .gallery-item:hover .gallery-img { transform: scale(1.06); }
+    .gallery-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-    .gallery-overlay { position:absolute; inset:0; background: linear-gradient(to top, rgba(15,23,42,0.24), transparent 40%); opacity:0; transition:opacity 0.18s ease; }
-    .gallery-item:hover .gallery-overlay { opacity:1; }
+    .gallery-title {
+        color: var(--nexus-text, #0f172a);
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin: 0;
+    }
 
-    .gallery-filmstrip { display:flex; gap:16px; overflow-x:auto; padding:12px 4px; -webkit-overflow-scrolling:touch; }
-    .gallery-filmstrip .gallery-item { flex:0 0 300px; height:200px; }
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
 
-    @media (max-width:1024px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width:768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); gap:8px; } .gallery-filmstrip .gallery-item{ flex:0 0 85vw; } }
+    .gallery-item {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+        background: var(--bg-card, #fff);
+        border: 1px solid rgba(15, 23, 42, 0.04);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .gallery-item:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 36px rgba(16, 24, 40, 0.08);
+    }
+
+    .gallery-img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .gallery-item:hover .gallery-img {
+        transform: scale(1.06);
+    }
+
+    .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(15, 23, 42, 0.24), transparent 40%);
+        opacity: 0;
+        transition: opacity 0.18s ease;
+    }
+
+    .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+    }
+
+    .gallery-filmstrip {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding: 12px 4px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .gallery-filmstrip .gallery-item {
+        flex: 0 0 300px;
+        height: 200px;
+    }
+
+    @media (max-width:1024px) {
+        .gallery-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width:768px) {
+        .gallery-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .gallery-filmstrip .gallery-item {
+            flex: 0 0 85vw;
+        }
+    }
 </style>
 
-<div class="nexus-gallery-section">
+<!-- Schema Markup for Gallery (Google Search Console) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageGallery",
+  "name": "{{ component.title|default:'Image Gallery' }}",
+  "description": "{{ component.description|default:'A collection of images' }}",
+  "image": [
+    {% for url in component.imageUrls %}
+    {
+      "@type": "ImageObject",
+      "url": "{{ url }}",
+      "name": "Gallery Image {{ forloop.counter }}",
+      "position": {{ forloop.counter }}
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+
+<div class="nexus-gallery-section" itemscope itemtype="https://schema.org/ImageGallery">
 
     {% if component.title %}
     <div class="gallery-header">

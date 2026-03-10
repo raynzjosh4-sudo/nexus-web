@@ -115,11 +115,11 @@ def shop_home(request):
     biz_components = [normalize_component_data(c) for c in biz_components]
 
     # Separate Components
-    hero_component = next((c for c in biz_components if c.get('type') == 'ProfileHeroComponent'), None)
-    tab_component = next((c for c in biz_components if c.get('type') == 'ProfileTabbedContentComponent'), None)
+    hero_component = next((c for c in biz_components if c.get('clean_type') == 'hero'), None)
+    tab_component = next((c for c in biz_components if c.get('clean_type') == 'tabs'), None)
     
     # Filter out Hero and Tab to leave the rest (including Gallery)
-    other_components = [c for c in biz_components if c.get('type') not in ['ProfileHeroComponent', 'ProfileTabbedContentComponent']]
+    other_components = [c for c in biz_components if c.get('clean_type') not in ['hero', 'tabs']]
 
     context = {
         'business': business_data,

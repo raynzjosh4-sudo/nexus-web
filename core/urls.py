@@ -23,44 +23,11 @@ from django.urls import re_path
 import os
 
 # Custom error view handlers  
-def error_500(request):
-    """Custom 500 error handler that passes exception details to template"""
-    from django.template.response import TemplateResponse
-    
-    # Get exception details that were captured by ExceptionMiddleware
-    exception_details = getattr(request, 'exception_details', None)
-    
-    # Also try to get from META as fallback
-    exc_info = request.META.get('exc_info', None)
-    if not exception_details and exc_info:
-        if isinstance(exc_info, tuple) and len(exc_info) >= 2:
-            exception_details = {
-                'error': str(exc_info[1]),
-                'traceback': str(exc_info[2])
-            }
-    
-    # Build context - the template will look for request.exception_details
-    context = {
-        'exception': exception_details.get('error') if exception_details else "Internal Server Error",
-    }
-    
-    response = TemplateResponse(
-        request, '500.html', 
-        context, 
-        status=500
-    )
-    
-    # Ensure the request object with exception_details is available to the template
-    response.context_data['request'] = request
-    
-    return response
-
 def error_404(request, exception=None):
     """Custom 404 error handler"""
-    from django.template.response import TemplateResponse
-    return TemplateResponse(
-        request, '404.html', 
-        {'exception': exception}, 
+    from django.http import JsonResponse
+    return JsonResponse(
+        {'error': 'Not Found', 'message': 'The page you requested could not be found.'},
         status=404
     )
 
@@ -102,5 +69,5 @@ if settings.DEBUG:
 
 # Register custom error handlers
 handler404 = error_404
-handler500 = error_500
+# Removed handler500 and handler400 as error templates are not needed
 

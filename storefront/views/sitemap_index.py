@@ -38,9 +38,9 @@ def sitemap_index(request):
         # Fetch all ACTIVE published businesses with domains
         # Filter: status='active' → ensures only live shops are indexed
         biz_response = supabase.table('business_profiles')\
-            .select('id,domain,updated_at,status')\
+            .select('id,domain,last_activity_at,created_at,status')\
             .eq('status', 'active')\
-            .order('updated_at', desc=True)\
+            .order('last_activity_at', desc=True)\
             .limit(50000)\
             .execute()
         
@@ -53,7 +53,8 @@ def sitemap_index(request):
                 continue
             
             # Track latest update for Last-Modified header
-            biz_updated = biz.get('updated_at')
+            # Use last_activity_at if available, fallback to created_at
+            biz_updated = biz.get('last_activity_at') or biz.get('created_at')
             if biz_updated:
                 try:
                     if isinstance(biz_updated, str):

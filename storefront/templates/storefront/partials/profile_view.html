@@ -22,10 +22,10 @@
                 {% if component.clean_type == 'bio' %}
                 {% include "storefront/components/bio.html" with component=component %}
 
-                {% elif component.clean_type == 'servicelist' %}
+                {% elif component.clean_type == 'services' %}
                 {% include "storefront/components/services.html" with component=component %}
 
-                {% elif component.clean_type == 'featurelist' %}
+                {% elif component.clean_type == 'features' %}
                 {% include "storefront/components/features.html" with component=component %}
 
                 {% elif component.clean_type == 'portfolio' %}
@@ -65,6 +65,7 @@
                 {% include "storefront/components/cta.html" with component=component %}
 
                 {% elif component.clean_type == 'gallery' %}
+                {# Gallery component works both inside tabs and standalone #}
                 {% include "storefront/components/gallery.html" with component=component %}
 
                 {% elif component.clean_type == 'faq' %}

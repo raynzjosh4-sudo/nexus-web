@@ -48,9 +48,13 @@ Sitemap: https://{request.get_host()}/sitemap.xml
     else:
         # Main domain (nexassearch.com) - Point to static master index
         # Master index updated daily, lists all business sitemaps
-        robots_content = """# Nexus Marketplace - Main Domain
+        import os
+        SUPABASE_URL = os.environ["SUPABASE_URL"]
+        BUCKET = "sitemaps"
+        master_url = f"{SUPABASE_URL}/storage/v1/object/public/{BUCKET}/master_index.xml"
+        robots_content = f"""# Nexus Marketplace - Main Domain
 # Static sitemaps generated daily via cron job
-# Command: python manage.py generate_static_sitemaps
+# Command: python manage.py generate_sitemaps
 
 User-agent: *
 Allow: /robots.txt
@@ -71,7 +75,7 @@ User-agent: *
 Crawl-delay: 1
 
 # Master sitemap index - lists all business sitemaps (updated daily)
-Sitemap: https://{request.get_host()}/sitemap_index.xml
+Sitemap: {master_url}
 """
     
     return HttpResponse(robots_content, content_type='text/plain')

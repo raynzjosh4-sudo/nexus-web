@@ -2,7 +2,7 @@ import json
 import logging
 from django.shortcuts import render, redirect
 from django.http import Http404
-from ..client import get_supabase_client
+from ..client import get_supabase_client, get_supabase_service_client
 from .shop import normalize_component_data
 
 logger = logging.getLogger(__name__)
@@ -494,7 +494,9 @@ def create_order(request, product_id):
             order_data['category_id'] = product['category_id']
         
         try:
-            result = supabase.table('market_orders').insert(order_data).execute()
+            # Use service role client to bypass RLS policies for order creation
+            service_supabase = get_supabase_service_client()
+            result = service_supabase.table('market_orders').insert(order_data).execute()
             logger.info(f"Order created successfully for user {user_id}, product {product_id}")
             
             return render(request, 'storefront/partials/mainstore/create_order.html', {

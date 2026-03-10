@@ -1,10 +1,133 @@
 import html
 from django.template.loader import render_to_string
+import json
+
+def generate_component_schema(comp):
+    """
+    Generate JSON-LD schema markup for a component (for Google Search Console).
+    Returns empty string if no schema is applicable.
+    """
+    c_type = comp.get('clean_type') or ''
+    
+    if c_type == 'gallery':
+        images = comp.get('imageUrls', [])
+        return json.dumps({
+            "@context": "https://schema.org",
+            "@type": "ImageGallery",
+            "name": comp.get('title', 'Image Gallery'),
+            "description": comp.get('description', 'A collection of images'),
+            "image": [
+                {
+                    "@type": "ImageObject",
+                    "url": url,
+                    "name": f"Gallery Image {i+1}",
+                    "position": i+1
+                }
+                for i, url in enumerate(images)
+            ]
+        })
+    elif c_type == 'services':
+        return json.dumps({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": comp.get('title', 'Services'),
+            "description": comp.get('description', 'Professional services'),
+            "service": [
+                {
+                    "@type": "Service",
+                    "name": svc.get('title', 'Service'),
+                    "description": svc.get('description', '')
+                }
+                for svc in comp.get('services', [])
+            ]
+        })
+    elif c_type == 'features':
+        return json.dumps({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            "name": comp.get('title', 'Features'),
+            "featureList": [
+                {
+                    "@type": "Text",
+                    "value": feat.get('title', '')
+                }
+                for feat in comp.get('features', [])
+            ]
+        })
+    elif c_type == 'testimonials':
+        testimonials = comp.get('testimonials', [])
+        return json.dumps({
+            "@context": "https://schema.org",
+            "@type": "AggregateRating",
+            "name": comp.get('title', 'Customer Testimonials'),
+            "review": [
+                {
+                    "@type": "Review",
+                    "author": {
+                        "@type": "Person",
+                        "name": t.get('authorName', 'Anonymous')
+                    },
+                    "reviewBody": t.get('text', ''),
+                    "ratingValue": t.get('rating', 5)
+                }
+                for t in testimonials
+            ]
+        })
+    elif c_type == 'team':
+        return json.dumps({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": comp.get('title', 'Team'),
+            "member": [
+                {
+                    "@type": "Person",
+                    "name": member.get('name', ''),
+                    "image": member.get('image', ''),
+                    "jobTitle": member.get('title', '')
+                }
+                for member in comp.get('members', [])
+            ]
+        })
+    elif c_type == 'faq':
+        return json.dumps({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": item.get('question', ''),
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": item.get('answer', '')
+                    }
+                }
+                for item in comp.get('items', [])
+            ]
+        })
+    elif c_type == 'pricing':
+        return json.dumps({
+            "@context": "https://schema.org",
+            "@type": "AggregateOffer",
+            "name": comp.get('title', 'Pricing'),
+            "offers": [
+                {
+                    "@type": "Offer",
+                    "name": plan.get('name', ''),
+                    "price": plan.get('price', 0),
+                    "priceCurrency": plan.get('currency', 'USD'),
+                    "description": plan.get('description', '')
+                }
+                for plan in comp.get('plans', [])
+            ]
+        })
+    
+    return ""
 
 def render_component_list(components, context=None):
     """
     Renders a list of component dictionaries into a single HTML string.
     Using Django templates for Profile components.
+    Includes JSON-LD schema markup for SEO/Google Search Console.
     """
     if not components or not isinstance(components, list):
         return ""
@@ -13,6 +136,11 @@ def render_component_list(components, context=None):
     for comp in components:
         if not isinstance(comp, dict): continue
         try:
+            # Generate schema markup for this component
+            schema = generate_component_schema(comp)
+            if schema:
+                html_output.append(f'<script type="application/ld+json">{schema}</script>')
+            
             html_output.append(render_single_component(comp, context))
         except Exception as e:
             html_output.append(f"<!-- Render Error: {e} -->")
@@ -20,12 +148,12 @@ def render_component_list(components, context=None):
     return "\n".join(html_output)
 
 def render_single_component(comp, context=None):
-    # Use normalized type if available, else standard type
+    # Use normalized type if available, otherwise fall back to raw type
     c_type = comp.get('clean_type') or comp.get('type') or ''
-    raw_type = c_type
     
-    # Cleaning the type slightly more to be sure
-    c_type = c_type.lower().replace('profile', '').replace('component', '')
+    # If clean_type is not available, do basic cleaning
+    if not comp.get('clean_type'):
+        c_type = c_type.lower().replace('profile', '').replace('component', '')
         
     # Map cleaned type to template file
     template_map = {

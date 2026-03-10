@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-from ..client import get_supabase_client
+from ..client import get_supabase_client, get_supabase_service_client
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,7 @@ def toggle_wishlist(request, product_id):
     
     try:
         supabase = get_supabase_client()
+        service_supabase = get_supabase_service_client()
         
         # Validate product exists
         product_check = supabase.table('posts').select('id').eq('id', str(product_id)).execute()
@@ -39,20 +40,20 @@ def toggle_wishlist(request, product_id):
         existing = supabase.table('wishlists').select('*').eq('user_id', user_id).eq('product_id', str(product_id)).execute()
         
         if existing.data:
-            # Remove from wishlist
-            supabase.table('wishlists').delete().eq('user_id', user_id).eq('product_id', str(product_id)).execute()
+            # Remove from wishlist - use service role to bypass RLS
+            service_supabase.table('wishlists').delete().eq('user_id', user_id).eq('product_id', str(product_id)).execute()
             return JsonResponse({
                 'success': True,
                 'action': 'removed',
                 'message': 'Removed from wishlist'
             })
         else:
-            # Add to wishlist
+            # Add to wishlist - use service role to bypass RLS
             wishlist_data = {
                 'user_id': user_id,
                 'product_id': str(product_id)
             }
-            supabase.table('wishlists').insert(wishlist_data).execute()
+            service_supabase.table('wishlists').insert(wishlist_data).execute()
             return JsonResponse({
                 'success': True,
                 'action': 'added',
