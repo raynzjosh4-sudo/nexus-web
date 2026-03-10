@@ -112,6 +112,63 @@
             transition: opacity 0.3s ease;
         }
     </style>
+
+    {# JSON-LD Store Schema for Google Search and Local Business #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Store",
+        "@id": "https://{{ request.META.HTTP_HOST }}#store",
+        "name": "{{ business.business_name|default:'Nexus Shop' }}",
+        "url": "https://{{ request.META.HTTP_HOST }}/",
+        "logo": "{{ business.logo_url|default:'https://nexassearch.com/logo.png' }}",
+        "image": [
+            "{{ business.cover_small_url|default:'https://nexassearch.com/default-cover.jpg' }}"
+        ],
+        "description": "{{ business.business_description|default:'Premium products and services available on Nexus - Your trusted local marketplace.' }}",
+        "telephone": [
+            "+256746010410",
+            "+256790915604",
+            "+256703590034"
+        ],
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "{% if business.business_address %}{{ business.business_address }}{% else %}Church House Building, Kampala Road{% endif %}",
+            "addressLocality": "Kampala",
+            "addressRegion": "Central",
+            "addressCountry": "UG"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "{% if business.latitude %}{{ business.latitude }}{% else %}0.3136{% endif %}",
+            "longitude": "{% if business.longitude %}{{ business.longitude }}{% else %}32.5812{% endif %}"
+        },
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday"
+                ],
+                "opens": "00:00",
+                "closes": "23:59"
+            }
+        ],
+        "priceRange": "{{ business.price_range|default:'$$' }}",
+        "currenciesAccepted": "UGX",
+        "paymentAccepted": "Cash, Mobile Money, Credit Card",
+        "areaServed": "Uganda",
+        "sameAs": [
+            "https://facebook.com",
+            "https://instagram.com",
+            "https://wa.me/256746010410"
+        ]
+    }
+    </script>
 </head>
 
 <body>
