@@ -1,0 +1,59 @@
+{% if show_login_prompt %}
+<div id="login-prompt-banner" class="login-prompt">
+    <p>Want to order? <a href="{% url 'google_login' %}?next={{ request.path }}" class="btn btn-primary">Log in with
+            Google</a></p>
+    <button id="login-prompt-close" class="close-button" aria-label="Close">&times;</button>
+</div>
+
+<script>
+    // When the banner is shown or closed, notify the server so it won't reappear.
+    function markPromptSeen() {
+        fetch('{% url "login_prompt_seen" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        });
+    }
+
+    // send flag immediately
+    markPromptSeen();
+
+    // also close button handler
+    var closeBtn = document.getElementById('login-prompt-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+            document.getElementById('login-prompt-banner').style.display = 'none';
+            markPromptSeen();
+        });
+    }
+</script>
+
+<style>
+    /* simple styles, adjust as needed */
+    .login-prompt {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #fff8c6;
+        padding: 10px;
+        text-align: center;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+    }
+
+    .login-prompt .btn {
+        margin-left: 8px;
+    }
+
+    .login-prompt .close-button {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+</style>
+{% endif %}

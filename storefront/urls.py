@@ -46,6 +46,7 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('signup/', views.auth.signup_view, name='signup'),
     path('login/google/', google_login_view, name='google_login'),
+    path('login_prompt_seen/', views.auth.mark_login_prompt_seen, name='login_prompt_seen'),
     path('auth/callback/', auth_callback_view, name='auth_callback'),
     path('auth/confirm/', confirm_auth_view, name='confirm_auth'),
     path('logout/', logout_view, name='logout'),

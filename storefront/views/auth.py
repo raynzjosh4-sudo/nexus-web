@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.http import require_POST
 from ..client import get_supabase_client
 from .shop import normalize_component_data
 import logging
@@ -132,6 +133,15 @@ def login_view(request):
             'error': 'An unexpected error occurred. Please try again later.',
             'business': _get_business_context(request)
         })
+
+def mark_login_prompt_seen(request):
+    """AJAX endpoint called by the front end to record that the visitor has seen or dismissed
+    the one-click login prompt. Sets a session flag so the banner won't reappear for this
+    session.
+    """
+    request.session['seen_login_prompt'] = True
+    return HttpResponse(status=204)
+
 
 def signup_view(request):
     subdomain = getattr(request, 'subdomain', None)
