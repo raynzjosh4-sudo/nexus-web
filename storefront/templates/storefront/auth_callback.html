@@ -159,8 +159,18 @@
                     if (data.status === 'ok') {
                         statusDetail.textContent = 'Redirecting to your profile...';
                         // If the central callback included a `next` origin, redirect there
-                        const nextOrigin = new URLSearchParams(window.location.search).get('next');
-                        const target = nextOrigin ? (nextOrigin.replace(/\/$/, '') + '/profile/') : '/profile/';
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const nextOrigin = urlParams.get('next');
+                        const subdomain = urlParams.get('subdomain');
+                        
+                        let target;
+                        if (nextOrigin) {
+                            target = nextOrigin.replace(/\/$/, '') + '/profile/';
+                        } else if (subdomain) {
+                            target = `https://${subdomain}.nexassearch.com/profile/`;
+                        } else {
+                            target = '/profile/';
+                        }
                         setTimeout(() => {
                             window.location.href = target;
                         }, 500);

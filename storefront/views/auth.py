@@ -343,6 +343,11 @@ def google_login_view(request):
             # Regular hostname - use as is
             callback_url = request.build_absolute_uri(reverse('auth_callback'))
     
+    # Include subdomain in callback URL so we can redirect back after auth
+    subdomain = getattr(request, 'subdomain', None)
+    if subdomain:
+        callback_url += f'?subdomain={subdomain}'
+    
     try:
         # Prepare OAuth options with proper redirect URL
         # Note: Make sure the value of `callback_url` is registered in your
