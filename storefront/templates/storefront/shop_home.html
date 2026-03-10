@@ -190,6 +190,15 @@
             ]
         },
         {% endif %}
+        "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "returnsAccepted": true,
+            "returnMethod": "ReturnByMail",
+            "returnFees": "FreeReturn",
+            "returnPeriod": "P30D"
+        },
+        "availability": "https://schema.org/InStock",
+        "identifier_exists": "{% if business.barcode and business.barcode|length >= 12 and business.barcode|length <= 13 %}true{% else %}false{% endif %}",
         "sameAs": {{ business.same_as|default:'["https://facebook.com", "https://instagram.com", "https://wa.me/256746010410"]'|safe }}
     }
     </script>
