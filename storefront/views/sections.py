@@ -1,9 +1,10 @@
 """
 Views for section pages: lost-and-found, community, swap, help
-These serve static HTML files from the root directories
+These serve dynamic pages with user theme colors
 """
 from django.shortcuts import render
 from django.http import HttpResponse
+from ..client import get_supabase_client
 import os
 import logging
 
@@ -51,20 +52,44 @@ def community_view(request):
 
 
 def swap_view(request):
-    """Swap section view"""
+    """Swap section view - render with user theme colors"""
     try:
-        # Read the HTML file from the swap directory
-        swap_path = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-            'swap',
-            'index.html'
-        )
-        with open(swap_path, 'r', encoding='utf-8') as f:
-            html_content = f.read()
-        return HttpResponse(html_content, content_type='text/html')
-    except FileNotFoundError:
-        logger.error("Swap HTML file not found")
-        return HttpResponse('<h1>Page Not Found</h1>', status=404)
+        subdomain = getattr(request, 'subdomain', None)
+        
+        # Fetch business theme if on a subdomain
+        theme_component = None
+        business = {}
+        
+        if subdomain:
+            supabase = get_supabase_client()
+            biz_response = supabase.table('business_profiles').select('*').eq('domain', subdomain).execute()
+            
+            if biz_response.data:
+                business = biz_response.data[0]
+                components_raw = business.get('components', [])
+                
+                # Parse components if needed
+                if isinstance(components_raw, str):
+                    try:
+                        import json
+                        components = json.loads(components_raw)
+                    except:
+                        components = []
+                else:
+                    components = components_raw or []
+                
+                # Find theme component
+                for comp in components:
+                    if isinstance(comp, dict) and comp.get('type', '').lower() in ['webtheme', 'theme']:
+                        theme_component = comp
+                        break
+        
+        context = {
+            'theme_component': theme_component,
+            'business': business
+        }
+        
+        return render(request, 'storefront/swap.html', context)
     except Exception as e:
         logger.error(f"Error loading Swap page: {e}")
         return HttpResponse('<h1>Error Loading Page</h1>', status=500)
