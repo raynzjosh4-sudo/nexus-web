@@ -327,36 +327,20 @@ def google_login_view(request):
     oauth_callback_base = os.getenv('OAUTH_CALLBACK_BASE')
     
     if oauth_callback_base:
-        # Production: Use configured base URL
-        callback_url = oauth_callback_base.rstrip('/') + '/auth/callback/'
-    else:
-        # Local development: Build from request, but handle localhost subdomains
-        # For localhost, we strip the subdomain to use the base localhost
-        host = request.get_host()  # e.g., "alice.localhost:8000" or "localhost:8000" or "example.com"
-        
-        # Check if it's localhost with subdomain - we need to use localhost without subdomain for OAuth
-        if 'localhost' in host and '.' in host:
-            # Replace "alice.localhost:8000" with "localhost:8000" for OAuth callback
-            parts = host.split('.')
-            base_host = '.'.join(parts[-2:])  # Get last 2 parts: "localhost:8000"
-            callback_url = f"{request.scheme}://{base_host}/auth/callback/"
-        else:
-            # Regular hostname - use as is
-            callback_url = request.build_absolute_uri(reverse('auth_callback'))
-    
-    # Include subdomain in callback URL path instead of query string
-    # Supabase may not support query parameters in redirect URLs
-    if oauth_callback_base:
-        # Production: Use configured base URL
+        # Production: ALWAYS use the configured base URL, never localhost
+        # Include subdomain in callback URL path
         callback_url = oauth_callback_base.rstrip('/') + f'/auth/callback/{subdomain}/'
     else:
         # Local development: Build from request
-        host = request.get_host()
+        host = request.get_host()  # e.g., "alice.localhost:8000" or "localhost:8000" or "example.com"
+        
         if 'localhost' in host and '.' in host:
+            # Handle localhost with subdomain: strip subdomain for OAuth callback (e.g., "alice.localhost:8000" → "localhost:8000")
             parts = host.split('.')
-            base_host = '.'.join(parts[-2:])
+            base_host = '.'.join(parts[-2:])  # Get last 2 parts: "localhost:8000"
             callback_url = f"{request.scheme}://{base_host}/auth/callback/{subdomain}/"
         else:
+            # Regular production domain or bare localhost - build from request
             callback_url = request.build_absolute_uri(reverse('auth_callback', kwargs={'subdomain': subdomain}))
     
     try:

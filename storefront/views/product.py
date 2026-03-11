@@ -132,7 +132,8 @@ def _get_default_theme():
 def product_detail(request, product_id):
     subdomain = getattr(request, 'subdomain', None)
     if not subdomain:
-        return redirect('http://localhost:8000') 
+        # In production, show an error instead of redirecting to localhost
+        raise Http404('No shop subdomain provided') 
 
     supabase = get_supabase_client()
 
@@ -324,7 +325,8 @@ def product_detail(request, product_id):
 def category_view(request, category_name):
     subdomain = getattr(request, 'subdomain', None)
     if not subdomain:
-        return redirect('http://localhost:8000')
+        # In production, show an error instead of redirecting to localhost
+        raise Http404('No shop subdomain provided')
 
     supabase = get_supabase_client()
     
@@ -386,7 +388,8 @@ def category_view(request, category_name):
 def create_order(request, product_id):
     subdomain = getattr(request, 'subdomain', None)
     if not subdomain:
-        return redirect('http://localhost:8000')
+        # In production, show an error instead of redirecting to localhost
+        raise Http404('No shop subdomain provided')
 
     supabase = get_supabase_client()
 

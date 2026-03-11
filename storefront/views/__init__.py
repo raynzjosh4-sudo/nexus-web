@@ -35,7 +35,8 @@ def normalize_component_data(component):
 def shop_home(request):
     subdomain = getattr(request, 'subdomain', None)
     if not subdomain:
-        return redirect('http://localhost:8000') 
+        # In production, show an error instead of redirecting to localhost
+        raise Http404('No shop subdomain provided') 
 
     supabase = get_supabase_client()
     search_query = request.GET.get('q', '').strip()
