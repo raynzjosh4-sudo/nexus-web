@@ -319,6 +319,7 @@ import os
 
 
 def google_login_view(request):
+    subdomain = getattr(request, 'subdomain', None)
     supabase = get_supabase_client()
 
     # Build the callback URL based on environment and request
