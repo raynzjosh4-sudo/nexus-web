@@ -165,6 +165,8 @@ def check_environment_vars():
     
     if oauth_callback_base:
         print(f"  ✅ OAUTH_CALLBACK_BASE set: {oauth_callback_base}")
+        if '{subdomain}' in oauth_callback_base:
+            print("     (will replace {subdomain} with actual store domain)")
     else:
         print(f"  ⚠️  OAUTH_CALLBACK_BASE not set (will auto-detect from request)")
     

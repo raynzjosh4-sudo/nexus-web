@@ -319,21 +319,32 @@ import os
 
 
 def google_login_view(request):
-    subdomain = getattr(request, 'subdomain', None)
+    # Extract subdomain manually since this URL doesn't use subdomain routing
+    from core.middleware import SubdomainMiddleware
+    middleware = SubdomainMiddleware(lambda r: None)
+    subdomain = middleware._extract_subdomain(request.get_host())
+    logger.info(f"🔍 Google login: extracted subdomain={subdomain}, host={request.get_host()}")
     supabase = get_supabase_client()
 
     # Build the callback URL based on environment and request
     # IMPORTANT: This must match a URL registered in Supabase OAuth settings
     oauth_callback_base = os.getenv('OAUTH_CALLBACK_BASE')
-    
+
     if oauth_callback_base:
-        # Production: ALWAYS use the configured base URL, never localhost
-        # Include subdomain in callback URL path
-        callback_url = oauth_callback_base.rstrip('/') + f'/auth/callback/{subdomain}/'
-    else:
-        # Local development: Build from request
-        host = request.get_host()  # e.g., "alice.localhost:8000" or "localhost:8000" or "example.com"
-        
+        # Production: Use configured base URL. It may include a placeholder
+        # such as {subdomain} to generate a per-store callback host.
+        base = oauth_callback_base.rstrip('/')
+        if '{subdomain}' in base:
+            # when subdomain is None, drop it or use 'main'
+            sd = subdomain or 'main'
+            callback_url = base.replace('{subdomain}', sd)
+            # ensure trailing slash
+            if not callback_url.endswith('/'):
+                callback_url += '/'
+        else:
+            # classic behavior: append /auth/callback/<subdomain>/ path
+            callback_url = base + f'/auth/callback/{subdomain}/'
+
         if 'localhost' in host and '.' in host:
             # Handle localhost with subdomain: strip subdomain for OAuth callback (e.g., "alice.localhost:8000" → "localhost:8000")
             parts = host.split('.')
